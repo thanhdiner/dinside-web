@@ -1,196 +1,185 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DinSide — Mang ngữ cảnh trang web vào AI Chat của bạn</title>
-  <meta name="description" content="Tiện ích mở rộng Chrome Side Panel đưa ngữ cảnh trang web vào ChatGPT, Claude, Gemini, DeepSeek mà không cần copy-paste thủ công.">
+  <meta name="description" content="Tiện ích mở rộng Chrome Side Panel kết nối ngữ cảnh trang web vào ChatGPT, Claude, Gemini, DeepSeek mà không cần copy-paste thủ công.">
   <meta name="keywords" content="DinSide, Chrome Extension, Side Panel, AI Context, ChatGPT, Claude, Gemini, DeepSeek">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/icon32.png">
   <link rel="apple-touch-icon" href="assets/icon128.png">
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 
-  <!-- Custom Stylesheet -->
+  <!-- Theme Stylesheet (MultiFlex Dark Theme) -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Ambient Light Orbs -->
-  <div class="ambient-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+  <!-- Top Utility Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <span class="top-bar-item">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>huynhvanthanh.dev@gmail.com</span>
+        </span>
+        <span class="top-bar-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>Phiên bản v0.6.9 (Chrome Manifest V3)</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="top-bar-item">
+          <span>GitHub: @thanhdiner</span>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
+  <!-- Main Navigation Bar -->
+  <nav class="main-navbar">
     <div class="container nav-container">
-      <a href="#" class="nav-brand">
-        <img src="assets/icon32.png" alt="DinSide Logo" class="nav-logo">
-        <span>DinSide</span>
-        <span class="version-badge">v0.6.9</span>
+      <a href="#" class="brand-logo-group">
+        <div class="brand-icon-ring"></div>
+        <span class="brand-title">Din<span>Side</span></span>
       </a>
 
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="#features" class="nav-link">Tính năng</a></li>
-        <li><a href="#providers" class="nav-link">Nhà cung cấp AI</a></li>
-        <li><a href="#how-it-works" class="nav-link">Cách hoạt động</a></li>
-        <li><a href="#installation" class="nav-link">Cài đặt</a></li>
-        <li><a href="#donate" class="nav-link">Ủng hộ dự án</a></li>
-        <li><a href="#faq" class="nav-link">Hỏi đáp</a></li>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="active">Trang chủ</a></li>
+        <li><a href="#features">Tính năng</a></li>
+        <li><a href="#about">Giới thiệu</a></li>
+        <li><a href="#providers">AI Providers</a></li>
+        <li><a href="#installation">Cài đặt</a></li>
+        <li><a href="#donate">Ủng hộ</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
 
-      <div class="nav-actions">
-        <!-- Theme Toggle -->
-        <button id="themeToggle" class="icon-btn" type="button" aria-label="Đổi giao diện Sáng/Tối">
-          <svg id="sunIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-          <svg id="moonIcon" viewBox="0 0 24 24" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </button>
-
-        <!-- GitHub Link -->
-        <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="Xem GitHub repository">
-          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="#installation" class="nav-cta-btn">
+          Tải DinSide
         </a>
-
-        <!-- Download Button -->
-        <a href="#installation" class="btn btn-primary btn-sm">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Tải DinSide</span>
-        </a>
-
-        <!-- Mobile Toggle Button -->
-        <button id="mobileToggle" class="icon-btn mobile-toggle" type="button" aria-label="Mở menu">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu">
           <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="hero">
-    <div class="container">
-      <div class="hero-pill">
-        <span class="hero-pill-tag">MỚI</span>
-        <span>DinSide v0.6.9 • Hỗ trợ 15 nhà cung cấp AI hàng đầu</span>
-      </div>
+  <!-- Hero Section (MultiFlex Header Banner) -->
+  <header class="hero-multiflex">
+    <div class="hero-bg-overlay"></div>
 
-      <h1 class="hero-title">
-        Mang trang web bạn đang đọc vào <br>
-        <span class="gradient-text">AI Chat bạn đang dùng</span>
+    <div class="container hero-content">
+      <span class="hero-category-tag">Chrome Side Panel Extension</span>
+      <h1 class="hero-headline">
+        Mang trang web bạn đang đọc vào AI Chat bạn đang dùng
       </h1>
-
-      <p class="hero-subtitle">
-        Tiện ích Chrome Manifest V3 tích hợp trực tiếp thanh bên (Side Panel). Tự động lấy ngữ cảnh bài viết, vùng xem màn hình, trích đoạn hoặc Google Docs và gửi thẳng đến ChatGPT, Claude, Gemini mà không cần copy-paste thủ công.
+      <p class="hero-description">
+        Tiện ích mở rộng Chrome Manifest V3 tích hợp trực tiếp thanh bên. Tự động lấy ngữ cảnh bài viết, vùng xem màn hình, trích đoạn hoặc Google Docs và gửi thẳng đến ChatGPT, Claude, Gemini mà không cần copy-paste.
       </p>
 
-      <div class="hero-actions">
-        <a href="downloads/DinSide-0.6.9.zip" class="btn btn-primary btn-lg" download="DinSide-0.6.9.zip">
-          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      <div class="hero-btn-group">
+        <a href="downloads/DinSide-0.6.9.zip" class="btn-coral" download="DinSide-0.6.9.zip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           <span>Tải file ZIP (v0.6.9)</span>
         </a>
 
-        <button class="btn btn-secondary btn-lg" data-copy="git clone https://github.com/thanhdiner/DinSide.git">
-          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <button class="btn-dark" data-copy="git clone https://github.com/thanhdiner/DinSide.git">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           <span>Copy git clone</span>
         </button>
       </div>
 
-      <div class="shortcut-indicator">
-        <span>Mở nhanh bằng phím tắt:</span>
-        <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">Y</span>
-        <span>(hoặc <span class="kbd">⌘</span> + <span class="kbd">Shift</span> + <span class="kbd">Y</span> trên macOS)</span>
+      <div class="hero-shortcut-hint">
+        <span>Phím tắt nhanh:</span>
+        <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd>
+        <span>(hoặc <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd> trên macOS)</span>
       </div>
 
-      <!-- Live Mockup Visual -->
-      <div class="mockup-container">
-        <div class="mockup-header">
-          <div class="mockup-dots">
-            <span class="mockup-dot dot-red"></span>
-            <span class="mockup-dot dot-yellow"></span>
-            <span class="mockup-dot dot-green"></span>
+      <!-- Live Mockup Box -->
+      <div class="mockup-wrap">
+        <div class="mockup-topbar">
+          <div class="mockup-lights">
+            <span class="mockup-light light-r"></span>
+            <span class="mockup-light light-y"></span>
+            <span class="mockup-light light-g"></span>
           </div>
-          <div class="mockup-address-bar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-            <span>https://developer.mozilla.org/vi/docs/Web/API/Context</span>
-          </div>
+          <div class="mockup-url">https://developer.mozilla.org/vi/docs/Web/API/Context</div>
         </div>
 
-        <div class="mockup-body">
-          <!-- Left: Webpage content -->
-          <div class="mockup-page">
-            <span class="mockup-page-tag">Tài liệu kỹ thuật / Bài viết</span>
-            <h3 class="mockup-page-title">Khám phá cơ chế hoạt động của Web APIs</h3>
-            <p class="mockup-page-text">
+        <div class="mockup-grid">
+          <!-- Left side: Browser Webpage -->
+          <div class="mockup-left">
+            <span style="font-size: 0.72rem; color: var(--accent-coral); font-weight: 700; text-transform: uppercase;">Tài liệu kỹ thuật / Bài viết</span>
+            <h3 style="font-size: 1.35rem; color: var(--text-white);">Cơ chế đồng bộ ngữ cảnh thời gian thực</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
               Trong phát triển web hiện đại, việc đồng bộ dữ liệu giữa các luồng xử lý và giao diện người dùng đòi hỏi một kiến trúc mở và bảo mật...
             </p>
 
             <div class="mockup-highlight-box">
-              <div class="quick-ask-bubble">
-                <span>✦ DinSide Quick Ask</span>
-              </div>
+              <div class="quick-bubble">✦ Quick Ask</div>
               <p>
-                <strong>"Cơ chế Service Worker cho phép lắng nghe sự kiện từ thanh bên và truyền tải ngữ cảnh một cách an toàn mà không làm rò rỉ thông tin người dùng ra bên ngoài."</strong>
+                <strong>"Cơ chế Service Worker cho phép lắng nghe sự kiện từ thanh bên và truyền tải ngữ cảnh an toàn mà không làm rò rỉ dữ liệu."</strong>
               </p>
             </div>
 
-            <p class="mockup-page-text">
-              Ngay khi văn bản này được bôi đen, DinSide đã sẵn sàng tóm tắt, dịch thuật hoặc giải thích cấu trúc code mà không yêu cầu bạn phải chuyển tab hay dán lại nội dung.
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
+              Khi bôi đen văn bản này, DinSide tự động nhận diện và sẵn sàng tóm tắt, giải thích mà không cần chuyển tab hay copy-paste.
             </p>
           </div>
 
-          <!-- Right: DinSide Panel -->
-          <div class="mockup-panel">
-            <div class="panel-header">
-              <div class="panel-brand">
-                <img src="assets/icon16.png" alt="DinSide Icon" width="16" height="16">
+          <!-- Right side: DinSide Sidepanel -->
+          <div class="mockup-right">
+            <div class="mockup-panel-head">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.88rem; color: #fff;">
+                <img src="assets/icon16.png" alt="DinSide" width="16" height="16">
                 <span>DinSide</span>
               </div>
-
-              <div class="panel-tabs">
-                <button class="panel-tab active" data-provider="chatgpt">
+              <div class="mockup-provider-pills">
+                <button class="mockup-pill active" data-provider="chatgpt">
                   <img src="assets/chatgpt-mark.svg" alt="ChatGPT">
                   <span>ChatGPT</span>
                 </button>
-                <button class="panel-tab" data-provider="gemini">
+                <button class="mockup-pill" data-provider="gemini">
                   <img src="assets/gemini-mark.svg" alt="Gemini">
                   <span>Gemini</span>
                 </button>
-                <button class="panel-tab" data-provider="claude">
+                <button class="mockup-pill" data-provider="claude">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                   <span>Claude</span>
                 </button>
               </div>
             </div>
 
-            <div class="panel-content">
-              <div class="context-bar">
-                <div class="context-bar-head">
-                  <span>Ngữ cảnh đã đính kèm (Context attached)</span>
-                  <span>Smart Mode</span>
+            <div class="mockup-panel-body">
+              <div class="attached-context-box">
+                <div class="attached-context-header">
+                  <span>NGỮ CẢNH ĐÍNH KÈM</span>
+                  <span>SMART MODE</span>
                 </div>
-                <div class="context-chips">
-                  <span class="context-chip">📄 MDN Web APIs</span>
-                  <span class="context-chip">👁️ Viewport: 65%</span>
-                  <span class="context-chip">✂️ Text đã chọn: 2 dòng</span>
+                <div class="context-tag-list">
+                  <span class="context-tag">📄 Trang hiện tại</span>
+                  <span class="context-tag">👁️ Viewport: 70%</span>
+                  <span class="context-tag">✂️ Đoạn đã bôi đen</span>
                 </div>
               </div>
 
-              <div class="chat-bubble-ai" id="mockupChatBubble">
-                Chào bạn! Tôi đã nhận được ngữ cảnh trang web và vùng xem của bạn. DinSide đã đính kèm nội dung bài viết và phần bạn vừa bôi đen. Bạn muốn tôi tóm tắt hay giải thích chi tiết mục này?
+              <div class="mockup-chat-msg" id="mockupChatMsg">
+                Chào bạn! Tôi đã nhận được ngữ cảnh trang web và vùng xem của bạn từ DinSide. Bạn muốn tôi tóm tắt hay giải thích chi tiết đoạn văn bản vừa bôi đen?
               </div>
             </div>
 
-            <div class="panel-footer">
-              <div class="chat-composer">
-                <input type="text" placeholder="Hỏi AI về phần văn bản này..." value="Giải thích cơ chế Service Worker trong đoạn bôi đen" readonly>
-                <button class="chat-send-btn" type="button" aria-label="Gửi">
-                  <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <div class="mockup-panel-foot">
+              <div class="mockup-input-box">
+                <input type="text" value="Giải thích cơ chế Service Worker trong đoạn bôi đen" readonly>
+                <button class="mockup-send-icon" aria-label="Gửi">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
               </div>
             </div>
@@ -200,515 +189,497 @@
     </div>
   </header>
 
-  <!-- Highlights / Stats -->
-  <section class="container">
-    <div class="highlights-row">
-      <div class="highlight-card">
-        <div class="highlight-val gradient-text">15+</div>
-        <div class="highlight-label">Mô hình & Nhà cung cấp AI</div>
+  <!-- What We Have to Offer Section (Exact MultiFlex structure from image) -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-headline-bar">
+        <div>
+          <span class="section-label">Our Specialize</span>
+          <h2 class="section-main-title">What We Have to Offer</h2>
+        </div>
+        <a href="#providers" class="section-link-action">
+          <span>Xem tất cả 15+ Providers</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-val gradient-text">1 Phím</div>
-        <div class="highlight-label">Kích hoạt nhanh (Ctrl+Shift+Y)</div>
-      </div>
-      <div class="highlight-card">
-        <div class="highlight-val gradient-text">100%</div>
-        <div class="highlight-label">Xử lý cục bộ (Local Pipeline)</div>
-      </div>
-      <div class="highlight-card">
-        <div class="highlight-val gradient-text">0s</div>
-        <div class="highlight-label">Thời gian sao chép qua lại</div>
+
+      <div class="features-grid-multiflex">
+        <!-- Card 1 -->
+        <div class="card-multiflex">
+          <div class="card-icon-line">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+          </div>
+          <h3 class="card-title">Multi-Provider Side Panel</h3>
+          <p class="card-desc">
+            Trò chuyện với ChatGPT, Claude, Gemini, DeepSeek, Qwen... ngay trên thanh bên Chrome mà không cần rời trang web.
+          </p>
+          <a href="#installation" class="card-action-link">
+            <span>Know More</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card-multiflex">
+          <div class="card-icon-line">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3 class="card-title">Smart Context Thông Minh</h3>
+          <p class="card-desc">
+            Tự động đánh giá nội dung trang và câu hỏi để chọn giữa Viewport màn hình hoặc toàn bộ bài viết, tối ưu hóa token.
+          </p>
+          <a href="#installation" class="card-action-link">
+            <span>Know More</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card-multiflex">
+          <div class="card-icon-line">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+          <h3 class="card-title">Quick Ask Bôi Đen</h3>
+          <p class="card-desc">
+            Bôi đen văn bản bất kỳ để kích hoạt popup: Giải thích, Dịch thuật, Tóm tắt hoặc chạy action tuỳ chỉnh của riêng bạn.
+          </p>
+          <a href="#installation" class="card-action-link">
+            <span>Know More</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card-multiflex">
+          <div class="card-icon-line">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </div>
+          <h3 class="card-title">Google Docs & PDF</h3>
+          <p class="card-desc">
+            Trích xuất văn bản từ Canvas của Google Docs và các file PDF nhúng trên Google Drive hay Google Classroom.
+          </p>
+          <a href="#installation" class="card-action-link">
+            <span>Know More</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Core Features Section -->
-  <section id="features" class="container">
-    <div class="section-header">
-      <span class="section-tag">Tính năng nổi bật</span>
-      <h2 class="section-title">Tại sao bạn nên dùng DinSide mỗi ngày?</h2>
-      <p class="section-desc">DinSide đóng vai trò cầu nối thông minh giữa trình duyệt và AI chatbot, giúp bạn tập trung đọc và làm việc mà không bị ngắt quãng.</p>
-    </div>
+  <!-- About DinSide / Split Section (Like bottom of user image) -->
+  <section class="about-section" id="about">
+    <div class="container about-split-grid">
+      <!-- Left Visual Card -->
+      <div class="about-visual-box">
+        <div style="background: #0f1015; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <img src="assets/icon32.png" alt="DinSide" width="24" height="24">
+              <strong style="color: #fff; font-size: 0.95rem;">DinSide Context Pipeline</strong>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--accent-coral); font-weight: 700;">100% LOCAL</span>
+          </div>
 
-    <div class="features-grid">
-      <!-- Feature 1 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 18px;">
+            Dữ liệu trang web của bạn được phân tích và truyền trực tiếp vào composer của chatbot AI trong trình duyệt. Không có server trung gian, không thu thập lịch sử duyệt web.
+          </p>
+
+          <div style="background: #191b24; padding: 14px; border-radius: var(--radius-xs); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 700; color: var(--accent-teal); margin-bottom: 8px;">
+              <span>TÍNH NĂNG ĐỘC QUYỀN</span>
+              <span>v0.6.9</span>
+            </div>
+            <div style="font-size: 0.82rem; color: #fff;">
+              ✦ Open Tabs Context Picker: Chọn nhiều tab đang mở để hỏi cùng một lúc.
+            </div>
+          </div>
         </div>
-        <h3 class="feature-title">Multi-Provider Side Panel</h3>
-        <p class="feature-desc">
-          Trò chuyện trực tiếp với ChatGPT, Claude, Gemini, DeepSeek, Qwen... ngay trên thanh bên của trình duyệt mà không cần mở nhiều cửa sổ hay tab riêng biệt.
-        </p>
       </div>
 
-      <!-- Feature 2 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-        </div>
-        <h3 class="feature-title">Smart Context Thông Minh</h3>
-        <p class="feature-desc">
-          Tự động đánh giá nội dung trang và câu hỏi để chọn giữa Viewport (phần đang nhìn thấy), nội dung đầy đủ hoặc bản tóm tắt, giúp AI trả lời chính xác mà không tốn token thừa.
+      <!-- Right Info Column -->
+      <div class="about-info-col">
+        <span class="section-label teal">About DinSide</span>
+        <h2 class="section-main-title">
+          Tối ưu hóa luồng làm việc giữa Web và Trí tuệ nhân tạo
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+          Thông thường khi dùng ChatGPT hay Claude, bạn phải liên tục bôi đen, copy và chuyển tab để dán vào khung chat. DinSide loại bỏ hoàn toàn rào cản này bằng cách mang chatbot vào ngay bên cạnh trang bạn đang đọc.
         </p>
-      </div>
 
-      <!-- Feature 3 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-        </div>
-        <h3 class="feature-title">Quick Ask Bôi Đen Nhanh</h3>
-        <p class="feature-desc">
-          Chỉ cần bôi đen bất kỳ đoạn văn bản nào trên trang web, popup hành động nhanh sẽ hiện lên: Giải thích, Dịch thuật, Tóm tắt hoặc chạy action tuỳ chỉnh của riêng bạn.
-        </p>
-      </div>
+        <ul class="step-checklist">
+          <li class="step-check-item">
+            <div class="check-bullet">✓</div>
+            <div class="step-check-text">
+              <strong>Tự động đọc cấu trúc trang và vùng nhìn (Viewport)</strong>
+              <p>Chỉ gửi những nội dung bạn đang quan tâm thay vì gửi tràn lan gây nghẽn context.</p>
+            </div>
+          </li>
+          <li class="step-check-item">
+            <div class="check-bullet">✓</div>
+            <div class="step-check-text">
+              <strong>Ghim ngữ cảnh (Pin Context) và gom nhiều Tab</strong>
+              <p>Giữ lại tài liệu tham khảo cho nhiều câu hỏi liên tiếp mà không cần chọn lại.</p>
+            </div>
+          </li>
+          <li class="step-check-item">
+            <div class="check-bullet">✓</div>
+            <div class="step-check-text">
+              <strong>Bảo mật tuyệt đối — 100% mã nguồn mở</strong>
+              <p>Mã nguồn công khai trên GitHub, chạy cục bộ dưới dạng Manifest V3 tiện lợi.</p>
+            </div>
+          </li>
+        </ul>
 
-      <!-- Feature 4 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <div style="margin-top: 10px;">
+          <a href="#installation" class="btn-coral">
+            <span>Bắt đầu cài đặt ngay</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
         </div>
-        <h3 class="feature-title">Hỗ trợ Google Docs & PDF</h3>
-        <p class="feature-desc">
-          Đọc và trích xuất nội dung trơn tru từ cả Canvas Editor của Google Docs, các file PDF trên Google Drive hay bài tập Google Classroom mà các tiện ích thông thường không làm được.
-        </p>
-      </div>
-
-      <!-- Feature 5 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        </div>
-        <h3 class="feature-title">Ghim Ngữ Cảnh & Multi-Tabs</h3>
-        <p class="feature-desc">
-          Ghim một trang tài liệu hoặc gom nhiều tab đang mở cùng lúc vào khung câu hỏi thông qua bộ chọn Open Tabs Picker với giao diện trực quan và phản hồi tức thì.
-        </p>
-      </div>
-
-      <!-- Feature 6 -->
-      <div class="feature-card">
-        <div class="feature-icon-wrapper">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-        </div>
-        <h3 class="feature-title">Bảo Mật & Riêng Tư Tuyệt Đối</h3>
-        <p class="feature-desc">
-          Không có máy chủ trung gian thu thập dữ liệu. Toàn bộ pipeline ngữ cảnh chạy trực tiếp trong trình duyệt của bạn và chỉ gửi tới AI provider do chính bạn lựa chọn.
-        </p>
       </div>
     </div>
   </section>
 
   <!-- Supported Providers Section -->
-  <section id="providers" class="providers-section">
+  <section class="providers-section" id="providers">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Hệ sinh thái AI</span>
-        <h2 class="section-title">Hỗ trợ 15+ Nhà cung cấp AI hàng đầu</h2>
-        <p class="section-desc">Sử dụng tài khoản và mô hình bạn đã quen thuộc. DinSide tích hợp mượt mà vào giao diện web chat của từng nền tảng.</p>
+      <div class="section-headline-bar">
+        <div>
+          <span class="section-label">Ecosystem</span>
+          <h2 class="section-main-title">Hỗ trợ 15+ Nhà cung cấp AI</h2>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Không yêu cầu API Key trả phí</span>
       </div>
 
-      <div class="providers-grid">
-        <div class="provider-card">
-          <img src="assets/chatgpt-mark.svg" alt="ChatGPT" class="provider-logo">
-          <span class="provider-name">ChatGPT</span>
-          <span class="provider-badge">OpenAI</span>
+      <div class="providers-grid-multiflex">
+        <div class="provider-box-mf">
+          <img src="assets/chatgpt-mark.svg" alt="ChatGPT">
+          <span class="provider-name-mf">ChatGPT</span>
+          <span class="provider-sub-mf">OpenAI</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/gemini-mark.svg" alt="Gemini" class="provider-logo">
-          <span class="provider-name">Google Gemini</span>
-          <span class="provider-badge">Google DeepMind</span>
+        <div class="provider-box-mf">
+          <img src="assets/gemini-mark.svg" alt="Gemini">
+          <span class="provider-name-mf">Gemini</span>
+          <span class="provider-sub-mf">Google</span>
         </div>
 
-        <div class="provider-card">
-          <svg class="provider-logo" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          <span class="provider-name">Claude</span>
-          <span class="provider-badge">Anthropic</span>
+        <div class="provider-box-mf">
+          <svg viewBox="0 0 24 24" fill="#d97706"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span class="provider-name-mf">Claude</span>
+          <span class="provider-sub-mf">Anthropic</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/deepseek-mark.svg" alt="DeepSeek" class="provider-logo">
-          <span class="provider-name">DeepSeek</span>
-          <span class="provider-badge">DeepSeek AI</span>
+        <div class="provider-box-mf">
+          <img src="assets/deepseek-mark.svg" alt="DeepSeek">
+          <span class="provider-name-mf">DeepSeek</span>
+          <span class="provider-sub-mf">DeepSeek AI</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/perplexity-mark.svg" alt="Perplexity" class="provider-logo">
-          <span class="provider-name">Perplexity</span>
-          <span class="provider-badge">Search & Research</span>
+        <div class="provider-box-mf">
+          <img src="assets/perplexity-mark.svg" alt="Perplexity">
+          <span class="provider-name-mf">Perplexity</span>
+          <span class="provider-sub-mf">AI Search</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/copilot-mark.svg" alt="Microsoft Copilot" class="provider-logo">
-          <span class="provider-name">MS Copilot</span>
-          <span class="provider-badge">Microsoft</span>
+        <div class="provider-box-mf">
+          <img src="assets/copilot-mark.svg" alt="Copilot">
+          <span class="provider-name-mf">MS Copilot</span>
+          <span class="provider-sub-mf">Microsoft</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/qwen-mark.svg" alt="Qwen" class="provider-logo">
-          <span class="provider-name">Qwen (Thông Nghĩa)</span>
-          <span class="provider-badge">Alibaba Cloud</span>
+        <div class="provider-box-mf">
+          <img src="assets/qwen-mark.svg" alt="Qwen">
+          <span class="provider-name-mf">Qwen</span>
+          <span class="provider-sub-mf">Alibaba</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/kimi-mark.svg" alt="Kimi" class="provider-logo">
-          <span class="provider-name">Kimi</span>
-          <span class="provider-badge">Moonshot AI</span>
+        <div class="provider-box-mf">
+          <img src="assets/kimi-mark.svg" alt="Kimi">
+          <span class="provider-name-mf">Kimi</span>
+          <span class="provider-sub-mf">Moonshot</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/notebooklm-mark.svg" alt="NotebookLM" class="provider-logo">
-          <span class="provider-name">NotebookLM</span>
-          <span class="provider-badge">Google Labs</span>
+        <div class="provider-box-mf">
+          <img src="assets/notebooklm-mark.svg" alt="NotebookLM">
+          <span class="provider-name-mf">NotebookLM</span>
+          <span class="provider-sub-mf">Google Labs</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/openrouter-mark.svg" alt="OpenRouter" class="provider-logo">
-          <span class="provider-name">OpenRouter</span>
-          <span class="provider-badge">Multi-Model API</span>
+        <div class="provider-box-mf">
+          <img src="assets/openrouter-mark.svg" alt="OpenRouter">
+          <span class="provider-name-mf">OpenRouter</span>
+          <span class="provider-sub-mf">Unified API</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/google-g.svg" alt="Google AI Studio" class="provider-logo">
-          <span class="provider-name">AI Studio / AI Mode</span>
-          <span class="provider-badge">Google</span>
+        <div class="provider-box-mf">
+          <img src="assets/google-g.svg" alt="Google AI Studio">
+          <span class="provider-name-mf">AI Studio</span>
+          <span class="provider-sub-mf">Google Dev</span>
         </div>
 
-        <div class="provider-card">
-          <img src="assets/zai-mark.svg" alt="Z.ai" class="provider-logo">
-          <span class="provider-name">Z.ai</span>
-          <span class="provider-badge">Zhipu AI</span>
+        <div class="provider-box-mf">
+          <img src="assets/zai-mark.svg" alt="Z.ai">
+          <span class="provider-name-mf">Z.ai</span>
+          <span class="provider-sub-mf">Zhipu AI</span>
         </div>
 
-        <div class="provider-card">
-          <svg class="provider-logo" viewBox="0 0 24 24" fill="#0081fb"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
-          <span class="provider-name">Meta AI</span>
-          <span class="provider-badge">Llama Models</span>
+        <div class="provider-box-mf">
+          <svg viewBox="0 0 24 24" fill="#0081fb"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
+          <span class="provider-name-mf">Meta AI</span>
+          <span class="provider-sub-mf">Llama</span>
         </div>
 
-        <div class="provider-card">
-          <svg class="provider-logo" viewBox="0 0 24 24" fill="#ff6900"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-2h2zm0-4h-2V7h2z"/></svg>
-          <span class="provider-name">Xiaomi MiMo</span>
-          <span class="provider-badge">MiMo Studio</span>
+        <div class="provider-box-mf">
+          <svg viewBox="0 0 24 24" fill="#ff6900"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14h-2v-2h2zm0-4h-2V7h2z"/></svg>
+          <span class="provider-name-mf">Xiaomi MiMo</span>
+          <span class="provider-sub-mf">MiMo Studio</span>
         </div>
 
-        <div class="provider-card">
-          <svg class="provider-logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-          <span class="provider-name">+ Nhiều hơn nữa</span>
-          <span class="provider-badge">Cập nhật liên tục</span>
+        <div class="provider-box-mf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span class="provider-name-mf">+ Khác</span>
+          <span class="provider-sub-mf">Cập nhật liên tục</span>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works Section -->
-  <section id="how-it-works" class="how-it-works container">
-    <div class="section-header">
-      <span class="section-tag">Quy trình trải nghiệm</span>
-      <h2 class="section-title">Cách thức hoạt động cực kỳ đơn giản</h2>
-      <p class="section-desc">Chỉ mất vài giây để đưa toàn bộ sức mạnh của AI vào quy trình đọc và tra cứu tài liệu của bạn.</p>
-    </div>
-
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <h3 class="step-title">Mở trang web bất kỳ</h3>
-        <p class="step-desc">
-          Đọc báo, bài nghiên cứu, tài liệu kỹ thuật, bảng dữ liệu hoặc Google Docs như bình thường.
-        </p>
-      </div>
-
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <h3 class="step-title">Nhấn Ctrl+Shift+Y</h3>
-        <p class="step-desc">
-          Thanh bên DinSide trượt ra gọn gàng ngay cạnh trang web của bạn, không chiếm toàn màn hình.
-        </p>
-      </div>
-
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <h3 class="step-title">Chọn AI & Ngữ cảnh</h3>
-        <p class="step-desc">
-          DinSide tự động đóng gói nội dung trang, vùng hiển thị hoặc đoạn chữ bạn vừa bôi đen.
-        </p>
-      </div>
-
-      <div class="step-card">
-        <div class="step-number">4</div>
-        <h3 class="step-title">Đặt câu hỏi & Nhận kết quả</h3>
-        <p class="step-desc">
-          Nhập câu hỏi hoặc chọn action tóm tắt, giải thích. AI sẽ trả lời ngay với hiểu biết đầy đủ về ngữ cảnh.
-        </p>
       </div>
     </div>
   </section>
 
-  <!-- Installation & Download Section -->
-  <section id="installation" class="install-section container">
-    <div class="section-header">
-      <span class="section-tag">Hướng dẫn cài đặt</span>
-      <h2 class="section-title">Cài đặt DinSide trong 1 phút</h2>
-      <p class="section-desc">DinSide hiện chạy dưới dạng unpacked extension trong trình duyệt Chromium (Chrome, Edge, Brave, Cốc Cốc).</p>
-    </div>
-
-    <div class="install-box">
-      <div class="install-tabs">
-        <button class="install-tab active" data-tab="tabZip">Dành cho người dùng (File ZIP)</button>
-        <button class="install-tab" data-tab="tabGit">Dành cho lập trình viên (Git Clone)</button>
+  <!-- Installation Guide Section -->
+  <section class="install-section-mf" id="installation">
+    <div class="container">
+      <div class="section-headline-bar">
+        <div>
+          <span class="section-label">Quick Setup</span>
+          <h2 class="section-main-title">Hướng dẫn cài đặt trong 1 phút</h2>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Tương thích Chrome, Edge, Brave, Cốc Cốc</span>
       </div>
 
-      <!-- Tab ZIP -->
-      <div class="install-panel" id="tabZip">
-        <div class="download-box">
-          <div class="download-info">
-            <div class="download-icon">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </div>
-            <div>
-              <div class="download-name">DinSide v0.6.9 (Bản mới nhất)</div>
-              <div class="download-meta">Định dạng .zip · Kích thước ~2.4 MB · Manifest V3</div>
-            </div>
-          </div>
-          <a href="downloads/DinSide-0.6.9.zip" class="btn btn-primary" download="DinSide-0.6.9.zip">
-            Tải về ngay
-          </a>
+      <div class="install-card-mf">
+        <div class="install-tab-header">
+          <button class="install-tab-btn active" data-tab="tabZip">Người dùng thông thường (File ZIP)</button>
+          <button class="install-tab-btn" data-tab="tabGit">Lập trình viên (Git Clone)</button>
         </div>
 
-        <div class="install-steps" style="margin-top: 30px;">
-          <div class="install-step-item">
-            <div class="install-step-idx">1</div>
-            <div class="install-step-text">
-              <strong>Tải và giải nén file</strong>
-              <p>Tải file <code>DinSide-0.6.9.zip</code> ở trên và giải nén vào một thư mục cố định trên máy tính của bạn.</p>
+        <!-- Tab 1: ZIP -->
+        <div class="install-tab-content" id="tabZip">
+          <div class="download-banner-mf">
+            <div class="download-banner-info">
+              <div class="download-banner-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </div>
+              <div>
+                <strong style="font-size: 1.05rem; color: #fff; display: block;">DinSide-0.6.9.zip (Bản mới nhất)</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Định dạng ZIP · Dung lượng ~2.4 MB · Không cần npm build</span>
+              </div>
             </div>
-          </div>
-
-          <div class="install-step-item">
-            <div class="install-step-idx">2</div>
-            <div class="install-step-text">
-              <strong>Mở trang Quản lý tiện ích mở rộng</strong>
-              <p>Nhập <code>chrome://extensions</code> vào thanh địa chỉ của trình duyệt Chrome hoặc Edge rồi nhấn Enter.</p>
-            </div>
-          </div>
-
-          <div class="install-step-item">
-            <div class="install-step-idx">3</div>
-            <div class="install-step-text">
-              <strong>Bật Chế độ nhà phát triển (Developer mode)</strong>
-              <p>Gạt công tắc <strong>Developer mode</strong> ở góc trên bên phải màn hình sang trạng thái bật.</p>
-            </div>
-          </div>
-
-          <div class="install-step-item">
-            <div class="install-step-idx">4</div>
-            <div class="install-step-text">
-              <strong>Tải tiện ích đã giải nén (Load unpacked)</strong>
-              <p>Bấm nút <strong>Tải tiện ích đã giải nén (Load unpacked)</strong> ở góc trái và chọn thư mục DinSide vừa giải nén. Thế là xong!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab Git -->
-      <div class="install-panel hidden" id="tabGit">
-        <p style="color: var(--text-secondary); margin-bottom: 16px;">
-          Nếu bạn quen thuộc với dòng lệnh và Git, hãy clone repository trực tiếp để dễ dàng cập nhật phiên bản mới:
-        </p>
-
-        <div class="code-block">
-          <div class="code-header">
-            <span class="code-title">Terminal / Command Prompt</span>
-            <button class="copy-btn" data-copy="git clone https://github.com/thanhdiner/DinSide.git">
-              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Sao chép</span>
-            </button>
-          </div>
-          <pre class="code-body"><code>git clone https://github.com/thanhdiner/DinSide.git
-cd DinSide</code></pre>
-        </div>
-
-        <p style="color: var(--text-secondary); font-size: 0.92rem; margin-top: 14px;">
-          Sau đó làm theo bước mở <code>chrome://extensions</code>, bật <strong>Developer mode</strong> và bấm <strong>Load unpacked</strong> trỏ vào thư mục vừa clone. DinSide không yêu cầu build step để chạy thông thường.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Donation / Support Section -->
-  <section id="donate" class="donate-section container">
-    <div class="donate-wrapper">
-      <div class="donate-header">
-        <div class="donate-badge">
-          <span>❤️ Đồ cho DinSide</span>
-        </div>
-        <h2 class="section-title">Ủng hộ tác giả phát triển DinSide</h2>
-        <p class="section-desc">
-          DinSide là một dự án mở miễn phí được xây dựng với tâm huyết. Nếu tiện ích này giúp bạn tiết kiệm thời gian và nâng cao năng suất, hãy mời mình một ly cà phê nhé!
-        </p>
-      </div>
-
-      <div class="donate-tabs">
-        <button class="donate-tab-btn active" data-type="vn">Chuyển khoản (VietQR / Vietcombank)</button>
-        <button class="donate-tab-btn" data-type="intl">Quốc tế & Đóng góp</button>
-      </div>
-
-      <!-- VN Tab -->
-      <div id="donateVnPanel" class="donate-card-vn">
-        <div class="qr-box">
-          <img src="assets/donate-vietcombank.png" alt="Mã VietQR Vietcombank DinSide">
-          <div class="qr-caption">Quét mã bằng ứng dụng ngân hàng</div>
-        </div>
-
-        <div class="bank-info-box">
-          <div class="bank-info-row">
-            <span class="bank-label">Ngân hàng</span>
-            <span class="bank-val">Vietcombank</span>
-          </div>
-
-          <div class="bank-info-row">
-            <span class="bank-label">Chủ tài khoản</span>
-            <span class="bank-val">HUYNH VAN THANH</span>
-          </div>
-
-          <div class="bank-info-row">
-            <span class="bank-label">Số tài khoản</span>
-            <span class="bank-val">
-              <span>1061960104</span>
-              <button class="btn btn-secondary btn-sm" data-copy="1061960104" style="padding: 4px 10px;">
-                Copy
-              </button>
-            </span>
-          </div>
-
-          <div class="donate-actions-row">
-            <button class="btn btn-primary" data-copy="1061960104" style="flex: 1;">
-              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              <span>Sao chép số tài khoản</span>
-            </button>
-            <a href="assets/donate-vietcombank.png" download="DinSide-Vietcombank-QR.png" class="btn btn-secondary">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span>Tải ảnh QR</span>
+            <a href="downloads/DinSide-0.6.9.zip" class="btn-coral" download="DinSide-0.6.9.zip">
+              Tải bản ZIP về máy
             </a>
           </div>
+
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 14px;">
+              <span style="width: 26px; height: 26px; border-radius: var(--radius-xs); background: rgba(255,94,58,0.15); color: var(--accent-coral); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;">1</span>
+              <div>
+                <strong style="color: #fff; font-size: 0.92rem;">Giải nén file</strong>
+                <p style="color: var(--text-muted); font-size: 0.88rem;">Giải nén file ZIP vừa tải về vào một thư mục cố định trên máy tính của bạn.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px;">
+              <span style="width: 26px; height: 26px; border-radius: var(--radius-xs); background: rgba(255,94,58,0.15); color: var(--accent-coral); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;">2</span>
+              <div>
+                <strong style="color: #fff; font-size: 0.92rem;">Mở trang quản lý Extension</strong>
+                <p style="color: var(--text-muted); font-size: 0.88rem;">Nhập <code>chrome://extensions</code> vào thanh địa chỉ trình duyệt rồi nhấn Enter.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px;">
+              <span style="width: 26px; height: 26px; border-radius: var(--radius-xs); background: rgba(255,94,58,0.15); color: var(--accent-coral); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;">3</span>
+              <div>
+                <strong style="color: #fff; font-size: 0.92rem;">Bật Developer Mode & Load Unpacked</strong>
+                <p style="color: var(--text-muted); font-size: 0.88rem;">Bật công tắc <strong>Developer mode</strong> ở góc phải, sau đó bấm <strong>Load unpacked</strong> ở góc trái và chọn thư mục vừa giải nén.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Git -->
+        <div class="install-tab-content hidden" id="tabGit">
+          <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 14px;">
+            Clone trực tiếp kho mã nguồn từ GitHub để dễ dàng nhận các bản cập nhật mới qua <code>git pull</code>:
+          </p>
+
+          <div class="code-box-mf">
+            <div class="code-box-head">
+              <span>Terminal / Bash / PowerShell</span>
+              <button class="code-copy-btn" data-copy="git clone https://github.com/thanhdiner/DinSide.git">Sao chép</button>
+            </div>
+            <pre class="code-box-body"><code>git clone https://github.com/thanhdiner/DinSide.git
+cd DinSide</code></pre>
+          </div>
+
+          <p style="color: var(--text-muted); font-size: 0.88rem;">
+            Sau khi clone, vào <code>chrome://extensions</code>, bật <strong>Developer mode</strong> và bấm <strong>Load unpacked</strong> trỏ vào thư mục vừa clone. DinSide không bắt buộc npm install để chạy.
+          </p>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- International Tab -->
-      <div id="donateIntlPanel" class="donate-card-intl hidden">
-        <div class="intl-icon">☕</div>
-        <h3 style="margin-bottom: 12px;">Ủng hộ quốc tế & Góp ý</h3>
-        <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto 24px;">
-          Bạn có thể ủng hộ qua Buy Me a Coffee hoặc gửi phản hồi đóng góp tính năng qua email trực tiếp cho tác giả:
-        </p>
+  <!-- Donation / Support Section ("Đồ cho DinSide") -->
+  <section class="donation-section-mf" id="donate">
+    <div class="container">
+      <div class="donation-card-mf">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <span class="section-label">Support Creator</span>
+          <h2 class="section-main-title" style="margin-bottom: 10px;">Ủng hộ tác giả & Đồ cho DinSide</h2>
+          <p style="color: var(--text-muted); font-size: 0.92rem; max-width: 620px; margin: 0 auto;">
+            DinSide là một dự án cá nhân được xây dựng với tâm huyết. Nếu tiện ích giúp bạn làm việc hiệu quả hơn, hãy mời mình một ly cà phê để tiếp tục duy trì và nâng cấp nhé!
+          </p>
+        </div>
 
-        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-          <button class="btn btn-secondary" data-copy="huynhvanthanh.dev@gmail.com">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            <span>huynhvanthanh.dev@gmail.com</span>
-          </button>
+        <div class="donation-grid-layout">
+          <!-- QR Box -->
+          <div class="qr-box-mf">
+            <img src="assets/donate-vietcombank.png" alt="Mã VietQR Vietcombank DinSide">
+            <div class="qr-caption-mf">Quét mã bằng ứng dụng ngân hàng</div>
+          </div>
 
-          <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            <span>Tặng Star trên GitHub</span>
-          </a>
+          <!-- Bank Details -->
+          <div class="bank-detail-group">
+            <div class="bank-row-mf">
+              <span>Ngân hàng</span>
+              <strong>Vietcombank</strong>
+            </div>
+
+            <div class="bank-row-mf">
+              <span>Chủ tài khoản</span>
+              <strong>HUYNH VAN THANH</strong>
+            </div>
+
+            <div class="bank-row-mf">
+              <span>Số tài khoản</span>
+              <strong>
+                <span>1061960104</span>
+                <button class="copy-pill-btn" data-copy="1061960104">Copy</button>
+              </strong>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 10px;">
+              <button class="btn-coral" data-copy="1061960104" style="flex: 1; justify-content: center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Sao chép STK</span>
+              </button>
+              <a href="assets/donate-vietcombank.png" download="DinSide-Vietcombank-QR.png" class="btn-dark">
+                Tải ảnh QR
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- FAQ Section -->
-  <section id="faq" class="faq-section container">
-    <div class="section-header">
-      <span class="section-tag">Giải đáp thắc mắc</span>
-      <h2 class="section-title">Câu hỏi thường gặp</h2>
-    </div>
-
-    <div class="faq-list">
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>DinSide có hoàn toàn miễn phí không?</span>
-          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="faq-answer">
-          Đúng vậy! DinSide là phần mềm nguồn mở và hoàn toàn miễn phí cho tất cả mọi người sử dụng. Bạn có thể ủng hộ tác giả qua kênh donate để khuyến khích phát triển các tính năng tiếp theo.
+  <section class="faq-section-mf" id="faq">
+    <div class="container">
+      <div class="section-headline-bar">
+        <div>
+          <span class="section-label">Questions</span>
+          <h2 class="section-main-title">Câu hỏi thường gặp</h2>
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Tôi có cần mua API key để sử dụng không?</span>
-          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="faq-answer">
-          Không cần! DinSide tương tác trực tiếp với giao diện web chat của nhà cung cấp (ChatGPT, Claude, Gemini, DeepSeek...) mà bạn đã đăng nhập sẵn trên trình duyệt. Bạn chỉ cần đăng nhập tài khoản bình thường là dùng được ngay.
+      <div class="faq-list-mf">
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span>DinSide có hoàn toàn miễn phí không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body">
+            Đúng vậy! DinSide là phần mềm nguồn mở và hoàn toàn miễn phí cho tất cả mọi người sử dụng. Bạn có thể ủng hộ tác giả qua kênh donate để khuyến khích phát triển các tính năng tiếp theo.
+          </div>
         </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Dữ liệu và nội dung trang web của tôi có an toàn không?</span>
-          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="faq-answer">
-          Tuyệt đối an toàn. DinSide không sở hữu máy chủ lưu trữ dữ liệu trung gian. Mọi xử lý ngữ cảnh diễn ra 100% cục bộ trong trình duyệt của bạn và chỉ được gửi tới đúng chatbot AI mà bạn bấm gửi.
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span>Tôi có cần mua API key để sử dụng không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body">
+            Không cần! DinSide tương tác trực tiếp với giao diện web chat của các nhà cung cấp (ChatGPT, Claude, Gemini...) mà bạn đã đăng nhập sẵn trên trình duyệt. Bạn chỉ cần đăng nhập tài khoản bình thường là dùng được ngay.
+          </div>
         </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Làm thế nào để đổi phím tắt mở DinSide?</span>
-          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-        <div class="faq-answer">
-          Bạn có thể truy cập <code>chrome://extensions/shortcuts</code> trong trình duyệt, tìm đến mục <strong>DinSide</strong> và gán bất kỳ tổ hợp phím nào bạn thấy tiện lợi nhất (mặc định là <code>Ctrl+Shift+Y</code>).
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span>Dữ liệu và nội dung trang web của tôi có an toàn không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body">
+            Tuyệt đối an toàn. DinSide không có máy chủ lưu trữ dữ liệu trung gian. Mọi xử lý ngữ cảnh diễn ra 100% cục bộ trong trình duyệt của bạn và chỉ được gửi tới đúng chatbot AI mà bạn bấm gửi.
+          </div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span>Làm thế nào để đổi phím tắt mở DinSide?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body">
+            Bạn có thể truy cập <code>chrome://extensions/shortcuts</code> trong trình duyệt, tìm đến mục DinSide và gán bất kỳ tổ hợp phím nào bạn thấy tiện lợi nhất (mặc định là Ctrl+Shift+Y).
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
+  <!-- Footer (MultiFlex Style) -->
+  <footer class="footer-mf">
     <div class="container">
-      <div class="footer-top">
+      <div class="footer-grid-mf">
         <div>
-          <div class="nav-brand">
-            <img src="assets/icon32.png" alt="DinSide" class="nav-logo">
-            <span>DinSide</span>
+          <div class="brand-logo-group">
+            <div class="brand-icon-ring"></div>
+            <span class="brand-title">Din<span>Side</span></span>
           </div>
-          <p class="footer-brand-desc">
-            Cầu nối thông minh giữa trang web đang xem và các mô hình AI bạn yêu thích. Tiện ích mở rộng Chrome Side Panel mã nguồn mở bởi <strong>thanhdiner</strong>.
+          <p class="footer-desc-mf">
+            Cầu nối thông minh giữa trang web đang đọc và các mô hình AI bạn yêu thích. Tiện ích mở rộng Chrome Manifest V3 mã nguồn mở phát triển bởi <strong>thanhdiner</strong>.
           </p>
         </div>
 
         <div>
-          <h4 class="footer-col-title">Liên kết</h4>
-          <ul class="footer-links">
+          <h4 class="footer-title-mf">Liên kết</h4>
+          <ul class="footer-nav-list">
             <li><a href="#features">Tính năng</a></li>
-            <li><a href="#providers">Nhà cung cấp</a></li>
+            <li><a href="#about">Giới thiệu</a></li>
+            <li><a href="#providers">AI Providers</a></li>
             <li><a href="#installation">Cài đặt</a></li>
-            <li><a href="#donate">Ủng hộ tác giả</a></li>
+            <li><a href="#donate">Ủng hộ dự án</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="footer-col-title">Tài nguyên</h4>
-          <ul class="footer-links">
+          <h4 class="footer-title-mf">Tài nguyên</h4>
+          <ul class="footer-nav-list">
             <li><a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
-            <li><a href="downloads/DinSide-0.6.9.zip" download>Tải bản ZIP v0.6.9</a></li>
-            <li><a href="../dinside-privacy/index.html">Chính sách riêng tư (Privacy)</a></li>
+            <li><a href="downloads/DinSide-0.6.9.zip" download>Tải file ZIP v0.6.9</a></li>
+            <li><a href="../dinside-privacy/index.html">Chính sách riêng tư</a></li>
             <li><a href="mailto:huynhvanthanh.dev@gmail.com">Liên hệ hỗ trợ</a></li>
           </ul>
         </div>
       </div>
 
-      <div class="footer-bottom">
+      <div class="footer-bottom-bar">
         <div>
-          © 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer">thanhdiner</a>.
+          © 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" style="color: var(--accent-coral);">thanhdiner</a>.
         </div>
         <div>
-          Phím tắt nhanh: <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">Y</span>
+          Phím tắt: <kbd style="background:#161820; border:1px solid #2a2d39; padding:2px 6px; border-radius:3px; color:#fff;">Ctrl+Shift+Y</kbd>
         </div>
       </div>
     </div>
