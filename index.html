@@ -71,116 +71,178 @@
     </div>
   </nav>
 
-  <!-- Hero Section (MultiFlex Header Banner) -->
-  <header class="hero-multiflex">
+  <!-- Hero Section (Balanced Split Layout inspired by reference image) -->
+  <header class="hero-split-section">
     <div class="hero-bg-overlay"></div>
 
-    <div class="container hero-content">
-      <span class="hero-category-tag">Chrome Side Panel Extension</span>
-      <h1 class="hero-headline">
-        Mang trang web bạn đang đọc vào AI Chat bạn đang dùng
-      </h1>
-      <p class="hero-description">
-        Tiện ích mở rộng Chrome Manifest V3 tích hợp trực tiếp thanh bên. Tự động lấy ngữ cảnh bài viết, vùng xem màn hình, trích đoạn hoặc Google Docs và gửi thẳng đến ChatGPT, Claude, Gemini mà không cần copy-paste.
-      </p>
-
-      <div class="hero-btn-group">
-        <a href="downloads/DinSide-0.6.9.zip" class="btn-coral" download="DinSide-0.6.9.zip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          <span>Tải file ZIP (v0.6.9)</span>
-        </a>
-
-        <button class="btn-dark" data-copy="git clone https://github.com/thanhdiner/DinSide.git">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          <span>Copy git clone</span>
-        </button>
-      </div>
-
-      <div class="hero-shortcut-hint">
-        <span>Phím tắt nhanh:</span>
-        <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd>
-        <span>(hoặc <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>Y</kbd> trên macOS)</span>
-      </div>
-
-      <!-- Live Mockup Box -->
-      <div class="mockup-wrap">
-        <div class="mockup-topbar">
-          <div class="mockup-lights">
-            <span class="mockup-light light-r"></span>
-            <span class="mockup-light light-y"></span>
-            <span class="mockup-light light-g"></span>
-          </div>
-          <div class="mockup-url">https://developer.mozilla.org/vi/docs/Web/API/Context</div>
+    <div class="container hero-split-container">
+      <!-- Left Column: Typographic & Action Content -->
+      <div class="hero-col-left">
+        <div class="hero-tag-line">
+          <span class="tag-dash">—</span>
+          <span class="tag-pill-text">DinSide MV3</span>
+          <span class="tag-sep">|</span>
+          <span class="tag-desc-text">Chrome Side Panel · v0.6.9</span>
         </div>
 
-        <div class="mockup-grid">
-          <!-- Left side: Browser Webpage -->
-          <div class="mockup-left">
-            <span style="font-size: 0.72rem; color: var(--accent-coral); font-weight: 700; text-transform: uppercase;">Tài liệu kỹ thuật / Bài viết</span>
-            <h3 style="font-size: 1.35rem; color: var(--text-white);">Cơ chế đồng bộ ngữ cảnh thời gian thực</h3>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
-              Trong phát triển web hiện đại, việc đồng bộ dữ liệu giữa các luồng xử lý và giao diện người dùng đòi hỏi một kiến trúc mở và bảo mật...
-            </p>
+        <h1 class="hero-split-headline">
+          Trang web <br>
+          bạn đang đọc, <br>
+          thấu hiểu bởi <br>
+          <span class="gradient-ai-text">AI Context.</span>
+        </h1>
 
-            <div class="mockup-highlight-box">
-              <div class="quick-bubble">✦ Quick Ask</div>
-              <p>
-                <strong>"Cơ chế Service Worker cho phép lắng nghe sự kiện từ thanh bên và truyền tải ngữ cảnh an toàn mà không làm rò rỉ dữ liệu."</strong>
-              </p>
+        <p class="hero-split-desc">
+          Đưa toàn bộ ngữ cảnh trang web, vùng xem màn hình, trích đoạn và Google Docs vào thẳng ChatGPT, Claude, Gemini... Trò chuyện trực tiếp ngay thanh bên, không cần copy-paste.
+        </p>
+
+        <div class="hero-split-cta-row">
+          <a href="downloads/DinSide-0.6.9.zip" class="btn-hero-primary" download="DinSide-0.6.9.zip">
+            <span>Tải DinSide ngay</span>
+            <span class="btn-arrow-box">↗</span>
+          </a>
+
+          <a href="#about" class="btn-hero-secondary">
+            <span>Xem cách hoạt động ▶</span>
+          </a>
+        </div>
+
+        <div class="hero-checklist-row">
+          <span class="check-item">
+            <span class="check-icon">✓</span>
+            <span>Local-first</span>
+          </span>
+          <span class="check-item">
+            <span class="check-icon">✓</span>
+            <span>15+ AI Models</span>
+          </span>
+          <span class="check-item">
+            <span class="check-icon">✓</span>
+            <span>Không cần API Key</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Column: Rich Desktop Session Mockup + Floating Panel -->
+      <div class="hero-col-right">
+        <div class="desktop-mockup-window">
+          <!-- Window Header -->
+          <div class="window-topbar">
+            <div class="window-controls">
+              <span class="win-dot dot-r"></span>
+              <span class="win-dot dot-y"></span>
+              <span class="win-dot dot-g"></span>
             </div>
-
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">
-              Khi bôi đen văn bản này, DinSide tự động nhận diện và sẵn sàng tóm tắt, giải thích mà không cần chuyển tab hay copy-paste.
-            </p>
+            <div class="window-session-title">
+              DINSIDE - CHROME SIDE PANEL SESSION
+            </div>
+            <div class="window-status-badge">
+              <span class="status-pulse-dot"></span>
+              <span>LOCAL</span>
+            </div>
           </div>
 
-          <!-- Right side: DinSide Sidepanel -->
-          <div class="mockup-right">
-            <div class="mockup-panel-head">
-              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.88rem; color: #fff;">
+          <!-- Window Inner Body -->
+          <div class="window-body-grid">
+            <!-- Slim Left Toolbar -->
+            <div class="window-sidebar-nav">
+              <button class="win-tool-btn active" title="Smart Context" type="button">✦</button>
+              <button class="win-tool-btn" title="Shortcuts" type="button">⌘</button>
+              <button class="win-tool-btn" title="Open Tabs Picker" type="button">⊞</button>
+              <button class="win-tool-btn" title="Settings" type="button">⚙</button>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="window-main-content">
+              <!-- Active Task Row -->
+              <div class="win-active-task-bar">
+                <div class="task-bar-left">
+                  <span class="task-bar-label">ACTIVE TASK</span>
+                  <div class="task-bar-title">Đọc hiểu tài liệu & Tóm tắt bài viết kỹ thuật</div>
+                </div>
+                <div class="task-running-badge">
+                  <span class="badge-dot-green"></span>
+                  <span>Running</span>
+                </div>
+              </div>
+
+              <!-- Pipeline Steps List -->
+              <div class="pipeline-steps-list">
+                <div class="pipeline-step-row">
+                  <span class="step-idx">01</span>
+                  <span class="step-name">Đọc tiêu đề và liên kết trang web</span>
+                  <span class="step-badge badge-done">DONE</span>
+                </div>
+                <div class="pipeline-step-row">
+                  <span class="step-idx">02</span>
+                  <span class="step-name">Ghi nhận vùng nhìn màn hình (Viewport 75%)</span>
+                  <span class="step-badge badge-done">DONE</span>
+                </div>
+                <div class="pipeline-step-row">
+                  <span class="step-idx">03</span>
+                  <span class="step-name">Trích xuất đoạn văn bản được bôi đen</span>
+                  <span class="step-badge badge-pass">PASS</span>
+                </div>
+                <div class="pipeline-step-row active-step">
+                  <span class="step-idx">04</span>
+                  <span class="step-name">Đồng bộ ngữ cảnh vào AI Side Panel</span>
+                  <span class="step-badge badge-live">LIVE</span>
+                </div>
+              </div>
+
+              <!-- Metrics Cards Row -->
+              <div class="win-metrics-row">
+                <div class="metric-card">
+                  <span class="metric-label">TỐI ƯU CONTEXT</span>
+                  <strong class="metric-val">Smart Mode</strong>
+                  <span class="metric-sub">Tiết kiệm 45% tokens</span>
+                </div>
+                <div class="metric-card">
+                  <span class="metric-label">AI PROVIDERS</span>
+                  <strong class="metric-val">15 sẵn sàng</strong>
+                  <span class="metric-sub">ChatGPT, Claude, Gemini...</span>
+                </div>
+              </div>
+
+              <!-- Bottom Ready Status Bar -->
+              <div class="win-bottom-bar">
+                <div class="ready-approval-text">
+                  <span class="check-mark">✓</span>
+                  <span>Sẵn sàng gửi ngữ cảnh cho AI</span>
+                </div>
+                <button class="win-submit-btn" data-copy="Ctrl+Shift+Y" type="button">
+                  Ctrl+Shift+Y
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating Sidepanel Device Overlay -->
+          <div class="floating-device-card">
+            <div class="device-card-header">
+              <div class="device-brand-info">
                 <img src="assets/icon16.png" alt="DinSide" width="16" height="16">
-                <span>DinSide</span>
+                <div>
+                  <strong>DinSide Assistant</strong>
+                  <span class="device-status-text">PC Online</span>
+                </div>
               </div>
-              <div class="mockup-provider-pills">
-                <button class="mockup-pill active" data-provider="chatgpt">
-                  <img src="assets/chatgpt-mark.svg" alt="ChatGPT">
-                  <span>ChatGPT</span>
-                </button>
-                <button class="mockup-pill" data-provider="gemini">
-                  <img src="assets/gemini-mark.svg" alt="Gemini">
-                  <span>Gemini</span>
-                </button>
-                <button class="mockup-pill" data-provider="claude">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                  <span>Claude</span>
-                </button>
+              <span class="device-model-pill">Gemini & GPT</span>
+            </div>
+
+            <div class="device-card-body">
+              <div class="device-ai-msg">
+                Đã thu thập xong ngữ cảnh từ trang web. Bạn muốn tôi giải thích chi tiết đoạn văn bản vừa bôi đen không?
+              </div>
+              <div class="device-user-preview">
+                Working on MDN / Context APIs...
               </div>
             </div>
 
-            <div class="mockup-panel-body">
-              <div class="attached-context-box">
-                <div class="attached-context-header">
-                  <span>NGỮ CẢNH ĐÍNH KÈM</span>
-                  <span>SMART MODE</span>
-                </div>
-                <div class="context-tag-list">
-                  <span class="context-tag">📄 Trang hiện tại</span>
-                  <span class="context-tag">👁️ Viewport: 70%</span>
-                  <span class="context-tag">✂️ Đoạn đã bôi đen</span>
-                </div>
-              </div>
-
-              <div class="mockup-chat-msg" id="mockupChatMsg">
-                Chào bạn! Tôi đã nhận được ngữ cảnh trang web và vùng xem của bạn từ DinSide. Bạn muốn tôi tóm tắt hay giải thích chi tiết đoạn văn bản vừa bôi đen?
-              </div>
-            </div>
-
-            <div class="mockup-panel-foot">
-              <div class="mockup-input-box">
-                <input type="text" value="Giải thích cơ chế Service Worker trong đoạn bôi đen" readonly>
-                <button class="mockup-send-icon" aria-label="Gửi">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                </button>
+            <div class="device-card-footer">
+              <div class="device-sync-indicator">
+                <span class="sync-bars">|||</span>
+                <span>Ngữ cảnh đã đồng bộ</span>
               </div>
             </div>
           </div>
