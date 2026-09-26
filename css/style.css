@@ -147,23 +147,12 @@ a {
   gap: 10px;
 }
 
-.brand-icon-ring {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 2.5px solid var(--accent-coral);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.brand-icon-ring::after {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--accent-coral);
-  border-radius: 50%;
+.brand-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-xs);
+  display: block;
+  object-fit: contain;
 }
 
 .brand-title {
@@ -171,10 +160,6 @@ a {
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-white);
-}
-
-.brand-title span {
-  color: var(--accent-coral);
 }
 
 .nav-links {
