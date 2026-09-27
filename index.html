@@ -137,68 +137,38 @@
         </div>
       </div>
 
-      <!-- Right Column: Rich Video Showcase Window + Floating Badge -->
+      <!-- Right Column: Minimalist Video Window -->
       <div class="hero-col-right" id="heroVideoSection">
         <div class="video-mockup-window" id="heroVideoWindow">
-          <!-- Window Header (macOS Style) -->
+          <!-- Window Header (Minimal macOS Style) -->
           <div class="window-topbar">
             <div class="window-controls">
               <span class="win-dot dot-r"></span>
               <span class="win-dot dot-y"></span>
               <span class="win-dot dot-g"></span>
             </div>
-            <div class="window-session-title">
-              <span class="video-rec-dot"></span>
-              DINSIDE DEMO — XEM TRỰC TIẾP TÍNH NĂNG
-            </div>
-            <div class="window-status-badge video-badge">
-              <span class="status-pulse-dot"></span>
-              <span>1080P HD</span>
-            </div>
+            <span class="window-session-title">dinside-demo.mp4</span>
           </div>
 
-          <!-- Video Wrapper (16:9 Responsive) -->
-          <!-- Lưu ý: Thay ID video YouTube bằng video của bạn (ví dụ: https://www.youtube.com/embed/VIDEO_ID) -->
+          <!-- Video Player Container (Native HTML5 - No Error 153) -->
           <div class="video-embed-container">
-            <iframe 
-              id="heroDemoVideo"
-              src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0&modestbranding=1" 
-              title="DinSide Extension Demo Video" 
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen>
-            </iframe>
-          </div>
+            <video 
+              id="heroDemoVideo" 
+              controls 
+              playsinline 
+              preload="metadata"
+            >
+              <source src="assets/demo.mp4" type="video/mp4">
+              Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
+            </video>
 
-          <!-- Video Window Bottom Bar -->
-          <div class="video-window-foot">
-            <div class="video-foot-feature">
-              <span class="foot-icon">✦</span>
-              <span>Đọc ngữ cảnh trang tự động</span>
+            <!-- Minimal Backdrop with Play Trigger -->
+            <div class="video-minimal-backdrop" id="videoBackdrop">
+              <button class="minimal-play-icon" id="btnPlayVideo" type="button" aria-label="Phát video demo">
+                <svg viewBox="0 0 24 24"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>
+              </button>
+              <span class="minimal-play-label">Xem video demo DinSide</span>
             </div>
-            <div class="video-foot-feature">
-              <span class="foot-icon">✦</span>
-              <span>15+ Nhà cung cấp AI</span>
-            </div>
-            <div class="video-foot-feature">
-              <span class="foot-icon">✦</span>
-              <span>100% Cục bộ & Riêng tư</span>
-            </div>
-          </div>
-
-          <!-- Floating Info Card -->
-          <div class="floating-video-card">
-            <div class="floating-video-head">
-              <div class="floating-video-brand">
-                <img src="assets/icon16.png" alt="DinSide" width="16" height="16">
-                <strong>DinSide v0.6.9</strong>
-              </div>
-              <span class="device-status-pill">Active Sync</span>
-            </div>
-            <p class="floating-video-body">
-              Xem cách DinSide tự động trích xuất ngữ cảnh trang web và gửi vào ChatGPT, Claude, Gemini...
-            </p>
           </div>
         </div>
       </div>

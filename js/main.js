@@ -37,12 +37,52 @@ function initMobileMenu() {
 function initHeroDemoVideo() {
   const watchDemoBtn = document.getElementById('btnWatchDemo');
   const videoWindow = document.getElementById('heroVideoWindow');
+  const videoBackdrop = document.getElementById('videoBackdrop');
+  const playVideoBtn = document.getElementById('btnPlayVideo');
+  const heroVideo = document.getElementById('heroDemoVideo');
+
+  function handlePlay() {
+    if (heroVideo) {
+      if (heroVideo.paused) {
+        const playPromise = heroVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              if (videoBackdrop) videoBackdrop.classList.add('playing');
+            })
+            .catch(() => {
+              if (videoBackdrop) videoBackdrop.classList.add('playing');
+            });
+        }
+      } else {
+        heroVideo.pause();
+      }
+    }
+  }
+
+  if (videoBackdrop) {
+    videoBackdrop.addEventListener('click', handlePlay);
+  }
+
+  if (playVideoBtn) {
+    playVideoBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handlePlay();
+    });
+  }
+
+  if (heroVideo) {
+    heroVideo.addEventListener('play', () => {
+      if (videoBackdrop) videoBackdrop.classList.add('playing');
+    });
+  }
 
   if (watchDemoBtn && videoWindow) {
     watchDemoBtn.addEventListener('click', (e) => {
       e.preventDefault();
       videoWindow.scrollIntoView({ behavior: 'smooth', block: 'center' });
       videoWindow.classList.add('video-highlight-pulse');
+      handlePlay();
       setTimeout(() => {
         videoWindow.classList.remove('video-highlight-pulse');
       }, 2000);
