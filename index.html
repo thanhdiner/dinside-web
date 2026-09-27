@@ -150,25 +150,20 @@
             <span class="window-session-title">dinside-demo.mp4</span>
           </div>
 
-          <!-- Video Player Container (Native HTML5 - No Error 153) -->
+          <!-- Video Player Container (Native HTML5 - Autoplay & Loop) -->
           <div class="video-embed-container">
             <video 
               id="heroDemoVideo" 
-              controls 
+              autoplay 
+              muted 
+              loop 
               playsinline 
-              preload="metadata"
+              controls 
+              preload="auto"
             >
               <source src="assets/demo.mp4" type="video/mp4">
               Trình duyệt của bạn không hỗ trợ thẻ video HTML5.
             </video>
-
-            <!-- Minimal Backdrop with Play Trigger -->
-            <div class="video-minimal-backdrop" id="videoBackdrop">
-              <button class="minimal-play-icon" id="btnPlayVideo" type="button" aria-label="Phát video demo">
-                <svg viewBox="0 0 24 24"><polygon points="8 5 19 12 8 19 8 5"></polygon></svg>
-              </button>
-              <span class="minimal-play-label">Xem video demo DinSide</span>
-            </div>
           </div>
         </div>
       </div>

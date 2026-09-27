@@ -505,59 +505,6 @@ a {
   display: block;
 }
 
-/* Minimalist Video Backdrop & Play Trigger */
-.video-minimal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, #141724 0%, #07080c 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.video-minimal-backdrop.playing {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.minimal-play-icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: rgba(255, 94, 58, 0.16);
-  border: 1.5px solid rgba(255, 94, 58, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 30px rgba(255, 94, 58, 0.25);
-}
-
-.minimal-play-icon svg {
-  width: 24px;
-  height: 24px;
-  fill: #ffffff;
-  transform: translateX(2px);
-}
-
-.minimal-play-icon:hover {
-  transform: scale(1.08);
-  background: var(--accent-coral);
-  box-shadow: 0 0 40px rgba(255, 94, 58, 0.6);
-}
-
-.minimal-play-label {
-  font-size: 0.82rem;
-  color: #94a3b8;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
 
 /* Section Header (MultiFlex Layout) */
 .section-headline-bar {
