@@ -35,9 +35,23 @@
         </span>
       </div>
       <div class="top-bar-right">
-        <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="top-bar-item">
-          <span>GitHub: @thanhdiner</span>
-        </a>
+        <div class="social-links-bar" aria-label="Mạng xã hội">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#090a0f"></polygon></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="X (Twitter)" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="#090a0f" stroke-width="1.5"></path><circle cx="17.5" cy="6.5" r="1.5" fill="#090a0f"></circle></svg>
+          </a>
+          <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="social-link-item" title="GitHub: @thanhdiner" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -102,8 +116,8 @@
             <span class="btn-arrow-box">↗</span>
           </a>
 
-          <a href="#about" class="btn-hero-secondary">
-            <span>Xem cách hoạt động ▶</span>
+          <a href="#heroVideoWindow" id="btnWatchDemo" class="btn-hero-secondary">
+            <span>Xem video demo ▶</span>
           </a>
         </div>
 
@@ -123,10 +137,10 @@
         </div>
       </div>
 
-      <!-- Right Column: Rich Desktop Session Mockup + Floating Panel -->
-      <div class="hero-col-right">
-        <div class="desktop-mockup-window">
-          <!-- Window Header -->
+      <!-- Right Column: Rich Video Showcase Window + Floating Badge -->
+      <div class="hero-col-right" id="heroVideoSection">
+        <div class="video-mockup-window" id="heroVideoWindow">
+          <!-- Window Header (macOS Style) -->
           <div class="window-topbar">
             <div class="window-controls">
               <span class="win-dot dot-r"></span>
@@ -134,117 +148,57 @@
               <span class="win-dot dot-g"></span>
             </div>
             <div class="window-session-title">
-              DINSIDE - CHROME SIDE PANEL SESSION
+              <span class="video-rec-dot"></span>
+              DINSIDE DEMO — XEM TRỰC TIẾP TÍNH NĂNG
             </div>
-            <div class="window-status-badge">
+            <div class="window-status-badge video-badge">
               <span class="status-pulse-dot"></span>
-              <span>LOCAL</span>
+              <span>1080P HD</span>
             </div>
           </div>
 
-          <!-- Window Inner Body -->
-          <div class="window-body-grid">
-            <!-- Slim Left Toolbar -->
-            <div class="window-sidebar-nav">
-              <button class="win-tool-btn active" title="Smart Context" type="button">✦</button>
-              <button class="win-tool-btn" title="Shortcuts" type="button">⌘</button>
-              <button class="win-tool-btn" title="Open Tabs Picker" type="button">⊞</button>
-              <button class="win-tool-btn" title="Settings" type="button">⚙</button>
+          <!-- Video Wrapper (16:9 Responsive) -->
+          <!-- Lưu ý: Thay ID video YouTube bằng video của bạn (ví dụ: https://www.youtube.com/embed/VIDEO_ID) -->
+          <div class="video-embed-container">
+            <iframe 
+              id="heroDemoVideo"
+              src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0&modestbranding=1" 
+              title="DinSide Extension Demo Video" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+
+          <!-- Video Window Bottom Bar -->
+          <div class="video-window-foot">
+            <div class="video-foot-feature">
+              <span class="foot-icon">✦</span>
+              <span>Đọc ngữ cảnh trang tự động</span>
             </div>
-
-            <!-- Main Content Area -->
-            <div class="window-main-content">
-              <!-- Active Task Row -->
-              <div class="win-active-task-bar">
-                <div class="task-bar-left">
-                  <span class="task-bar-label">ACTIVE TASK</span>
-                  <div class="task-bar-title">Đọc hiểu tài liệu & Tóm tắt bài viết kỹ thuật</div>
-                </div>
-                <div class="task-running-badge">
-                  <span class="badge-dot-green"></span>
-                  <span>Running</span>
-                </div>
-              </div>
-
-              <!-- Pipeline Steps List -->
-              <div class="pipeline-steps-list">
-                <div class="pipeline-step-row">
-                  <span class="step-idx">01</span>
-                  <span class="step-name">Đọc tiêu đề và liên kết trang web</span>
-                  <span class="step-badge badge-done">DONE</span>
-                </div>
-                <div class="pipeline-step-row">
-                  <span class="step-idx">02</span>
-                  <span class="step-name">Ghi nhận vùng nhìn màn hình (Viewport 75%)</span>
-                  <span class="step-badge badge-done">DONE</span>
-                </div>
-                <div class="pipeline-step-row">
-                  <span class="step-idx">03</span>
-                  <span class="step-name">Trích xuất đoạn văn bản được bôi đen</span>
-                  <span class="step-badge badge-pass">PASS</span>
-                </div>
-                <div class="pipeline-step-row active-step">
-                  <span class="step-idx">04</span>
-                  <span class="step-name">Đồng bộ ngữ cảnh vào AI Side Panel</span>
-                  <span class="step-badge badge-live">LIVE</span>
-                </div>
-              </div>
-
-              <!-- Metrics Cards Row -->
-              <div class="win-metrics-row">
-                <div class="metric-card">
-                  <span class="metric-label">TỐI ƯU CONTEXT</span>
-                  <strong class="metric-val">Smart Mode</strong>
-                  <span class="metric-sub">Tiết kiệm 45% tokens</span>
-                </div>
-                <div class="metric-card">
-                  <span class="metric-label">AI PROVIDERS</span>
-                  <strong class="metric-val">15 sẵn sàng</strong>
-                  <span class="metric-sub">ChatGPT, Claude, Gemini...</span>
-                </div>
-              </div>
-
-              <!-- Bottom Ready Status Bar -->
-              <div class="win-bottom-bar">
-                <div class="ready-approval-text">
-                  <span class="check-mark">✓</span>
-                  <span>Sẵn sàng gửi ngữ cảnh cho AI</span>
-                </div>
-                <button class="win-submit-btn" data-copy="Ctrl+Shift+Y" type="button">
-                  Ctrl+Shift+Y
-                </button>
-              </div>
+            <div class="video-foot-feature">
+              <span class="foot-icon">✦</span>
+              <span>15+ Nhà cung cấp AI</span>
+            </div>
+            <div class="video-foot-feature">
+              <span class="foot-icon">✦</span>
+              <span>100% Cục bộ & Riêng tư</span>
             </div>
           </div>
 
-          <!-- Floating Sidepanel Device Overlay -->
-          <div class="floating-device-card">
-            <div class="device-card-header">
-              <div class="device-brand-info">
+          <!-- Floating Info Card -->
+          <div class="floating-video-card">
+            <div class="floating-video-head">
+              <div class="floating-video-brand">
                 <img src="assets/icon16.png" alt="DinSide" width="16" height="16">
-                <div>
-                  <strong>DinSide Assistant</strong>
-                  <span class="device-status-text">PC Online</span>
-                </div>
+                <strong>DinSide v0.6.9</strong>
               </div>
-              <span class="device-model-pill">Gemini & GPT</span>
+              <span class="device-status-pill">Active Sync</span>
             </div>
-
-            <div class="device-card-body">
-              <div class="device-ai-msg">
-                Đã thu thập xong ngữ cảnh từ trang web. Bạn muốn tôi giải thích chi tiết đoạn văn bản vừa bôi đen không?
-              </div>
-              <div class="device-user-preview">
-                Working on MDN / Context APIs...
-              </div>
-            </div>
-
-            <div class="device-card-footer">
-              <div class="device-sync-indicator">
-                <span class="sync-bars">|||</span>
-                <span>Ngữ cảnh đã đồng bộ</span>
-              </div>
-            </div>
+            <p class="floating-video-body">
+              Xem cách DinSide tự động trích xuất ngữ cảnh trang web và gửi vào ChatGPT, Claude, Gemini...
+            </p>
           </div>
         </div>
       </div>
@@ -739,6 +693,23 @@ cd DinSide</code></pre>
       <div class="footer-bottom-bar">
         <div>
           © 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" style="color: var(--accent-coral);">thanhdiner</a>.
+        </div>
+        <div class="social-links-bar" aria-label="Mạng xã hội footer">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#090a0f"></polygon></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="X (Twitter)" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="#090a0f" stroke-width="1.5"></path><circle cx="17.5" cy="6.5" r="1.5" fill="#090a0f"></circle></svg>
+          </a>
+          <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="social-link-item" title="GitHub: @thanhdiner" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </a>
         </div>
         <div>
           Phím tắt: <kbd style="background:#161820; border:1px solid #2a2d39; padding:2px 6px; border-radius:3px; color:#fff;">Ctrl+Shift+Y</kbd>

@@ -4,6 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
+  initHeroDemoVideo();
   initMockupTabs();
   initInstallTabs();
   initFaqAccordion();
@@ -26,6 +27,25 @@ function initMobileMenu() {
       link.addEventListener('click', () => {
         navLinks.classList.remove('open');
       });
+    });
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Hero Demo Video Interaction
+   -------------------------------------------------------------------------- */
+function initHeroDemoVideo() {
+  const watchDemoBtn = document.getElementById('btnWatchDemo');
+  const videoWindow = document.getElementById('heroVideoWindow');
+
+  if (watchDemoBtn && videoWindow) {
+    watchDemoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      videoWindow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      videoWindow.classList.add('video-highlight-pulse');
+      setTimeout(() => {
+        videoWindow.classList.remove('video-highlight-pulse');
+      }, 2000);
     });
   }
 }
