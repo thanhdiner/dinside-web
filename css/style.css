@@ -691,7 +691,7 @@ html:not([data-theme="dark"]) .theme-icon-moon { display: block; }
   background: var(--accent-soft);
   color: var(--text-white);
 }
-.release-preview-mark { color: var(--accent-coral); }
+.release-preview-provider-mark { display: inline-block; width: 15px; height: 15px; flex: none; object-fit: contain; }
 .release-preview-close { margin-left: auto; font-size: 0.94rem; }
 .release-preview-add { padding: 4px 8px; font-size: 1.1rem; color: var(--text-muted); }
 .release-preview-content { padding: 25px 24px 18px; }
@@ -831,7 +831,7 @@ html:not([data-theme="dark"]) .theme-icon-moon { display: block; }
   color: var(--text-white);
   font-weight: 500;
 }
-.release-file-demo-provider span { margin-right: 5px; color: var(--accent-coral); }
+.release-file-demo-provider img { display: inline-block; width: 15px; height: 15px; margin-right: 5px; object-fit: contain; vertical-align: -3px; }
 .release-file-demo-status {
   overflow: hidden;
   min-width: 0;
@@ -899,6 +899,7 @@ html:not([data-theme="dark"]) .theme-icon-moon { display: block; }
   font: 0.73rem var(--font-sans);
   color: var(--text-muted);
 }
+.release-upload-queue-icon { display: inline-flex; flex: 0 0 16px; align-items: center; justify-content: center; color: var(--accent-coral); }
 .release-upload-preview-queued span:last-child {
   margin-left: auto;
   font-size: 0.65rem;

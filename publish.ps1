@@ -19,6 +19,19 @@ foreach ($dir in @('assets', 'css', 'js')) {
   if ($LASTEXITCODE -ge 8) { throw "Failed syncing $dir (robocopy exit $LASTEXITCODE)" }
 }
 
+# Use a content hash for stylesheet and scripts so mobile browsers do not
+# keep using cached assets after a successful GitHub Pages deployment.
+$indexPath = Join-Path $publish 'index.html'
+$page = [System.IO.File]::ReadAllText($indexPath)
+foreach ($relativePath in @('css/style.css', 'js/translations.js', 'js/main.js')) {
+  $diskPath = Join-Path $publish ($relativePath.Replace('/', [System.IO.Path]::DirectorySeparatorChar))
+  $hash = (Get-FileHash -LiteralPath $diskPath -Algorithm SHA256).Hash.Substring(0, 12).ToLowerInvariant()
+  $pattern = '((?:src|href)="' + [regex]::Escape($relativePath) + ')(?:\?v=[^"]*)?(")'
+  $replacement = '${1}?v=' + $hash + '${2}'
+  $page = [regex]::Replace($page, $pattern, $replacement)
+}
+[System.IO.File]::WriteAllText($indexPath, $page, [System.Text.UTF8Encoding]::new($false))
+
 & git -C $publish add --all
 if ($LASTEXITCODE -ne 0) { throw 'Git stage failed' }
 
