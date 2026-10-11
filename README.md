@@ -62,6 +62,18 @@ Vì trang được xây dựng hoàn toàn bằng **HTML, CSS và JavaScript thu
 
 ## 🌐 Triển khai lên mạng (Deployment)
 
+**Đã deploy:** https://thanhdiner.github.io/dinside-web/ từ repo https://github.com/thanhdiner/dinside-web (nhánh `main`, thư mục `/(root)`).
+
+**Cập nhật website:** Sau khi sửa `D:\Dev\dinside-web`, chạy:
+
+```powershell
+pwsh -File "D:\Dev\dinside-web\publish.ps1" -Message "feat: update website"
+```
+
+Script đồng bộ file website công khai sang `D:\Dev\dinside-web-publish`, commit và push. GitHub Pages sẽ tự deploy mỗi lần push. Git history cũ tại thư mục nguồn vẫn giữ nguyên, không cần Node.js server.
+
+
+
 ### 1. GitHub Pages (Miễn phí)
 1. Đẩy mã nguồn repo lên GitHub (ví dụ: `https://github.com/thanhdiner/dinside-web`).
 2. Vào tab **Settings** -> **Pages**.
