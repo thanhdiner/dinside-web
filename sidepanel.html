@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DinSide</title>
+  <link rel="stylesheet" href="sidepanel.css" />
+</head>
+<body>
+  <div id="startupLoading" class="startup-loading" role="status" aria-live="polite">
+    <canvas id="startupLoadingOrb" data-thinking-orb="connecting" data-orb-size="64" data-orb-speed="0.9" data-orb-theme="auto" aria-hidden="true"></canvas>
+    <span data-i18n="Loading DinSide…">Loading DinSide…</span>
+  </div>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <button id="providerBtn" class="provider-button" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="AI provider: ChatGPT" data-tooltip="ChatGPT">
+          <span id="providerIcon" class="provider-mark" data-provider="chatgpt" aria-hidden="true"></span>
+        </button>
+        <div id="contextStatus" class="status" data-i18n="No page context">No page context</div>
+      </div>
+
+      <div class="toolbar" aria-label="DinSide tools" data-i18n-aria-label="DinSide tools">
+        <button id="contextBtn" class="tool-icon-btn active" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Context" data-tooltip="Context" data-i18n-aria-label="Context" data-i18n-data-tooltip="Context">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5" /><path d="m3 16 9 5 9-5" /></svg>
+        </button>
+        <button id="captureBtn" class="tool-icon-btn capture-tools-trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="Capture tools" data-tooltip="Capture tools" data-i18n-aria-label="Capture tools" data-i18n-data-tooltip="Capture tools">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" /><rect x="8" y="8" width="8" height="8" rx="1.5" /></svg>
+        </button>
+        <button id="skillsBtn" class="tool-icon-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Skills" data-tooltip="Skills" data-i18n-aria-label="Skills" data-i18n-data-tooltip="Skills">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.35 3.65L17 8l-3.65 1.35L12 13l-1.35-3.65L7 8l3.65-1.35Z" /><path d="m18 13 .8 2.2L21 16l-2.2.8L18 19l-.8-2.2L15 16l2.2-.8Z" /><path d="m6 14 .8 2.2L9 17l-2.2.8L6 20l-.8-2.2L3 17l2.2-.8Z" /></svg>
+        </button>
+        <button id="settingsBtn" class="tool-icon-btn" type="button" aria-label="Settings" data-tooltip="Settings" data-i18n-aria-label="Settings" data-i18n-data-tooltip="Settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <section id="captureMenu" class="capture-menu hidden" role="menu" aria-label="Capture tools" data-i18n-aria-label="Capture tools">
+      <button id="captureRegionBtn" type="button" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" /><rect x="8" y="8" width="8" height="8" rx="1.5" /></svg>
+        <span data-i18n="Capture region">Capture region</span>
+      </button>
+      <button id="drawBtn" type="button" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" /><path d="m13.5 8.5 3 3" /></svg>
+        <span data-i18n="Draw on page">Draw on page</span>
+      </button>
+    </section>
+
+    <section id="providerMenu" class="provider-menu hidden" role="menu" aria-label="Choose AI provider" data-i18n-aria-label="Choose AI provider">
+      <div class="provider-options-scroll" role="none">
+        <button type="button" class="provider-option active" data-provider-id="chatgpt" role="menuitemradio" aria-checked="true">
+        <span class="provider-mark" data-provider="chatgpt" aria-hidden="true"></span>
+        <span class="provider-option-name">ChatGPT</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="gemini" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="gemini" aria-hidden="true"></span>
+        <span class="provider-option-name">Gemini</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="googleaimode" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="googleaimode" aria-hidden="true"></span>
+        <span class="provider-option-name">AI Mode <small>Beta</small></span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="googleaistudio" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="googleaistudio" aria-hidden="true"></span>
+        <span class="provider-option-name">Google AI Studio</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="notebooklm" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="notebooklm" aria-hidden="true"></span>
+        <span class="provider-option-name">NotebookLM</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="claude" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="claude" aria-hidden="true"></span>
+        <span class="provider-option-name">Claude</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="perplexity" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="perplexity" aria-hidden="true"></span>
+        <span class="provider-option-name">Perplexity</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="deepseek" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="deepseek" aria-hidden="true"></span>
+        <span class="provider-option-name">DeepSeek</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="openrouter" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="openrouter" aria-hidden="true"></span>
+        <span class="provider-option-name">OpenRouter</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="copilot" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="copilot" aria-hidden="true"></span>
+        <span class="provider-option-name">Copilot</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" class="provider-option" data-provider-id="qwen" role="menuitemradio" aria-checked="false">
+        <span class="provider-mark" data-provider="qwen" aria-hidden="true"></span>
+        <span class="provider-option-name">Qwen</span>
+        <span class="provider-check" aria-hidden="true">✓</span>
+      </button>
+        <button type="button" class="provider-option" data-provider-id="kimi" role="menuitemradio" aria-checked="false">
+          <span class="provider-mark" data-provider="kimi" aria-hidden="true"></span>
+          <span class="provider-option-name">Kimi</span>
+          <span class="provider-check" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" class="provider-option" data-provider-id="metaai" role="menuitemradio" aria-checked="false">
+          <span class="provider-mark" data-provider="metaai" aria-hidden="true"></span>
+          <span class="provider-option-name">Meta AI</span>
+          <span class="provider-check" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" class="provider-option" data-provider-id="mimo" role="menuitemradio" aria-checked="false">
+          <span class="provider-mark" data-provider="mimo" aria-hidden="true"></span>
+          <span class="provider-option-name">MiMo Studio</span>
+          <span class="provider-check" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" class="provider-option" data-provider-id="zai" role="menuitemradio" aria-checked="false">
+          <span class="provider-mark" data-provider="zai" aria-hidden="true"></span>
+          <span class="provider-option-name">Z.ai</span>
+          <span class="provider-check" aria-hidden="true">✓</span>
+        </button>
+      </div>
+      <div class="provider-menu-actions" role="none">
+        <button id="reloadChatBtn" class="provider-reload-button" type="button" role="menuitem" aria-label="Reload ChatGPT">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5" /><path d="M19 11a7 7 0 1 0-1.7 7.2" /></svg>
+          <span id="reloadChatLabel">Reload ChatGPT</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="contextInspector" class="context-inspector hidden" role="dialog" aria-label="Context inspector" data-i18n-aria-label="Context inspector">
+      <div class="context-inspector-head">
+        <div class="context-inspector-title">
+          <strong data-i18n="Context">Context</strong>
+          <span id="contextInspectorCount" data-i18n="0 items">0 items</span>
+        </div>
+        <div class="context-inspector-head-actions">
+          <div class="context-inspector-toggle" role="group" aria-label="Page context" data-i18n-aria-label="Page context">
+            <button id="contextInspectorFollowOnBtn" type="button" aria-pressed="true" data-i18n="On">On</button>
+            <button id="contextInspectorFollowOffBtn" type="button" aria-pressed="false" data-i18n="Off">Off</button>
+          </div>
+          <button id="closeContextInspectorBtn" type="button" aria-label="Close context inspector" data-i18n-aria-label="Close context inspector">×</button>
+        </div>
+      </div>
+      <div id="contextOverviewPane" class="context-menu-pane context-overview-pane">
+        <div id="contextSourceTabs" class="context-source-tabs" role="tablist" aria-label="Context sources" data-i18n-aria-label="Context sources">
+          <button id="contextAddToggleBtn" class="context-source-tab" type="button" role="tab" tabindex="-1" aria-selected="false" aria-controls="tabsMenu">
+            <strong data-i18n="Open tabs">Open tabs</strong>
+            <small id="contextLimitCount" class="context-limit-count">0 pinned</small>
+          </button>
+          <button id="contextPickerSummaryBtn" class="context-source-tab" type="button" role="tab" aria-selected="true" aria-controls="contextCurrentPane" aria-label="View current page context" data-i18n-aria-label="View current page context">
+            <strong data-i18n="Current page">Current page</strong>
+            <small><span data-i18n="Full page">Full page</span> · <span data-i18n="Viewport">Viewport</span></small>
+          </button>
+        </div>
+        <section class="context-add-section">
+          <div id="tabsMenu" class="context-pinned-pane hidden" role="tabpanel" aria-labelledby="contextAddToggleBtn">
+            <label id="openTabsSearchWrap" class="open-tabs-search-wrap hidden">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" /><path d="m12.5 12.5 4 4" /></svg>
+              <input id="openTabsSearch" class="open-tabs-search" type="search" autocomplete="off" placeholder="Search tabs" data-i18n-placeholder="Search tabs" aria-label="Search tabs" data-i18n-aria-label="Search tabs">
+            </label>
+            <div id="openTabGroups" class="open-tab-groups">
+              <section id="openTabsGroup" class="open-tab-group">
+                <div class="open-tab-group-head other-tabs-head">
+                  <div class="open-tabs-section-label">
+                    <span data-i18n="Open tabs">Open tabs</span>
+                    <span id="openTabsSectionCount" class="pin-section-count">0</span>
+                  </div>
+                  <button id="clearSelectedTabsBtn" class="hidden" type="button" aria-label="Clear selected tabs" data-i18n-aria-label="Clear selected tabs" data-i18n="Clear">Clear</button>
+                </div>
+                <div id="tabsList" class="open-tab-group-list"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+        <div id="contextCurrentPane" class="context-current-pane" role="tabpanel" aria-labelledby="contextPickerSummaryBtn">
+          <div class="pin-quick-actions current-page-pin-actions">
+            <button id="pinCurrentPageBtn" type="button"><svg class="pin-action-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3v12" /><path d="M8 11l4 4 4-4" /><path d="M5 20h14" /></svg><span class="pin-action-text" data-i18n="Pin this page">Pin this page</span></button>
+            <button id="pinCurrentViewportBtn" type="button"><svg class="pin-action-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 3 7 8h3v5l-2 2h8l-2-2V8h3Z" /><path d="M12 15v6" /></svg><span class="pin-action-text" data-i18n="Pin viewport">Pin viewport</span></button>
+          </div>
+          <div id="savedViewportsGroup" class="saved-viewports-group hidden">
+            <button id="pinnedSectionLabel" class="pin-section-label" type="button" aria-expanded="true">
+              <span data-i18n="Saved viewports">Saved viewports</span>
+              <span id="pinnedSectionCount" class="pin-section-count">0</span>
+              <svg class="pin-section-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 4 4 4-4 4" /></svg>
+            </button>
+            <div id="pinnedList" class="pinned-list"></div>
+          </div>
+          <div id="contextInspectorBody" class="context-inspector-body"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsMenu" class="settings-menu hidden" aria-label="Settings" data-i18n-aria-label="Settings">
+      <div class="settings-menu-head">
+        <strong data-i18n="Settings">Settings</strong>
+        <button id="closeSettingsBtn" type="button" aria-label="Close settings" data-i18n-aria-label="Close settings">×</button>
+      </div>
+      <div class="settings-menu-body">
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="Language">Language</div>
+          <div class="segmented-control" role="group" aria-label="Language" data-i18n-aria-label="Language">
+            <button id="languageViBtn" type="button" lang="vi" aria-pressed="false">Tiếng Việt</button>
+            <button id="languageEnBtn" type="button" lang="en" aria-pressed="true">English</button>
+          </div>
+        </div>
+        <div class="settings-section-heading" data-i18n="Appearance">Appearance</div>
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="Toolbar position">Toolbar position</div>
+          <div class="segmented-control" role="group" aria-label="Toolbar position" data-i18n-aria-label="Toolbar position">
+            <button id="toolbarTopBtn" type="button" data-position="top" data-i18n="Top">Top</button>
+            <button id="toolbarBottomBtn" type="button" data-position="bottom" data-i18n="Bottom">Bottom</button>
+          </div>
+        </div>
+        <div class="settings-row theme-settings-row">
+          <div>
+            <div class="settings-label" data-i18n="Theme">Theme</div>
+          </div>
+          <div class="segmented-control theme-control" role="group" aria-label="Theme" data-i18n-aria-label="Theme">
+            <button id="themeLightBtn" type="button" data-theme="light" data-i18n="Light">Light</button>
+            <button id="themeDarkBtn" type="button" data-theme="dark" data-i18n="Dark">Dark</button>
+            <button id="themeChatGPTBtn" type="button" data-theme="chatgpt">AI</button>
+          </div>
+        </div>
+        <div class="settings-section-heading" data-i18n="Context & behavior">Context &amp; behavior</div>
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="Keep chat on reopen">Keep chat on reopen</div>
+          <div class="segmented-control" role="group" aria-label="Keep chat on reopen" data-i18n-aria-label="Keep chat on reopen">
+            <button id="keepChatOnBtn" type="button" data-i18n="On">On</button>
+            <button id="keepChatOffBtn" type="button" data-i18n="Off">Off</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="Selected text context">Selected text context</div>
+          <div class="segmented-control" role="group" aria-label="Selected text context" data-i18n-aria-label="Selected text context">
+            <button id="selectedTextOnBtn" type="button" data-i18n="On">On</button>
+            <button id="selectedTextOffBtn" type="button" data-i18n="Off">Off</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-label" data-i18n="Quick Ask">Quick Ask</div>
+          <div class="segmented-control" role="group" aria-label="Quick Ask" data-i18n-aria-label="Quick Ask">
+            <button id="quickAskOnBtn" type="button" data-i18n="On">On</button>
+            <button id="quickAskOffBtn" type="button" data-i18n="Off">Off</button>
+          </div>
+        </div>
+        <div class="settings-row quick-ask-manage-row">
+          <div class="quick-ask-custom-title-row">
+            <div class="settings-label" data-i18n="Custom actions">Custom actions</div>
+            <span id="quickAskCustomCount" class="quick-ask-custom-count">0/8</span>
+          </div>
+          <button id="quickAskManageBtn" class="quick-ask-manage-btn" type="button" data-i18n="Manage">Manage</button>
+        </div>
+        <div class="settings-row context-mode-row">
+          <div>
+            <div class="settings-label" data-i18n="Context mode">Context mode</div>
+          </div>
+          <div class="segmented-control context-mode-control" role="group" aria-label="Context loading mode" data-i18n-aria-label="Context loading mode">
+            <button id="contextOnDemandBtn" type="button" data-context-mode="on-demand" data-tooltip="Lower CPU/RAM use, but the first send on a new page may be slower." data-i18n="On demand" data-i18n-data-tooltip="Lower CPU/RAM use, but the first send on a new page may be slower.">On demand</button>
+            <button id="contextSmartBtn" type="button" data-context-mode="smart" data-tooltip="Automatically chooses viewport, fresh cache, or full-page context from your prompt and page state." data-i18n="Smart" data-i18n-data-tooltip="Automatically chooses viewport, fresh cache, or full-page context from your prompt and page state.">Smart</button>
+            <button id="contextPreloadBtn" type="button" data-context-mode="preload" data-tooltip="Faster first send with fuller context, but uses a little more CPU/RAM while browsing." data-i18n="Preload" data-i18n-data-tooltip="Faster first send with fuller context, but uses a little more CPU/RAM while browsing.">Preload</button>
+          </div>
+        </div>
+        <div class="settings-row context-mode-row">
+          <div>
+            <div class="settings-label" data-i18n="Context display">Context display</div>
+          </div>
+          <div class="segmented-control context-mode-control" role="group" aria-label="Context display mode" data-i18n-aria-label="Context display mode">
+            <button id="contextDisplayVisibleBtn" type="button" data-context-display-mode="visible" data-tooltip="Show the full DinSide context inside sent messages. Best for debugging context delivery." data-i18n="Visible" data-i18n-data-tooltip="Show the full DinSide context inside sent messages. Best for debugging context delivery.">Visible</button>
+            <button id="contextDisplayCompactBtn" type="button" data-context-display-mode="compact" data-tooltip="Keep sending the full context to the AI, but collapse it from the rendered chat message so only your prompt stays visible." data-i18n="Compact" data-i18n-data-tooltip="Keep sending the full context to the AI, but collapse it from the rendered chat message so only your prompt stays visible.">Compact</button>
+          </div>
+        </div>
+        <div class="settings-row context-mode-row">
+          <div>
+            <div class="settings-label" data-i18n="Page updates">Page updates</div>
+          </div>
+          <div class="segmented-control context-mode-control" role="group" aria-label="Page context update mode" data-i18n-aria-label="Page context update mode">
+            <button id="pageUpdateSmartBtn" type="button" data-page-update-mode="smart" data-tooltip="Send a compact diff when the page changes a little; fall back to a full update when the diff is large or unsafe." data-i18n="Smart" data-i18n-data-tooltip="Send a compact diff when the page changes a little; fall back to a full update when the diff is large or unsafe.">Smart</button>
+            <button id="pageUpdateDiffBtn" type="button" data-page-update-mode="diff" data-tooltip="Prefer block-level diffs for changed pages, with a full update fallback when a safe baseline is unavailable." data-i18n="Diff" data-i18n-data-tooltip="Prefer block-level diffs for changed pages, with a full update fallback when a safe baseline is unavailable.">Diff</button>
+            <button id="pageUpdateFullBtn" type="button" data-page-update-mode="full" data-tooltip="Always resend the full page context when meaningful page content changes." data-i18n="Full" data-i18n-data-tooltip="Always resend the full page context when meaningful page content changes.">Full</button>
+          </div>
+        </div>
+        <div class="settings-row context-mode-row">
+          <div>
+            <div class="settings-label" data-i18n="Compression">Compression</div>
+          </div>
+          <div class="segmented-control context-mode-control" role="group" aria-label="Context compression mode" data-i18n-aria-label="Context compression mode">
+            <button id="compressionOffBtn" type="button" data-compression-mode="off" data-tooltip="Send extracted context without additional compression." data-i18n="Off" data-i18n-data-tooltip="Send extracted context without additional compression.">Off</button>
+            <button id="compressionBalancedBtn" type="button" data-compression-mode="balanced" data-tooltip="Reduce duplicate/noisy context while preserving broad page coverage." data-i18n="Balanced" data-i18n-data-tooltip="Reduce duplicate/noisy context while preserving broad page coverage.">Balanced</button>
+            <button id="compressionAggressiveBtn" type="button" data-compression-mode="aggressive" data-tooltip="Use a tighter token budget and stronger deduplication for very large pages." data-i18n="Aggressive" data-i18n-data-tooltip="Use a tighter token budget and stronger deduplication for very large pages.">Aggressive</button>
+          </div>
+        </div>
+        <div class="settings-section-heading" data-i18n="Shortcuts">Shortcuts</div>
+        <div class="settings-row shortcut-row">
+          <div class="settings-label" data-i18n="Toggle DinSide">Toggle DinSide</div>
+          <div class="shortcut-control">
+            <kbd id="toggleShortcutKey">Ctrl + Shift + Y</kbd>
+            <button id="changeToggleShortcutBtn" type="button" data-i18n="Change">Change</button>
+          </div>
+        </div>
+        <div class="settings-section-heading" data-i18n="Help & support">Help &amp; support</div>
+        <div class="settings-row support-contact-row">
+          <div class="support-contact-head">
+            <div>
+              <div class="settings-label" data-i18n="Bug reports & feedback">Bug reports &amp; feedback</div>
+            </div>
+            <button id="contactSupportBtn" class="support-action-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></svg>
+              <span data-i18n="Email">Email</span>
+            </button>
+          </div>
+          <div class="support-email-line">
+            <span class="support-email-address">huynhvanthanh.dev@gmail.com</span>
+            <button id="copySupportEmailBtn" type="button" aria-label="Copy support email" data-tooltip="Copy support email" data-i18n-aria-label="Copy support email" data-i18n-data-tooltip="Copy support email">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></svg>
+            </button>
+          </div>
+        </div>
+        <div class="settings-row donate-settings-row">
+          <div>
+            <div class="settings-label" data-i18n="Buy DinSide a coffee">Buy DinSide a coffee</div>
+          </div>
+          <button id="openDonateBtn" class="donate-open-btn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z" /></svg>
+            <span data-i18n="Donate">Donate</span>
+          </button>
+        </div>
+      </div>
+      <div id="quickAskCustomPanel" class="quick-ask-custom-panel hidden">
+        <div class="quick-ask-custom-panel-head">
+          <div class="quick-ask-custom-panel-head-left">
+            <button id="quickAskCustomBackBtn" type="button" aria-label="Back to settings" data-i18n-aria-label="Back to settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg></button>
+            <strong data-i18n="Custom actions">Custom actions</strong>
+          </div>
+          <div class="quick-ask-custom-panel-head-actions">
+            <button id="quickAskAddCustomBtn" class="quick-ask-add-btn" type="button" data-i18n="+ Add">+ Add</button>
+            <button id="closeQuickAskCustomBtn" class="close-sub-btn" type="button" aria-label="Close settings" data-i18n-aria-label="Close settings">×</button>
+          </div>
+        </div>
+        <div class="quick-ask-custom-panel-body">
+          <div id="quickAskCustomList" class="quick-ask-custom-list"></div>
+          <form id="quickAskCustomForm" class="quick-ask-custom-form hidden">
+            <label class="quick-ask-custom-field" for="quickAskCustomLabel">
+              <span data-i18n="Name">Name</span>
+              <div class="quick-ask-name-row">
+                <div class="quick-ask-icon-select">
+                  <button id="quickAskIconTrigger" class="quick-ask-icon-trigger" type="button" aria-label="Choose action icon" aria-expanded="false" data-i18n-aria-label="Choose action icon"><span id="quickAskIconPreview">✦</span></button>
+                  <div id="quickAskIconPicker" class="quick-ask-icon-picker hidden" role="radiogroup" aria-label="Action icon" data-i18n-aria-label="Action icon"></div>
+                </div>
+                <input id="quickAskCustomLabel" type="text" maxlength="32" autocomplete="off" placeholder="e.g. Fix grammar" data-i18n-placeholder="e.g. Fix grammar">
+              </div>
+            </label>
+            <label class="quick-ask-custom-field" for="quickAskCustomInstruction">
+              <span data-i18n="Instruction">Instruction</span>
+              <textarea id="quickAskCustomInstruction" maxlength="2000" rows="3" placeholder="e.g. Fix grammar while keeping the original meaning." data-i18n-placeholder="e.g. Fix grammar while keeping the original meaning."></textarea>
+            </label>
+            <div class="quick-ask-custom-form-actions">
+              <button id="quickAskCustomCancelBtn" type="button" data-i18n="Cancel">Cancel</button>
+              <button id="quickAskCustomSaveBtn" type="submit" data-i18n="Add action">Add action</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="donatePanel" class="donate-panel hidden" role="dialog" aria-modal="false" aria-hidden="true" aria-label="Support DinSide" data-i18n-aria-label="Support DinSide">
+        <div class="donate-panel-head">
+          <div class="donate-panel-head-left">
+            <button id="donateBackBtn" type="button" aria-label="Back to settings" data-i18n-aria-label="Back to settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 3-9 9 9 9" /></svg></button>
+            <strong data-i18n="Support DinSide">Support DinSide</strong>
+          </div>
+          <button id="closeDonateBtn" type="button" aria-label="Close settings" data-i18n-aria-label="Close settings">×</button>
+        </div>
+        <div class="donate-panel-body">
+          <div id="donateMethodTabs" class="donate-method-tabs" role="tablist" aria-label="Support method" data-i18n-aria-label="Support method">
+            <button id="donateInternationalTab" class="active" type="button" role="tab" aria-selected="true" aria-controls="donateInternationalPanel" data-i18n="International">International</button>
+            <button id="donateVietnamTab" type="button" role="tab" aria-selected="false" aria-controls="donateVietnamPanel" data-i18n="Vietnam">Vietnam</button>
+          </div>
+
+          <section id="donateInternationalPanel" class="donate-method-panel" role="tabpanel" aria-labelledby="donateInternationalTab">
+            <div class="donate-international-card">
+              <button id="openBuyMeCoffeeBtn" class="buy-me-coffee-btn" type="button">
+                <svg class="buy-me-coffee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5Z" /><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17M7 4v2M11 3v3M15 4v2M4 21h15" /></svg>
+                <span data-i18n="Buy DinSide a coffee">Buy DinSide a coffee</span>
+                <svg class="buy-me-coffee-external" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8" /><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" /></svg>
+              </button>
+            </div>
+          </section>
+
+          <section id="donateVietnamPanel" class="donate-method-panel hidden" role="tabpanel" aria-labelledby="donateVietnamTab">
+            <p class="donate-method-note" data-i18n="Scan the VietQR code with your banking app.">Scan the VietQR code with your banking app.</p>
+            <div class="donate-qr-frame">
+              <img src="assets/donate-vietcombank.png" alt="VietQR donation code for DinSide" data-i18n-alt="VietQR donation code for DinSide">
+            </div>
+            <div class="donate-bank-card">
+              <div class="donate-bank-row">
+                <span data-i18n="Bank">Bank</span>
+                <strong>Vietcombank</strong>
+              </div>
+              <div class="donate-bank-row">
+                <span data-i18n="Account holder">Account holder</span>
+                <strong>HUYNH VAN THANH</strong>
+              </div>
+              <div class="donate-bank-row donate-account-row">
+                <span data-i18n="Account number">Account number</span>
+                <strong>1061960104</strong>
+              </div>
+            </div>
+            <div class="donate-actions">
+              <button id="copyDonateAccountBtn" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                <span data-i18n="Copy account number">Copy account number</span>
+              </button>
+              <a href="assets/donate-vietcombank.png" download="DinSide-Vietcombank-QR.png">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14" /></svg>
+                <span data-i18n="Save QR">Save QR</span>
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="skillsMenu" class="skills-menu hidden">
+      <div class="skills-menu-head">
+        <div>
+          <strong data-i18n="Skills">Skills</strong>
+          <span id="skillsCount" class="skills-count"></span>
+        </div>
+        <button id="closeSkillsBtn" type="button" aria-label="Close skills menu" data-i18n-aria-label="Close skills menu">×</button>
+      </div>
+      <div id="skillsList" class="skills-list"></div>
+      <button id="addSkillBtn" class="add-skill-btn" type="button" data-i18n="+ Add skill">+ Add skill</button>
+    </section>
+
+    <section id="skillEditor" class="skill-editor hidden" aria-label="Skill editor" data-i18n-aria-label="Skill editor">
+      <div class="skill-editor-head">
+        <strong id="skillEditorTitle" data-i18n="Add skill">Add skill</strong>
+        <button id="closeSkillEditorBtn" type="button" aria-label="Close skill editor" data-i18n-aria-label="Close skill editor">×</button>
+      </div>
+      <div class="skill-editor-body">
+        <input id="skillNameInput" type="text" maxlength="60" placeholder="Skill name" data-i18n-placeholder="Skill name" />
+        <textarea id="skillPromptInput" maxlength="8000" placeholder="Instructions this skill should add to the prompt…" data-i18n-placeholder="Instructions this skill should add to the prompt…"></textarea>
+      </div>
+      <div class="skill-editor-actions">
+        <button id="deleteSkillBtn" class="danger-btn hidden" type="button" data-i18n="Delete">Delete</button>
+        <div class="skill-editor-spacer"></div>
+        <button id="cancelSkillBtn" type="button" data-i18n="Cancel">Cancel</button>
+        <button id="saveSkillBtn" class="primary-btn" type="button" data-i18n="Save">Save</button>
+      </div>
+    </section>
+
+    <section id="contextBar" class="context-bar hidden">
+      <div id="contextChips" class="context-chips"></div>
+      <div class="context-bar-actions">
+        <button id="clearContextBarBtn" class="context-bar-action context-clear-all" type="button" title="Clear all pinned context" data-i18n-title="Clear all pinned context" aria-label="Clear all pinned context" data-i18n-aria-label="Clear all pinned context" data-i18n="Clear all">Clear all</button>
+        <button id="refreshContextBtn" class="context-bar-action context-refresh" type="button" title="Refresh current page context" data-i18n-title="Refresh current page context" aria-label="Refresh current page context" data-i18n-aria-label="Refresh current page context">↻</button>
+      </div>
+    </section>
+
+    <section id="screenshotWrap" class="screenshot-wrap hidden">
+      <img id="screenshotPreview" alt="Captured page region" data-i18n-alt="Captured page region" />
+      <button id="closeScreenshotBtn" class="context-close" title="Hide screenshot" data-i18n-title="Hide screenshot">×</button>
+    </section>
+
+    <main id="frameShell" class="frame-shell">
+      <div id="frameLoading" class="frame-loading" role="status" aria-live="polite">
+        <canvas
+          id="frameLoadingOrb"
+          class="frame-loading-orb"
+          data-thinking-orb="connecting"
+          data-orb-size="64"
+          data-orb-speed="0.9"
+          data-orb-theme="auto"
+          aria-hidden="true"
+        ></canvas>
+        <div id="frameLoadingText" data-i18n="Loading ChatGPT…">Loading ChatGPT…</div>
+        <div id="mimoLoadingActions" class="mimo-loading-actions hidden">
+          <button id="mimoShowPageBtn" type="button" data-i18n="Show MiMo page">Show MiMo page</button>
+          <button id="mimoOpenTabBtn" type="button" data-i18n="Open MiMo in a tab">Open MiMo in a tab</button>
+        </div>
+      </div>
+      <iframe
+        id="providerFrame"
+        title="AI provider"
+        data-i18n-title="AI provider"
+        allow="clipboard-read; clipboard-write; microphone; camera"
+      ></iframe>
+    </main>
+  </div>
+
+  <div id="dinsideTooltip" class="dinside-tooltip" role="tooltip" aria-hidden="true">
+    <span id="dinsideTooltipText"></span>
+    <span class="dinside-tooltip-arrow" aria-hidden="true"></span>
+  </div>
+
+  <script src="providers/provider-manager.js"></script>
+  <script src="providers/chatgpt.js"></script>
+  <script src="providers/gemini.js"></script>
+  <script src="providers/google-ai-mode.js"></script>
+  <script src="providers/google-ai-studio.js"></script>
+  <script src="providers/notebooklm.js"></script>
+  <script src="providers/claude.js"></script>
+  <script src="providers/perplexity.js"></script>
+  <script src="providers/deepseek.js"></script>
+  <script src="providers/openrouter.js"></script>
+  <script src="providers/copilot.js"></script>
+  <script src="providers/qwen.js"></script>
+  <script src="providers/kimi.js"></script>
+  <script src="providers/meta-ai.js"></script>
+  <script src="providers/mimo.js"></script>
+  <script src="providers/zai.js"></script>
+  <script src="vendor/thinking-orbs.js"></script>
+  <script src="i18n.js"></script>
+  <script src="startup.js"></script>
+</body>
+</html>
+
+
