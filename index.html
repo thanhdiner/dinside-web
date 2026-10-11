@@ -316,12 +316,39 @@
           <div class="release-card-eyebrow"><span>02 / FILES</span><span class="release-card-index">↗</span></div>
           <h3 data-i18n="release.files.title">Chọn và gửi file ngay trên trang web</h3>
           <p data-i18n="release.files.desc">Đính kèm file từ website hoặc Drive. Google Docs, Sheets và Slides có thể xuất thành định dạng tài liệu phù hợp trước khi tải lên.</p>
+          <div class="release-file-demo" data-file-demo data-state="idle">
+            <div class="release-file-demo-top">
+              <span class="release-file-demo-label">DEMO / SELECT FILE</span>
+              <span class="release-file-demo-badge" data-i18n="release.files.demo.badge">MÔ PHỎNG</span>
+            </div>
+            <div class="release-file-demo-item">
+              <span class="release-file-demo-filetype" aria-hidden="true">PDF</span>
+              <span class="release-file-demo-filename"><strong>project-brief.pdf</strong><small data-i18n="release.files.demo.source">Tài liệu trên website</small></span>
+              <button type="button" class="release-file-demo-button" data-file-demo-button>
+                <span data-file-demo-action data-i18n="release.files.demo.select">Chọn file</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+            <div class="release-file-demo-path" aria-hidden="true"><span></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v17m-5-5 5 5 5-5"/></svg><span></span></div>
+            <div class="release-file-demo-target">
+              <span class="release-file-demo-provider"><span aria-hidden="true">✳</span> ChatGPT</span>
+              <span class="release-file-demo-status" role="status" aria-live="polite" data-file-demo-status data-i18n="release.files.demo.idle">Chờ chọn file</span>
+            </div>
+            <span class="release-file-demo-hint" data-i18n="release.files.demo.hint">Demo tương tác, không tải file thật.</span>
+          </div>
           <div class="release-pills" aria-label="Supported formats"><span>DOCX</span><span>XLSX</span><span>PPTX</span><span>PDF</span></div>
         </article>
         <article class="release-card reveal-on-scroll">
           <div class="release-card-eyebrow"><span>03 / UPLOAD</span><span class="release-card-index">↗</span></div>
           <h3 data-i18n="release.upload.title">Ba file tải lên cùng lúc</h3>
           <p data-i18n="release.upload.desc">Tối đa 3 file được xử lý song song; file tiếp theo tự chờ lượt. Đính kèm xong không tự gửi tin nhắn.</p>
+          <div class="release-upload-preview" aria-hidden="true">
+            <div class="release-upload-preview-head"><span>UPLOAD QUEUE / DEMO</span><span>3 / 3</span></div>
+            <div class="release-upload-preview-row"><span class="release-upload-preview-type">PDF</span><span class="release-upload-preview-name">project-brief.pdf</span><span class="release-upload-preview-progress"><i style="width: 100%"></i></span></div>
+            <div class="release-upload-preview-row"><span class="release-upload-preview-type">DOC</span><span class="release-upload-preview-name">contract.docx</span><span class="release-upload-preview-progress"><i style="width: 62%"></i></span></div>
+            <div class="release-upload-preview-row"><span class="release-upload-preview-type">XLS</span><span class="release-upload-preview-name">budget.xlsx</span><span class="release-upload-preview-progress"><i style="width: 38%"></i></span></div>
+            <div class="release-upload-preview-queued"><span>⏳</span><span>slides.pptx</span><span data-i18n="release.upload.preview.queued">Đang chờ</span></div>
+          </div>
           <div class="release-pills"><span data-i18n="release.upload.tag1">3 luồng đồng thời</span><span data-i18n="release.upload.tag2">Có hàng chờ</span></div>
         </article>
         <article class="release-card reveal-on-scroll">

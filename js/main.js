@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initInstallTabs();
   initFeatureCarousel();
   initFaqAccordion();
+  initFileAttachDemo();
   initCopyButtons();
   initSmoothAnchors();
   initScrollTracking();
@@ -20,6 +21,33 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --------------------------------------------------------------------------
    Scroll Position Tracking (Giữ nguyên vị trí khi reload)
    -------------------------------------------------------------------------- */
+/* File selection demo is a local visual simulation only. */
+function initFileAttachDemo() {
+  const demo = document.querySelector('[data-file-demo]');
+  const button = demo?.querySelector('[data-file-demo-button]');
+  const action = demo?.querySelector('[data-file-demo-action]');
+  const status = demo?.querySelector('[data-file-demo-status]');
+  if (!button || !action || !status) return;
+
+  function showState(state, actionKey, statusKey) {
+    demo.dataset.state = state;
+    button.disabled = state === 'loading';
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'vi';
+    for (const [element, key] of [[action, actionKey], [status, statusKey]]) {
+      element.setAttribute('data-i18n', key);
+      element.textContent = translations[lang]?.[key] || '';
+    }
+  }
+
+  button.addEventListener('click', () => {
+    if (demo.dataset.state === 'loading') return;
+    showState('loading', 'release.files.demo.select', 'release.files.demo.loading');
+    window.setTimeout(() => {
+      showState('ready', 'release.files.demo.retry', 'release.files.demo.ready');
+    }, 900);
+  });
+}
+
 function initScrollTracking() {
   const KEY = 'dinside_scroll_pos';
 
