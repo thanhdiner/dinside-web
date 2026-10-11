@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DinSide — Mang ngữ cảnh trang web vào AI Chat của bạn</title>
+  <meta name="description" content="Tiện ích mở rộng Chrome Side Panel kết nối ngữ cảnh trang web vào ChatGPT, Claude, Gemini, DeepSeek mà không cần copy-paste thủ công.">
+  <meta name="keywords" content="DinSide, Chrome Extension, Side Panel, AI Context, ChatGPT, Claude, Gemini, DeepSeek">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icon32.png">
+  <link rel="apple-touch-icon" href="assets/icon128.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Immediate Theme Initialization (Zero Flicker) -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('dinside_theme');
+        var isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      } catch (_) {}
+    })();
+  </script>
+
+  <!-- Scroll Restoration Guard: Prevents flashing top (0) when reloading at an existing position -->
+  <script>
+    (function() {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      try {
+        var savedY = parseInt(sessionStorage.getItem('dinside_scroll_pos'), 10) || (history.state && history.state.scrollPos) || 0;
+        if (savedY > 30) {
+          var style = document.createElement('style');
+          style.id = 'scroll-guard';
+          style.textContent = 'body { visibility: hidden !important; }';
+          document.head.appendChild(style);
+          setTimeout(function() {
+            var g = document.getElementById('scroll-guard');
+            if (g) g.remove();
+          }, 350);
+        }
+      } catch (_) {}
+    })();
+  </script>
+
+  <!-- Immediate Language Initialization -->
+  <script src="js/translations.js"></script>
+  <script>
+    (function() {
+      function detectLang() {
+        try {
+          var saved = localStorage.getItem('dinside_lang');
+          if (saved === 'vi' || saved === 'en') return saved;
+        } catch (_) {}
+
+        try {
+          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+          if (tz === 'Asia/Ho_Chi_Minh' || tz === 'Saigon') return 'vi';
+          if (tz.indexOf('America/') === 0 || tz.indexOf('US/') === 0) return 'en';
+        } catch (_) {}
+
+        try {
+          var langs = navigator.languages || [navigator.language || ''];
+          for (var i = 0; i < langs.length; i++) {
+            var l = (langs[i] || '').toLowerCase();
+            if (l.indexOf('vi') === 0) return 'vi';
+            if (l.indexOf('en') === 0) return 'en';
+          }
+        } catch (_) {}
+
+        return 'vi';
+      }
+
+      var lang = detectLang();
+      window.__initialLang = lang;
+      document.documentElement.setAttribute('lang', lang);
+
+      // If English, translate DOM nodes as soon as parser creates them (zero flicker)
+      if (lang === 'en' && typeof translations !== 'undefined' && translations.en) {
+        var dict = translations.en;
+        if (dict["page.title"]) document.title = dict["page.title"];
+
+        function translateNode(el) {
+          if (el.nodeType === 1 && el.hasAttribute('data-i18n')) {
+            var key = el.getAttribute('data-i18n');
+            if (dict[key] !== undefined) el.innerHTML = dict[key];
+          }
+          if (el.nodeType === 1 && el.querySelectorAll) {
+            var children = el.querySelectorAll('[data-i18n]');
+            for (var j = 0; j < children.length; j++) {
+              var cKey = children[j].getAttribute('data-i18n');
+              if (dict[cKey] !== undefined) children[j].innerHTML = dict[cKey];
+            }
+          }
+        }
+
+        var observer = new MutationObserver(function(mutations) {
+          for (var m = 0; m < mutations.length; m++) {
+            var added = mutations[m].addedNodes;
+            for (var a = 0; a < added.length; a++) {
+              translateNode(added[a]);
+            }
+          }
+        });
+
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          observer.disconnect();
+          var remaining = document.querySelectorAll('[data-i18n]');
+          for (var r = 0; r < remaining.length; r++) {
+            var rKey = remaining[r].getAttribute('data-i18n');
+            if (dict[rKey] !== undefined) remaining[r].innerHTML = dict[rKey];
+          }
+        });
+      }
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- Top Utility Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <span class="top-bar-item">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span data-i18n="topbar.email">huynhvanthanh.dev@gmail.com</span>
+        </span>
+      </div>
+      <div class="top-bar-right">
+        <button type="button" class="theme-toggle-btn topbar-theme-toggle" aria-label="Chuyển đổi giao diện Sáng / Tối" title="Chuyển đổi giao diện">
+          <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="lang-switch-group" aria-label="Ngôn ngữ / Language">
+          <button type="button" class="lang-btn active" data-lang="vi">VIE</button>
+          <span class="lang-sep">|</span>
+          <button type="button" class="lang-btn" data-lang="en">ENG</button>
+        </div>
+        <div class="social-links-bar" aria-label="Mạng xã hội">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="var(--bg-topbar)"></polygon></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="X (Twitter)" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+          </a>
+          <a href="https://github.com/thanhdiner/DinSide" target="_blank" rel="noopener noreferrer" class="social-link-item" title="GitHub: @thanhdiner" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <nav class="main-navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo-group">
+        <img src="assets/icon128.png" alt="DinSide Logo" class="brand-logo-img">
+        <span class="brand-title">DinSide</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#" class="active" data-i18n="nav.home">Trang chủ</a></li>
+        <li><a href="#features" data-i18n="nav.features">Tính năng</a></li>
+        <li><a href="#about" data-i18n="nav.about">Giới thiệu</a></li>
+        <li><a href="#providers" data-i18n="nav.providers">AI Providers</a></li>
+        <li><a href="#installation" data-i18n="nav.installation">Cài đặt</a></li>
+        <li><a href="#donate" data-i18n="nav.donate">Ủng hộ</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+      </ul>
+
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button type="button" class="theme-toggle-btn nav-theme-toggle" aria-label="Chuyển đổi giao diện Sáng / Tối" title="Chuyển đổi giao diện">
+          <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <div class="lang-switch-group nav-lang-switch" aria-label="Ngôn ngữ / Language">
+          <button type="button" class="lang-btn active" data-lang="vi">VIE</button>
+          <span class="lang-sep">|</span>
+          <button type="button" class="lang-btn" data-lang="en">ENG</button>
+        </div>
+        <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="nav-cta-btn" data-i18n="nav.addToChrome">
+          Thêm vào Chrome
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu">
+          <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section (centered) -->
+  <header class="hero-split-section">
+    <div class="container hero-center">
+      <div class="hero-tag-line">
+        <span class="tag-pill-text">DinSide</span>
+        <span class="tag-sep">/</span>
+        <span class="tag-desc-text" data-i18n="hero.tagDesc">Tiện ích mở rộng Chrome Side Panel</span>
+      </div>
+
+      <h1 class="hero-split-headline" data-i18n="hero.headline">
+        Trang web bạn đang đọc,<br>
+        cùng đọc với <em>ngữ cảnh AI.</em>
+      </h1>
+
+      <p class="hero-split-desc" data-i18n="hero.desc">
+        Đưa toàn bộ ngữ cảnh trang web, vùng xem màn hình, trích đoạn và Google Docs vào thẳng ChatGPT, Claude, Gemini... Trò chuyện trực tiếp ngay thanh bên, không cần copy-paste.
+      </p>
+
+      <div class="hero-split-cta-row">
+        <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="btn-hero-primary">
+          <span data-i18n="hero.ctaPrimary">Thêm vào Chrome — Miễn phí</span>
+          <span class="btn-arrow-box"><svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
+        </a>
+        <a href="#features" class="btn-hero-secondary">
+          <span data-i18n="hero.ctaSecondary">Xem tính năng</span>
+        </a>
+      </div>
+
+      <p class="hero-slogan-text" data-i18n="hero.slogan">AI của bạn. Ngữ cảnh của bạn. Trình duyệt của bạn.</p>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="container features-layout">
+      <div class="features-intro reveal-left">
+        <span class="section-label" data-i18n="features.label">Tính năng</span>
+        <h2 class="section-main-title" data-i18n="features.title">DinSide làm được gì</h2>
+        <p class="features-lead" data-i18n="features.lead">Bốn việc bạn hay làm thủ công khi dùng AI cùng một trang web, gom lại ngay trong thanh bên.</p>
+        <a href="#providers" class="section-link-action">
+          <span data-i18n="features.linkProviders">Xem các nhà cung cấp hỗ trợ</span>
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+      <div class="features-list">
+        <article class="feature-row reveal-on-scroll reveal-delay-1">
+          <span class="feature-num">01</span>
+          <div class="feature-body">
+            <h3 class="feature-title" data-i18n="features.f1.title">Side Panel đa nhà cung cấp</h3>
+            <p class="feature-desc" data-i18n="features.f1.desc">Trò chuyện với ChatGPT, Claude, Gemini, DeepSeek, Qwen... ngay trên thanh bên Chrome mà không cần rời trang web.</p>
+            <ul class="feature-tags"><li><span>ChatGPT</span></li><li><span>Claude</span></li><li><span>Gemini</span></li><li><span data-i18n="features.f1.tag4">15+ nhà cung cấp</span></li></ul>
+          </div>
+        </article>
+        <article class="feature-row reveal-on-scroll reveal-delay-2">
+          <span class="feature-num">02</span>
+          <div class="feature-body">
+            <h3 class="feature-title" data-i18n="features.f2.title">Ngữ cảnh tự chọn</h3>
+            <p class="feature-desc" data-i18n="features.f2.desc">Tự đánh giá nội dung trang và câu hỏi để chọn giữa vùng đang xem hoặc toàn bộ bài viết, giúp tiết kiệm token.</p>
+            <ul class="feature-tags"><li><span data-i18n="features.f2.tag1">Vùng nhìn</span></li><li><span data-i18n="features.f2.tag2">Toàn trang</span></li><li><span data-i18n="features.f2.tag3">Nhiều tab</span></li></ul>
+          </div>
+        </article>
+        <article class="feature-row reveal-on-scroll reveal-delay-3">
+          <span class="feature-num">03</span>
+          <div class="feature-body">
+            <h3 class="feature-title" data-i18n="features.f3.title">Hỏi nhanh khi bôi đen</h3>
+            <p class="feature-desc" data-i18n="features.f3.desc">Bôi đen văn bản bất kỳ để mở popup: giải thích, dịch, tóm tắt hoặc chạy action tuỳ chỉnh của riêng bạn.</p>
+            <ul class="feature-tags"><li><span data-i18n="features.f3.tag1">Giải thích</span></li><li><span data-i18n="features.f3.tag2">Dịch</span></li><li><span data-i18n="features.f3.tag3">Tóm tắt</span></li></ul>
+          </div>
+        </article>
+        <article class="feature-row reveal-on-scroll reveal-delay-4">
+          <span class="feature-num">04</span>
+          <div class="feature-body">
+            <h3 class="feature-title" data-i18n="features.f4.title">Google Docs và PDF</h3>
+            <p class="feature-desc" data-i18n="features.f4.desc">Trích xuất văn bản từ Google Docs và các file PDF nhúng trên Google Drive hay Google Classroom.</p>
+            <ul class="feature-tags"><li><span>Google Docs</span></li><li><span>PDF</span></li><li><span>Classroom</span></li></ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DinSide v0.6.16: release highlights sourced from docs/RELEASE_0.6.16.md -->
+  <section class="release-section" id="whats-new" aria-labelledby="release-heading">
+    <div class="container">
+      <div class="release-header reveal-on-scroll">
+        <div>
+          <span class="release-kicker"><span class="release-kicker-dot" aria-hidden="true"></span><span data-i18n="release.kicker">CẬP NHẬT DINSIDE</span><span class="release-version">v0.6.16</span></span>
+          <h2 class="section-main-title release-heading" id="release-heading" data-i18n="release.heading">Nhiều cách làm việc hơn. Ít phải chuyển tab hơn.</h2>
+          <p class="release-intro" data-i18n="release.intro">Quản lý các cuộc trò chuyện, gửi tài liệu và thao tác trên trang web, tất cả từ một Side Panel.</p>
+        </div>
+        <a class="release-cta" href="#installation"><span data-i18n="release.cta">Khám phá DinSide</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+      </div>
+      <div class="release-grid">
+        <article class="release-card release-card-featured reveal-on-scroll">
+          <div class="release-card-copy">
+            <div class="release-card-eyebrow"><span>01 / MULTI CHAT</span><span class="release-card-state" data-i18n="release.tabs.state">Tùy chọn</span></div>
+            <h3 data-i18n="release.tabs.title">Nhiều cuộc trò chuyện, một thanh bên</h3>
+            <p data-i18n="release.tabs.desc">Giữ chat đang mở khi chuyển qua lại giữa ChatGPT, Claude và các nhà cung cấp khác. Đổi tên, kéo sắp xếp và khôi phục danh sách tab khi mở lại.</p>
+            <span class="release-card-footnote" data-i18n="release.tabs.note">Mặc định tắt · Bật trong Settings → General</span>
+          </div>
+          <div class="release-preview" aria-hidden="true">
+            <div class="release-preview-bar"><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-label">DinSide / Side Panel</span></div>
+            <div class="release-preview-tabs"><span class="release-preview-tab is-active"><span class="release-preview-mark">✳</span> ChatGPT <span class="release-preview-close">×</span></span><span class="release-preview-tab"><span class="release-preview-mark">✦</span> Claude <span class="release-preview-close">×</span></span><span class="release-preview-add">+</span></div>
+            <div class="release-preview-content"><span class="release-preview-content-title">Research notes</span><span class="release-preview-line"></span><span class="release-preview-line short"></span><span class="release-preview-line medium"></span><div class="release-preview-compose"><span>Message ChatGPT</span><span>↑</span></div></div>
+          </div>
+        </article>
+        <article class="release-card reveal-on-scroll">
+          <div class="release-card-eyebrow"><span>02 / FILES</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.files.title">Chọn và gửi file ngay trên trang web</h3>
+          <p data-i18n="release.files.desc">Đính kèm file từ website hoặc Drive. Google Docs, Sheets và Slides có thể xuất thành định dạng tài liệu phù hợp trước khi tải lên.</p>
+          <div class="release-pills" aria-label="Supported formats"><span>DOCX</span><span>XLSX</span><span>PPTX</span><span>PDF</span></div>
+        </article>
+        <article class="release-card reveal-on-scroll">
+          <div class="release-card-eyebrow"><span>03 / UPLOAD</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.upload.title">Ba file tải lên cùng lúc</h3>
+          <p data-i18n="release.upload.desc">Tối đa 3 file được xử lý song song; file tiếp theo tự chờ lượt. Đính kèm xong không tự gửi tin nhắn.</p>
+          <div class="release-pills"><span data-i18n="release.upload.tag1">3 luồng đồng thời</span><span data-i18n="release.upload.tag2">Có hàng chờ</span></div>
+        </article>
+        <article class="release-card reveal-on-scroll">
+          <div class="release-card-eyebrow"><span>04 / SHORTCUTS</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.keys.title">17 lệnh, phím tắt theo ý bạn</h3>
+          <p data-i18n="release.keys.desc">Mở menu, ghim ngữ cảnh, làm mới chat hoặc gọi công cụ bằng phím tắt. Tự gán phím trong Chrome và bật/tắt từng lệnh tùy chỉnh.</p>
+          <div class="release-pills"><span>Settings → Shortcuts</span><span>Ctrl + Shift + Y</span></div>
+        </article>
+        <article class="release-card reveal-on-scroll">
+          <div class="release-card-eyebrow"><span>05 / PAGE TOOLS</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.tools.title">Năm công cụ ngay trên trang đang xem</h3>
+          <p data-i18n="release.tools.desc">Chọn phần tử, chọn hình ảnh, chọn file, chụp một vùng hoặc vẽ trực tiếp lên trang để chia sẻ nội dung chính xác hơn.</p>
+          <div class="release-pills"><span data-i18n="release.tools.tag1">Chọn</span><span data-i18n="release.tools.tag2">Chụp vùng</span><span data-i18n="release.tools.tag3">Vẽ</span></div>
+        </article>
+      </div>
+      <p class="release-footer-note" data-i18n="release.disclaimer">Các tính năng trên thuộc gói v0.6.16. Phiên bản trên Chrome Web Store có thể được cập nhật theo lịch duyệt của cửa hàng.</p>
+    </div>
+  </section>
+
+  <!-- About DinSide / Split Section (Like bottom of user image) -->
+  <section class="about-section" id="about">
+    <div class="container about-split-grid">
+      <!-- Left Visual: Cult UI Hero Color Panels Shader Visual -->
+      <div class="about-art-container reveal-left">
+        <div class="hero-colorpanels-visual-frame" data-slot="hero-colorpanels-visual">
+          <div class="hero-colorpanels-desktop" id="hero-color-panels-mount" data-slot="hero-colorpanels-desktop">
+            <!-- WebGL2 ColorPanels Canvas mounts here -->
+          </div>
+        </div>
+      </div>
+      <!-- Right Info Column -->
+      <div class="about-info-col reveal-right">
+        <span class="section-label" data-i18n="about.label">Giới thiệu</span>
+        <h2 class="section-main-title" data-i18n="about.title">
+          Tối ưu hóa luồng làm việc giữa Web và Trí tuệ nhân tạo
+        </h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;" data-i18n="about.lead">
+          Thông thường khi dùng ChatGPT hay Claude, bạn phải liên tục bôi đen, copy và chuyển tab để dán vào khung chat. DinSide loại bỏ hoàn toàn rào cản này bằng cách mang chatbot vào ngay bên cạnh trang bạn đang đọc.
+        </p>
+
+        <ul class="step-checklist">
+          <li class="step-check-item">
+            <div class="check-bullet">+</div>
+            <div class="step-check-text">
+              <strong data-i18n="about.c1.title">Tự động đọc cấu trúc trang và vùng nhìn (Viewport)</strong>
+              <p data-i18n="about.c1.desc">Chỉ gửi những nội dung bạn đang quan tâm thay vì gửi tràn lan gây nghẽn context.</p>
+            </div>
+          </li>
+          <li class="step-check-item">
+            <div class="check-bullet">+</div>
+            <div class="step-check-text">
+              <strong data-i18n="about.c2.title">Ghim ngữ cảnh (Pin Context) và gom nhiều Tab</strong>
+              <p data-i18n="about.c2.desc">Giữ lại tài liệu tham khảo cho nhiều câu hỏi liên tiếp mà không cần chọn lại.</p>
+            </div>
+          </li>
+          <li class="step-check-item">
+            <div class="check-bullet">+</div>
+            <div class="step-check-text">
+              <strong data-i18n="about.c3.title">An toàn & Bảo mật — Xác minh bởi Chrome Web Store</strong>
+              <p data-i18n="about.c3.desc">Được kiểm duyệt bởi Google, toàn bộ xử lý diễn ra trực tiếp trên trình duyệt của bạn.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div style="margin-top: 10px;">
+          <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="btn-coral">
+            <span data-i18n="about.cta">Thêm vào Chrome ngay</span>
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported Providers Section -->
+  <section class="providers-section" id="providers">
+    <div class="container">
+      <div class="section-headline-bar reveal-on-scroll">
+        <div>
+          <span class="section-label" data-i18n="providers.label">Hệ sinh thái AI</span>
+          <h2 class="section-main-title" data-i18n="providers.title">Hỗ trợ 15+ Nhà cung cấp AI</h2>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" data-i18n="providers.note">Không yêu cầu API Key trả phí</span>
+      </div>
+
+      <!-- 3D Perspective Image Stream Corridor Hero -->
+      <div class="image-stream-hero-container reveal-on-scroll" aria-label="DinSide AI Ecosystem 3D Stream">
+        <div aria-hidden="true" class="ish-stage">
+          <div class="ish-world">
+            <!-- Right Rail -->
+            <div class="ish-card ish-card-r ish-delay-0">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/767d99bb371a54d0d36751e8cecae43c.jpg" alt="ChatGPT" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/chatgpt-mark.svg" alt="ChatGPT">
+                <span>ChatGPT</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-1">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/hero_gradient/hero-gradients-01.png" alt="Claude" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/claude-mark.svg" alt="Claude">
+                <span>Claude</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-2">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/821d815affa6496c39cbdeeec7a84603.jpg" alt="Gemini" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/gemini-mark.svg" alt="Gemini">
+                <span>Gemini</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-3">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/crimson_aura/crimson-aura-02.png" alt="DeepSeek" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/deepseek-mark.svg" alt="DeepSeek">
+                <span>DeepSeek</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-4">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/937438c560ada1c83317f2c11b3454b0.jpg" alt="Perplexity" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/perplexity-mark.svg" alt="Perplexity">
+                <span>Perplexity</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-5">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/hue-flow/hue-flow-01.png" alt="MS Copilot" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/copilot-mark.svg" alt="MS Copilot">
+                <span>MS Copilot</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-6">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/98f89cb9994f5c382ab964062c4039db.jpg" alt="Qwen" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/qwen-mark.svg" alt="Qwen">
+                <span>Qwen</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-7">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/moon/moon-grade-03.png" alt="Meta AI" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/meta-mark.svg" alt="Meta AI">
+                <span>Meta AI</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-r ish-delay-8">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/ddcbee38be8b7274e19e132d7ab35b53.jpg" alt="Kimi" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/kimi-mark.svg" alt="Kimi">
+                <span>Kimi</span>
+              </div>
+            </div>
+
+            <!-- Left Rail -->
+            <div class="ish-card ish-card-l ish-delay-0">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/767d99bb371a54d0d36751e8cecae43c.jpg" alt="ChatGPT" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/chatgpt-mark.svg" alt="ChatGPT">
+                <span>ChatGPT</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-1">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/hero_gradient/hero-gradients-01.png" alt="Claude" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/claude-mark.svg" alt="Claude">
+                <span>Claude</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-2">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/821d815affa6496c39cbdeeec7a84603.jpg" alt="Gemini" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/gemini-mark.svg" alt="Gemini">
+                <span>Gemini</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-3">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/crimson_aura/crimson-aura-02.png" alt="DeepSeek" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/deepseek-mark.svg" alt="DeepSeek">
+                <span>DeepSeek</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-4">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/937438c560ada1c83317f2c11b3454b0.jpg" alt="Perplexity" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/perplexity-mark.svg" alt="Perplexity">
+                <span>Perplexity</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-5">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/hue-flow/hue-flow-01.png" alt="MS Copilot" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/copilot-mark.svg" alt="MS Copilot">
+                <span>MS Copilot</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-6">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/98f89cb9994f5c382ab964062c4039db.jpg" alt="Qwen" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/qwen-mark.svg" alt="Qwen">
+                <span>Qwen</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-7">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/gradients/moon/moon-grade-03.png" alt="Meta AI" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/meta-mark.svg" alt="Meta AI">
+                <span>Meta AI</span>
+              </div>
+            </div>
+            <div class="ish-card ish-card-l ish-delay-8">
+              <img src="https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/stock-images/ddcbee38be8b7274e19e132d7ab35b53.jpg" alt="Kimi" loading="lazy" decoding="async" draggable="false" class="ish-card-img">
+              <div class="ish-provider-mark">
+                <img src="assets/kimi-mark.svg" alt="Kimi">
+                <span>Kimi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clean Foreground Content: Top Title & Bottom Description -->
+        <div class="ish-foreground">
+          <div class="ish-top-header">
+            <h3 class="ish-headline" data-i18n="providers.heroTitle">
+              Mọi mô hình AI bạn cần,<br>
+              ngay trên thanh bên.
+            </h3>
+          </div>
+          <p class="ish-description" data-i18n="providers.heroDesc">
+            Đưa toàn bộ ngữ cảnh duyệt web vào thẳng ChatGPT, Claude, Gemini, DeepSeek... Trò chuyện song song, không cần copy-paste hay API Key trả phí.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Guide Section -->
+  <section class="install-section-mf" id="installation">
+    <div class="container container-wide">
+      <!-- Section Header -->
+      <div class="install-header-row reveal-on-scroll">
+        <div>
+          <span class="install-badge">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span data-i18n="install.badge">Cài đặt</span>
+          </span>
+          <h2 class="install-main-title" data-i18n="install.title">Hướng dẫn cài đặt trong 1 phút</h2>
+          <p class="install-subtitle" data-i18n="install.subtitle">Chỉ với vài bước đơn giản, bạn có thể sử dụng DinSide ngay trên trình duyệt yêu thích.</p>
+        </div>
+        <div class="install-compat-group">
+          <span class="compat-label" data-i18n="install.compatLabel">Tương thích với</span>
+          <div class="compat-browser-list">
+            <div class="compat-browser-item">
+              <img src="assets/browser-chrome.svg" alt="Chrome">
+              <span>Chrome</span>
+            </div>
+            <div class="compat-browser-item">
+              <img src="assets/browser-edge.svg" alt="Edge">
+              <span>Edge</span>
+            </div>
+            <div class="compat-browser-item">
+              <img src="assets/browser-brave.svg" alt="Brave">
+              <span>Brave</span>
+            </div>
+            <div class="compat-browser-item">
+              <img src="assets/browser-coccoc.svg" alt="Cốc Cốc">
+              <span>Cốc Cốc</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Chrome Web Store Banner -->
+      <div class="install-store-banner reveal-on-scroll">
+        <div class="store-banner-left">
+          <div class="store-icon-wrap">
+            <img src="assets/browser-chrome.svg" alt="Chrome Web Store" class="store-chrome-icon">
+          </div>
+          <div>
+            <strong class="store-banner-title" data-i18n="install.storeTitle">Cài đặt chính thức từ Chrome Web Store</strong>
+            <p class="store-banner-desc" data-i18n="install.storeDesc">Phiên bản mới nhất · Tự động cập nhật bảo mật · Được kiểm duyệt bởi Google</p>
+          </div>
+        </div>
+        <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="btn-store-install">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+          <span data-i18n="install.storeBtn">Thêm vào Chrome ngay</span>
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+
+      <!-- Interactive Feature Carousel (Cult UI Pattern) -->
+      <div class="fc-wrapper">
+        <div class="fc-outer-border">
+          <div class="fc-inner-border">
+            <div class="fc-card animated-cards" id="installFeatureCarousel">
+              <!-- Top Row: Step Title & Description on Left, Navigation Pills on Right -->
+              <div class="fc-header">
+                <div class="fc-info-wrap">
+                  <div class="fc-info-item is-active" data-info-step="0">
+                    <h3 class="fc-step-title" data-i18n="install.s1.title">
+                      Mở trang tiện ích trên Chrome Web Store
+                    </h3>
+                    <p class="fc-step-desc" data-i18n="install.s1.desc">
+                      Bấm nút "Thêm vào Chrome ngay" ở trên hoặc truy cập trực tiếp <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer">trang DinSide trên Chrome Web Store</a>.
+                    </p>
+                  </div>
+                  <div class="fc-info-item" data-info-step="1">
+                    <h3 class="fc-step-title" data-i18n="install.s2.title">
+                      Bấm "Thêm vào Chrome"
+                    </h3>
+                    <p class="fc-step-desc" data-i18n="install.s2.desc">
+                      Xác nhận hộp thoại popup của trình duyệt. Tiện ích sẽ được cài đặt và kích hoạt trong vòng vài giây.
+                    </p>
+                  </div>
+                  <div class="fc-info-item" data-info-step="2">
+                    <h3 class="fc-step-title" data-i18n="install.s3.title">
+                      Mở Side Panel và trải nghiệm
+                    </h3>
+                    <p class="fc-step-desc" data-i18n="install.s3.desc">
+                      Ghim biểu tượng DinSide vào thanh công cụ hoặc nhấn tổ hợp phím tắt để bắt đầu trò chuyện với AI cùng ngữ cảnh trang web.
+                    </p>
+                  </div>
+                </div>
+
+                <nav class="fc-steps-nav" aria-label="Các bước cài đặt">
+                  <ol class="fc-steps-list">
+                    <li class="fc-step-pill is-active" data-step="0">
+                      <button type="button" class="fc-pill-btn" aria-label="Bước 1">
+                        <span class="fc-pill-badge">
+                          <span class="fc-badge-num">1</span>
+                          <svg class="fc-check-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="fc-pill-text" data-i18n="install.step1Pill">Bước 1</span>
+                      </button>
+                    </li>
+                    <li class="fc-step-pill" data-step="1">
+                      <button type="button" class="fc-pill-btn" aria-label="Bước 2">
+                        <span class="fc-pill-badge">
+                          <span class="fc-badge-num">2</span>
+                          <svg class="fc-check-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="fc-pill-text" data-i18n="install.step2Pill">Bước 2</span>
+                      </button>
+                    </li>
+                    <li class="fc-step-pill" data-step="2">
+                      <button type="button" class="fc-pill-btn" aria-label="Bước 3">
+                        <span class="fc-pill-badge">
+                          <span class="fc-badge-num">3</span>
+                          <svg class="fc-check-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                        <span class="fc-pill-text" data-i18n="install.step3Pill">Bước 3</span>
+                      </button>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+
+              <!-- Animated Showcase Stage -->
+              <div class="fc-stage" id="fcStage" title="Bấm để chuyển bước tiếp theo">
+                <!-- Step 1 Scene -->
+                <div class="fc-scene is-active" data-scene="0">
+                  <div class="fc-img-box fc-img-left fc-step1-img1">
+                    <img src="assets/install-step-1.png" alt="Mở Chrome Web Store" loading="lazy">
+                  </div>
+                  <div class="fc-img-box fc-img-right fc-step1-img2">
+                    <img src="assets/crop_step1_focus.png" alt="Chi tiết Thêm vào Chrome" loading="lazy">
+                  </div>
+                </div>
+
+                <!-- Step 2 Scene -->
+                <div class="fc-scene" data-scene="1">
+                  <div class="fc-img-box fc-img-left fc-step2-img1">
+                    <img src="assets/install-step-2.png" alt="Xác nhận thêm vào Chrome" loading="lazy">
+                  </div>
+                  <div class="fc-img-box fc-img-right fc-step2-img2">
+                    <img src="assets/crop_step2_focus.png" alt="Hộp thoại xác nhận" loading="lazy">
+                  </div>
+                </div>
+
+                <!-- Step 3 Scene -->
+                <div class="fc-scene" data-scene="2">
+                  <div class="fc-img-box fc-img-left fc-step3-img1">
+                    <img src="assets/install-step-3.png" alt="Mở Side Panel DinSide" loading="lazy">
+                  </div>
+                  <div class="fc-img-box fc-img-right fc-step3-img2">
+                    <img src="assets/crop_step3_focus.png" alt="Ghim biểu tượng thanh công cụ" loading="lazy">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer Bar with Hint & Smooth Progress Bar -->
+              <div class="fc-footer-bar">
+                <span class="fc-hint-text" data-i18n="install.clickHint">Bấm vào ảnh để chuyển bước · Tự động chuyển sau 4.8s</span>
+                <div class="fc-progress-track">
+                  <div class="fc-progress-fill is-animating" id="fcProgressFill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation / Support Section ("mời cà phê") -->
+  <section class="donation-section-mf" id="donate">
+    <div class="container container-wide">
+      <div class="donation-card-mf reveal-on-scroll">
+        <div class="donation-grid-layout">
+          <!-- Left: QR Box -->
+          <div class="qr-col-mf">
+            <div class="qr-box-mf">
+              <img src="assets/donate-vietcombank.png" width="850" height="1100" alt="Mã VietQR Vietcombank DinSide">
+            </div>
+            <div class="qr-caption-mf" data-i18n="donate.qrCaption">Quét mã bằng ứng dụng ngân hàng</div>
+          </div>
+
+          <!-- Right: Info & Bank Details -->
+          <div class="donation-info-col">
+            <div class="donate-badge">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+              <span data-i18n="donate.badge">Ủng hộ DinSide</span>
+            </div>
+
+            <h2 class="donate-main-title" data-i18n="donate.title">Nếu DinSide giúp bạn làm việc hiệu quả hơn</h2>
+            <p class="donate-desc" data-i18n="donate.desc">DinSide là một dự án cá nhân được xây dựng với rất nhiều tâm huyết. Nếu tiện, bạn có thể mời mình một ly cà phê để tiếp tục duy trì và nâng cấp nhé!</p>
+
+            <!-- Bank Details Box -->
+            <div class="bank-details-box">
+              <div class="bank-row-item">
+                <div class="bank-row-label">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="10" width="18" height="11" rx="2"></rect><path d="m3 10 9-7 9 7"></path><path d="M9 21v-6h6v6"></path></svg>
+                  <span data-i18n="donate.bankLabel">Ngân hàng</span>
+                </div>
+                <strong class="bank-row-val">Vietcombank</strong>
+              </div>
+
+              <div class="bank-row-item">
+                <div class="bank-row-label">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span data-i18n="donate.ownerLabel">Chủ tài khoản</span>
+                </div>
+                <strong class="bank-row-val">HUYNH VAN THANH</strong>
+              </div>
+
+              <div class="bank-row-item bank-row-stk">
+                <div class="bank-row-label">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <span data-i18n="donate.stkLabel">Số tài khoản</span>
+                </div>
+                <div class="bank-stk-wrap">
+                  <strong class="bank-row-val stk-number">1061960104</strong>
+                  <button class="btn-copy-stk" data-copy="1061960104" title="Sao chép">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="donate-actions-row">
+              <button class="btn-donate-copy" data-copy="1061960104">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span data-i18n="donate.btnCopyStk">Sao chép STK</span>
+              </button>
+              <a href="assets/donate-vietcombank.png" download="DinSide-Vietcombank-QR.png" class="btn-donate-download">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span data-i18n="donate.btnDownloadQr">Tải ảnh QR</span>
+              </a>
+              <a href="https://buymeacoffee.com/thanhdiner" target="_blank" rel="noopener noreferrer" class="btn-donate-bmc">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M20.216 6.415l-.132-.666c-.119-.597-.388-1.15-.78-1.6A4.92 4.92 0 0 0 16.5 2.5H4.75a2.25 2.25 0 0 0-2.25 2.25v8.5a5.25 5.25 0 0 0 5.25 5.25h6.5a5.25 5.25 0 0 0 5.17-4.32l.83-5.26a3.25 3.25 0 0 0-.034-2.505zm-2.8 1.985l-.54 3.44a3.25 3.25 0 0 1-3.2 2.66H7.75a3.25 3.25 0 0 1-3.25-3.25v-6.5c0-.138.112-.25.25-.25h11.75c.66 0 1.28.28 1.71.78.31.36.49.8.56 1.27l.14.71c.07.38.08.77.03 1.16-.01.1-.03.21-.05.32zM2.5 20.5a1 1 0 0 1 1-1h17a1 1 0 1 1 0 2h-17a1 1 0 0 1-1-1z"/>
+                </svg>
+                <span data-i18n="donate.btnBmc">Buy Me a Coffee (Quốc tế)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer thank-you note spanning bottom -->
+        <div class="donate-thanks-note">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          <span data-i18n="donate.thanks">Cảm ơn bạn đã đồng hành và ủng hộ DinSide!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section-mf" id="faq">
+    <div class="container">
+      <div class="section-headline-bar reveal-on-scroll">
+        <div>
+          <span class="section-label" data-i18n="faq.label">Hỏi đáp</span>
+          <h2 class="section-main-title" data-i18n="faq.title">Câu hỏi thường gặp</h2>
+        </div>
+      </div>
+
+      <div class="faq-list-mf reveal-on-scroll">
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span data-i18n="faq.q1">DinSide có hoàn toàn miễn phí không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body" data-i18n="faq.a1">
+            Đúng vậy! Tiện ích mở rộng DinSide hoàn toàn miễn phí cho tất cả mọi người sử dụng. Bạn có thể ủng hộ tác giả qua kênh donate để khuyến khích phát triển và duy trì các bản cập nhật tiếp theo.
+          </div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span data-i18n="faq.q2">Tôi có cần mua API key để sử dụng không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body" data-i18n="faq.a2">
+            Không cần! DinSide tương tác trực tiếp với giao diện web chat của các nhà cung cấp (ChatGPT, Claude, Gemini...) mà bạn đã đăng nhập sẵn trên trình duyệt. Bạn chỉ cần đăng nhập tài khoản bình thường là dùng được ngay.
+          </div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span data-i18n="faq.q3">Dữ liệu và nội dung trang web của tôi có an toàn không?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body" data-i18n="faq.a3">
+            Tuyệt đối an toàn. DinSide không có máy chủ lưu trữ dữ liệu trung gian. Mọi xử lý ngữ cảnh diễn ra 100% cục bộ trong trình duyệt của bạn và chỉ được gửi tới đúng chatbot AI mà bạn bấm gửi.
+          </div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn">
+            <span data-i18n="faq.q4">Làm thế nào để đổi phím tắt mở DinSide?</span>
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="faq-ans-body" data-i18n="faq.a4">
+            Bạn có thể truy cập <code>chrome://extensions/shortcuts</code> trong trình duyệt, tìm đến mục DinSide và gán bất kỳ tổ hợp phím nào bạn thấy tiện lợi nhất (mặc định là Ctrl+Shift+Y).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (MultiFlex Style) -->
+  <footer class="footer-mf">
+    <div class="container">
+      <div class="footer-grid-mf">
+        <div>
+          <div class="brand-logo-group">
+            <img src="assets/icon128.png" alt="DinSide Logo" class="brand-logo-img">
+            <span class="brand-title">DinSide</span>
+          </div>
+          <p class="footer-desc-mf" data-i18n="footer.desc">
+            Cầu nối thông minh giữa trang web đang đọc và các mô hình AI bạn yêu thích. Tiện ích mở rộng Chrome phát triển bởi <strong>thanhdiner</strong>.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title-mf" data-i18n="footer.colLinks">Liên kết</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#features" data-i18n="nav.features">Tính năng</a></li>
+            <li><a href="#about" data-i18n="nav.about">Giới thiệu</a></li>
+            <li><a href="#providers" data-i18n="nav.providers">AI Providers</a></li>
+            <li><a href="#installation" data-i18n="nav.installation">Cài đặt</a></li>
+            <li><a href="#donate" data-i18n="nav.donate">Ủng hộ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title-mf" data-i18n="footer.colResources">Tài nguyên</h4>
+          <ul class="footer-nav-list">
+            <li><a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer">Chrome Web Store</a></li>
+            <li><a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" data-i18n="footer.author">Tác giả @thanhdiner</a></li>
+            <li><a href="https://github.com/thanhdiner/dinside-privacy/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer" data-i18n="footer.privacy">Chính sách riêng tư</a></li>
+            <li><a href="mailto:huynhvanthanh.dev@gmail.com" data-i18n="footer.contact">Liên hệ hỗ trợ</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div data-i18n="footer.copyright">
+          © 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" style="color: var(--accent-coral);">thanhdiner</a>.
+        </div>
+        <div class="social-links-bar" aria-label="Mạng xã hội footer">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Facebook" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="YouTube" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#f4f1ea"></polygon></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="X (Twitter)" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Instagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="#f4f1ea" stroke-width="1.5"></path><circle cx="17.5" cy="6.5" r="1.5" fill="#f4f1ea"></circle></svg>
+          </a>
+          <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" class="social-link-item" title="GitHub: @thanhdiner" aria-label="GitHub">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </a>
+        </div>
+        <div>
+          <span data-i18n="footer.shortcut">Phím tắt:</span> <kbd class="kbd">Ctrl+Shift+Y</kbd>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Translations Data & Main JavaScript File -->
+  <script src="js/translations.js"></script>
+  <script src="js/hero-color-panels.js"></script>
+  <script src="js/metal-pill.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Instant Scroll Restoration: Applied before first paint so page appears directly at previous scroll offset -->
+  <script>
+    (function() {
+      try {
+        var savedY = parseInt(sessionStorage.getItem('dinside_scroll_pos'), 10) || (history.state && history.state.scrollPos) || 0;
+        if (savedY > 30) {
+          window.scrollTo(0, savedY);
+          var viewBottom = savedY + window.innerHeight + 200;
+          var els = document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right');
+          for (var i = 0; i < els.length; i++) {
+            if (els[i].offsetTop < viewBottom) {
+              els[i].classList.add('is-revealed');
+            }
+          }
+        }
+      } catch (_) {}
+      var guard = document.getElementById('scroll-guard');
+      if (guard) guard.remove();
+    })();
+  </script>
+</body>
+</html>
