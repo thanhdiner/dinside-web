@@ -301,7 +301,7 @@ html:not([data-theme="dark"]) .theme-icon-moon { display: block; }
 
 .hero-split-desc { font-size: 1.08rem; color: var(--text-muted); max-width: 600px; margin-bottom: 30px; }
 
-.hero-split-cta-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+.hero-split-cta-row { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
 
 .btn-hero-primary {
   background: var(--accent-coral);
@@ -2510,7 +2510,36 @@ html:not([data-theme="dark"]) .theme-icon-moon { display: block; }
   }
 }
 
+@media (max-width: 400px) {
+  /* Keep header controls within the smallest phone widths. */
+  .nav-container { padding-left: 16px; padding-right: 16px; gap: 8px; }
+  .brand-logo-group { gap: 7px; }
+  .brand-logo-img { width: 30px; height: 30px; }
+  .brand-title { font-size: 1.22rem; }
+  .nav-container > div:last-child { gap: 7px !important; }
+  .nav-theme-toggle { width: 30px; height: 30px; }
+  .nav-lang-switch { font-size: 0.74rem; }
+  .nav-lang-switch .lang-btn { padding: 3px 4px; }
+  .mobile-menu-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+  .mobile-menu-btn svg { display: block; width: 23px; height: 23px; }
+}
+
 @media (max-width: 520px) {
+  /* Mobile hero actions share a centered, full-width column. */
+  .hero-split-cta-row {
+    width: 100%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    text-align: center;
+  }
   .nav-cta-btn {
     display: none;
   }
