@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFeatureCarousel();
   initFaqAccordion();
   initFileAttachDemo();
+  initHandoffDemo();
   initCopyButtons();
   initSmoothAnchors();
   initScrollTracking();
@@ -45,6 +46,22 @@ function initFileAttachDemo() {
     window.setTimeout(() => {
       showState('ready', 'release.files.demo.retry', 'release.files.demo.ready');
     }, 900);
+  });
+}
+
+/* Sending-mode preview only; this website never transfers a real conversation. */
+function initHandoffDemo() {
+  const demo = document.querySelector('[data-handoff-demo]');
+  if (!demo) return;
+  const buttons = demo.querySelectorAll('[data-handoff-mode]');
+  const status = demo.querySelector('[data-handoff-status]');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      const key = `release.handoff.demo.${button.dataset.handoffMode}`;
+      status.dataset.i18n = key;
+      status.textContent = translations[currentLanguage][key];
+    });
   });
 }
 
@@ -276,6 +293,11 @@ function setLanguage(lang, persist = true) {
     }
   });
 
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+    const label = translations[lang][el.dataset.i18nAriaLabel];
+    if (label) el.setAttribute('aria-label', label);
+  });
+
   // Update active state on language buttons
   const langButtons = document.querySelectorAll('.lang-btn');
   langButtons.forEach(btn => {
@@ -493,15 +515,24 @@ function initFeatureCarousel() {
 function initFaqAccordion() {
   const faqItems = document.querySelectorAll('.faq-item-mf');
 
-  faqItems.forEach(item => {
+  faqItems.forEach((item, index) => {
     const question = item.querySelector('.faq-q-btn');
+    const answer = item.querySelector('.faq-ans-body');
     if (question) {
+      question.setAttribute('aria-expanded', 'false');
+      if (answer) {
+        answer.id = `faq-answer-${index + 1}`;
+        question.setAttribute('aria-controls', answer.id);
+        answer.inert = true;
+      }
       question.addEventListener('click', () => {
         const isOpen = item.classList.contains('open');
-        faqItems.forEach(i => i.classList.remove('open'));
-        if (!isOpen) {
-          item.classList.add('open');
-        }
+        faqItems.forEach(other => {
+          const open = other === item && !isOpen;
+          other.classList.toggle('open', open);
+          other.querySelector('.faq-q-btn').setAttribute('aria-expanded', String(open));
+          other.querySelector('.faq-ans-body').inert = !open;
+        });
       });
     }
   });
