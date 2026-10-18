@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DinSide — Mang ngữ cảnh trang web vào AI Chat của bạn</title>
-  <meta name="description" content="Tiện ích mở rộng Chrome Side Panel kết nối ngữ cảnh trang web vào ChatGPT, Claude, Gemini, DeepSeek mà không cần copy-paste thủ công.">
+  <meta name="description" content="DinSide kết nối ngữ cảnh trang web với 19 nhà cung cấp AI ngay trên thanh bên Chrome. Chọn nội dung, gửi tài liệu và chuyển tiếp hội thoại giữa các AI.">
   <meta name="keywords" content="DinSide, Chrome Extension, Side Panel, AI Context, ChatGPT, Claude, Gemini, DeepSeek">
 
   <!-- Favicon -->
@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=0.6.20">
 
   <!-- Immediate Theme Initialization (Zero Flicker) -->
   <script>
@@ -190,9 +190,7 @@
           <span class="lang-sep">|</span>
           <button type="button" class="lang-btn" data-lang="en">ENG</button>
         </div>
-        <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="nav-cta-btn" data-i18n="nav.addToChrome">
-          Thêm vào Chrome
-        </a>
+        <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="nav-cta-btn" data-i18n="nav.addToChrome">Thêm vào Chrome</a>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Mở menu">
           <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
@@ -209,22 +207,17 @@
         <span class="tag-desc-text" data-i18n="hero.tagDesc">Tiện ích mở rộng Chrome Side Panel</span>
       </div>
 
-      <h1 class="hero-split-headline" data-i18n="hero.headline">
-        Trang web bạn đang đọc,<br>
-        cùng đọc với <em>ngữ cảnh AI.</em>
-      </h1>
+      <h1 class="hero-split-headline" data-i18n="hero.headline">Trang web bạn đang đọc,<br>cùng đọc với <em>ngữ cảnh AI.</em></h1>
 
-      <p class="hero-split-desc" data-i18n="hero.desc">
-        Đưa toàn bộ ngữ cảnh trang web, vùng xem màn hình, trích đoạn và Google Docs vào thẳng ChatGPT, Claude, Gemini... Trò chuyện trực tiếp ngay thanh bên, không cần copy-paste.
-      </p>
+      <p class="hero-split-desc" data-i18n="hero.desc">Đọc web cùng ChatGPT, Claude, Gemini và 16 nhà cung cấp khác ngay trên thanh bên. Chọn nội dung cần hỏi, gửi tài liệu hoặc chuyển hội thoại sang AI khác để tiếp tục.</p>
 
       <div class="hero-split-cta-row">
         <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="btn-hero-primary">
           <span data-i18n="hero.ctaPrimary">Thêm vào Chrome — Miễn phí</span>
           <span class="btn-arrow-box"><svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span>
         </a>
-        <a href="#features" class="btn-hero-secondary">
-          <span data-i18n="hero.ctaSecondary">Xem tính năng</span>
+        <a href="#whats-new" class="btn-hero-secondary">
+          <span data-i18n="hero.ctaSecondary">Khám phá bản 0.6.20</span>
         </a>
       </div>
 
@@ -238,7 +231,7 @@
       <div class="features-intro reveal-left">
         <span class="section-label" data-i18n="features.label">Tính năng</span>
         <h2 class="section-main-title" data-i18n="features.title">DinSide làm được gì</h2>
-        <p class="features-lead" data-i18n="features.lead">Bốn việc bạn hay làm thủ công khi dùng AI cùng một trang web, gom lại ngay trong thanh bên.</p>
+        <p class="features-lead" data-i18n="features.lead">Đọc, chọn, hỏi và tiếp tục công việc ngay cạnh trang web đang mở.</p>
         <a href="#providers" class="section-link-action">
           <span data-i18n="features.linkProviders">Xem các nhà cung cấp hỗ trợ</span>
           <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -248,16 +241,16 @@
         <article class="feature-row reveal-on-scroll reveal-delay-1">
           <span class="feature-num">01</span>
           <div class="feature-body">
-            <h3 class="feature-title" data-i18n="features.f1.title">Side Panel đa nhà cung cấp</h3>
-            <p class="feature-desc" data-i18n="features.f1.desc">Trò chuyện với ChatGPT, Claude, Gemini, DeepSeek, Qwen... ngay trên thanh bên Chrome mà không cần rời trang web.</p>
-            <ul class="feature-tags"><li><span>ChatGPT</span></li><li><span>Claude</span></li><li><span>Gemini</span></li><li><span data-i18n="features.f1.tag4">15+ nhà cung cấp</span></li></ul>
+            <h3 class="feature-title" data-i18n="features.f1.title">19 nhà cung cấp, một thanh bên</h3>
+            <p class="feature-desc" data-i18n="features.f1.desc">Mở nhiều chat, đổi tên, sắp xếp và đánh dấu yêu thích. Chuyển giữa các AI mà vẫn giữ danh sách cuộc trò chuyện của bạn.</p>
+            <ul class="feature-tags"><li><span>ChatGPT</span></li><li><span>Claude</span></li><li><span>Gemini</span></li><li><span data-i18n="features.f1.tag4">19 nhà cung cấp</span></li></ul>
           </div>
         </article>
         <article class="feature-row reveal-on-scroll reveal-delay-2">
           <span class="feature-num">02</span>
           <div class="feature-body">
-            <h3 class="feature-title" data-i18n="features.f2.title">Ngữ cảnh tự chọn</h3>
-            <p class="feature-desc" data-i18n="features.f2.desc">Tự đánh giá nội dung trang và câu hỏi để chọn giữa vùng đang xem hoặc toàn bộ bài viết, giúp tiết kiệm token.</p>
+            <h3 class="feature-title" data-i18n="features.f2.title">Ngữ cảnh theo cách bạn chọn</h3>
+            <p class="feature-desc" data-i18n="features.f2.desc">Dùng nội dung trang, vùng đang xem hoặc nhiều tab làm ngữ cảnh. Ghim tài liệu tham khảo và xem lại nội dung trong Context trước khi gửi.</p>
             <ul class="feature-tags"><li><span data-i18n="features.f2.tag1">Vùng nhìn</span></li><li><span data-i18n="features.f2.tag2">Toàn trang</span></li><li><span data-i18n="features.f2.tag3">Nhiều tab</span></li></ul>
           </div>
         </article>
@@ -272,8 +265,8 @@
         <article class="feature-row reveal-on-scroll reveal-delay-4">
           <span class="feature-num">04</span>
           <div class="feature-body">
-            <h3 class="feature-title" data-i18n="features.f4.title">Google Docs và PDF</h3>
-            <p class="feature-desc" data-i18n="features.f4.desc">Trích xuất văn bản từ Google Docs và các file PDF nhúng trên Google Drive hay Google Classroom.</p>
+            <h3 class="feature-title" data-i18n="features.f4.title">Tài liệu và file gốc</h3>
+            <p class="feature-desc" data-i18n="features.f4.desc">Đọc Google Docs và PDF, gửi file từ website, Drive hoặc kéo thả từ máy tính. Định dạng và giới hạn tải lên tùy nhà cung cấp.</p>
             <ul class="feature-tags"><li><span>Google Docs</span></li><li><span>PDF</span></li><li><span>Classroom</span></li></ul>
           </div>
         </article>
@@ -281,84 +274,99 @@
     </div>
   </section>
 
-  <!-- DinSide v0.6.16: release highlights sourced from docs/RELEASE_0.6.16.md -->
+  <!-- Release highlights aligned with DinSide 0.6.20 -->
   <section class="release-section" id="whats-new" aria-labelledby="release-heading">
     <div class="container">
       <div class="release-header reveal-on-scroll">
         <div>
-          <span class="release-kicker"><span class="release-kicker-dot" aria-hidden="true"></span><span data-i18n="release.kicker">CẬP NHẬT DINSIDE</span><span class="release-version">v0.6.16</span></span>
-          <h2 class="section-main-title release-heading" id="release-heading" data-i18n="release.heading">Nhiều cách làm việc hơn. Ít phải chuyển tab hơn.</h2>
-          <p class="release-intro" data-i18n="release.intro">Quản lý các cuộc trò chuyện, gửi tài liệu và thao tác trên trang web, tất cả từ một Side Panel.</p>
+          <span class="release-kicker"><span class="release-kicker-dot" aria-hidden="true"></span><span data-i18n="release.kicker">CẬP NHẬT DINSIDE</span><span class="release-version">v0.6.20</span></span>
+          <h2 class="section-main-title release-heading" id="release-heading" data-i18n="release.heading">Đổi AI. Tiếp tục đúng việc đang làm.</h2>
+          <p class="release-intro" data-i18n="release.intro">Chuyển tiếp hội thoại, chọn nội dung trên trang và tìm thao tác nhanh hơn trong DinSide 0.6.20.</p>
         </div>
-        <a class="release-cta" href="#installation"><span data-i18n="release.cta">Khám phá DinSide</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+        <a class="release-cta" href="#installation"><span data-i18n="release.cta">Khám phá DinSide</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
       </div>
       <div class="release-grid">
         <article class="release-card release-card-featured reveal-on-scroll">
           <div class="release-card-copy">
-            <div class="release-card-eyebrow"><span>01 / MULTI CHAT</span><span class="release-card-state" data-i18n="release.tabs.state">Tùy chọn</span></div>
-            <h3 data-i18n="release.tabs.title">Nhiều cuộc trò chuyện, một thanh bên</h3>
-            <p data-i18n="release.tabs.desc">Giữ chat đang mở khi chuyển qua lại giữa ChatGPT, Claude và các nhà cung cấp khác. Đổi tên, kéo sắp xếp và khôi phục danh sách tab khi mở lại.</p>
-            <span class="release-card-footnote" data-i18n="release.tabs.note">Mặc định tắt · Bật trong Settings → General</span>
+            <div class="release-card-eyebrow"><span>01 / CONTINUE ANYWHERE</span><span class="release-card-state" data-i18n="release.handoff.state">Mới trong 0.6.20</span></div>
+            <h3 data-i18n="release.handoff.title">Mang hội thoại sang AI khác</h3>
+            <p data-i18n="release.handoff.desc">Chọn lịch sử đang tải, toàn bộ hoặc các tin gần đây; xem lại ngữ cảnh rồi chuyển sang nhà cung cấp khác. Dùng Auto-send để gửi ngay hoặc Manual để chọn model trước khi gửi.</p>
+            <span class="release-card-footnote" data-i18n="release.handoff.note">Không giới hạn lượt chuyển trong DinSide · Giới hạn của nhà cung cấp vẫn áp dụng.</span>
           </div>
-          <div class="release-preview" aria-hidden="true">
-            <div class="release-preview-bar"><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-label">DinSide / Side Panel</span></div>
-            <div class="release-preview-tabs"><span class="release-preview-tab is-active"><img class="release-preview-provider-mark" src="assets/chatgpt-mark.svg" alt="" aria-hidden="true"> ChatGPT <span class="release-preview-close">×</span></span><span class="release-preview-tab"><img class="release-preview-provider-mark" src="assets/claude-mark.svg" alt="" aria-hidden="true"> Claude <span class="release-preview-close">×</span></span><span class="release-preview-add">+</span></div>
-            <div class="release-preview-content"><span class="release-preview-content-title">Research notes</span><span class="release-preview-line"></span><span class="release-preview-line short"></span><span class="release-preview-line medium"></span><div class="release-preview-compose"><span>Message ChatGPT</span><span>↑</span></div></div>
+          <div class="handoff-demo" data-handoff-demo>
+            <div class="handoff-demo-header"><span data-i18n="release.handoff.demo.title">Chuyển hội thoại</span><span class="release-file-demo-badge" data-i18n="release.files.demo.badge">MÔ PHỎNG</span></div>
+            <div class="handoff-demo-route"><span><img src="assets/chatgpt-mark.svg" alt="">ChatGPT</span><span aria-hidden="true">→</span><span><img src="assets/claude-mark.svg" alt="">Claude</span></div>
+            <div class="handoff-demo-record" aria-hidden="true"><span data-i18n="release.handoff.demo.history">Lịch sử đã chọn</span><i></i><i></i><i></i></div>
+            <div class="handoff-demo-modes" role="group" aria-label="Xem thử cách gửi" data-i18n-aria-label="release.handoff.demo.label">
+              <button type="button" data-handoff-mode="auto" aria-pressed="true">Auto-send</button>
+              <button type="button" data-handoff-mode="manual" aria-pressed="false">Manual</button>
+            </div>
+            <p class="handoff-demo-status" data-handoff-status data-i18n="release.handoff.demo.auto" role="status" aria-live="polite">Điền ngữ cảnh và gửi sang chat mới.</p>
+            <span class="handoff-demo-hint" data-i18n="release.handoff.demo.hint">Bản xem thử · Không gửi hội thoại thật.</span>
           </div>
         </article>
         <article class="release-card reveal-on-scroll">
-          <div class="release-card-eyebrow"><span>02 / FILES</span><span class="release-card-index">↗</span></div>
-          <h3 data-i18n="release.files.title">Chọn và gửi file ngay trên trang web</h3>
-          <p data-i18n="release.files.desc">Đính kèm file từ website hoặc Drive. Google Docs, Sheets và Slides có thể xuất thành định dạng tài liệu phù hợp trước khi tải lên.</p>
+          <div class="release-card-eyebrow"><span>02 / SELECT ON PAGE</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.files.title">Một cách chọn cho cả trang web</h3>
+          <p data-i18n="release.files.desc">Select on page nhận diện văn bản, ảnh và file. Chọn liên tiếp các nội dung cần dùng rồi hoàn tất; chụp vùng và vẽ trên trang vẫn có công cụ riêng.</p>
           <div class="release-file-demo" data-file-demo data-state="idle">
             <div class="release-file-demo-top">
-              <span class="release-file-demo-label">DEMO / SELECT FILE</span>
+              <span class="release-file-demo-label">DEMO / SELECT ON PAGE</span>
               <span class="release-file-demo-badge" data-i18n="release.files.demo.badge">MÔ PHỎNG</span>
             </div>
             <div class="release-file-demo-item">
               <span class="release-file-demo-filetype" aria-hidden="true">PDF</span>
               <span class="release-file-demo-filename"><strong>project-brief.pdf</strong><small data-i18n="release.files.demo.source">Tài liệu trên website</small></span>
               <button type="button" class="release-file-demo-button" data-file-demo-button>
-                <span data-file-demo-action data-i18n="release.files.demo.select">Chọn file</span>
+                <span data-file-demo-action data-i18n="release.files.demo.select">Chọn trên trang</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               </button>
             </div>
             <div class="release-file-demo-path" aria-hidden="true"><span></span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v17m-5-5 5 5 5-5"/></svg><span></span></div>
             <div class="release-file-demo-target">
               <span class="release-file-demo-provider"><img src="assets/chatgpt-mark.svg" alt="" aria-hidden="true"> ChatGPT</span>
-              <span class="release-file-demo-status" role="status" aria-live="polite" data-file-demo-status data-i18n="release.files.demo.idle">Chờ chọn file</span>
+              <span class="release-file-demo-status" role="status" aria-live="polite" data-file-demo-status data-i18n="release.files.demo.idle">Chờ chọn nội dung</span>
             </div>
-            <span class="release-file-demo-hint" data-i18n="release.files.demo.hint">Demo tương tác, không tải file thật.</span>
+            <span class="release-file-demo-hint" data-i18n="release.files.demo.hint">Mô phỏng chọn file · Không tải file thật.</span>
           </div>
-          <div class="release-pills" aria-label="Supported formats"><span>DOCX</span><span>XLSX</span><span>PPTX</span><span>PDF</span></div>
+          <div class="release-pills"><span data-i18n="release.tools.tag1">Văn bản · Ảnh · File</span><span data-i18n="release.tools.tag2">Chụp vùng</span><span data-i18n="release.tools.tag3">Vẽ trên trang</span></div>
         </article>
         <article class="release-card reveal-on-scroll">
-          <div class="release-card-eyebrow"><span>03 / UPLOAD</span><span class="release-card-index">↗</span></div>
-          <h3 data-i18n="release.upload.title">Ba file tải lên cùng lúc</h3>
-          <p data-i18n="release.upload.desc">Tối đa 3 file được xử lý song song; file tiếp theo tự chờ lượt. Đính kèm xong không tự gửi tin nhắn.</p>
-          <div class="release-upload-preview" aria-hidden="true">
-            <div class="release-upload-preview-head"><span>UPLOAD QUEUE / DEMO</span><span>3 / 3</span></div>
-            <div class="release-upload-preview-row"><span class="release-upload-preview-type">PDF</span><span class="release-upload-preview-name">project-brief.pdf</span><span class="release-upload-preview-progress"><i style="width: 100%"></i></span></div>
-            <div class="release-upload-preview-row"><span class="release-upload-preview-type">DOC</span><span class="release-upload-preview-name">contract.docx</span><span class="release-upload-preview-progress"><i style="width: 62%"></i></span></div>
-            <div class="release-upload-preview-row"><span class="release-upload-preview-type">XLS</span><span class="release-upload-preview-name">budget.xlsx</span><span class="release-upload-preview-progress"><i style="width: 38%"></i></span></div>
-            <div class="release-upload-preview-queued"><span class="release-upload-queue-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span>slides.pptx</span><span data-i18n="release.upload.preview.queued">Đang chờ</span></div>
+          <div class="release-card-eyebrow"><span>03 / VIEWPORT IMAGE</span><span class="release-card-state" data-i18n="release.viewport.state">Tùy chọn</span></div>
+          <h3 data-i18n="release.viewport.title">Cho AI xem cả vùng bạn đang nhìn</h3>
+          <p data-i18n="release.viewport.desc">Bật ảnh vùng xem để gửi thêm hình ảnh phần trang đang hiển thị, kể cả biểu đồ và canvas. DinSide kiểm tra thay đổi để tránh tải lại cùng một ảnh.</p>
+          <div class="viewport-demo" aria-hidden="true">
+            <div class="viewport-demo-bar"><span></span><span></span><span></span></div>
+            <div class="viewport-demo-page"><div class="viewport-demo-lines"><i></i><i></i><i></i><i></i></div><div class="viewport-demo-chart"><i></i><i></i><i></i><i></i><i></i></div></div>
+            <span class="viewport-demo-label" data-i18n="release.viewport.preview">Ảnh vùng xem</span>
           </div>
-          <div class="release-pills"><span data-i18n="release.upload.tag1">3 luồng đồng thời</span><span data-i18n="release.upload.tag2">Có hàng chờ</span></div>
+          <div class="release-pills"><span data-i18n="release.viewport.tag">PNG tối ưu, giữ nguyên điểm ảnh</span></div>
+          <span class="release-card-footnote" data-i18n="release.viewport.note">Mặc định tắt · Ảnh có thể chứa nội dung đang hiển thị trên màn hình.</span>
         </article>
         <article class="release-card reveal-on-scroll">
-          <div class="release-card-eyebrow"><span>04 / SHORTCUTS</span><span class="release-card-index">↗</span></div>
-          <h3 data-i18n="release.keys.title">17 lệnh, phím tắt theo ý bạn</h3>
-          <p data-i18n="release.keys.desc">Mở menu, ghim ngữ cảnh, làm mới chat hoặc gọi công cụ bằng phím tắt. Tự gán phím trong Chrome và bật/tắt từng lệnh tùy chỉnh.</p>
-          <div class="release-pills"><span>Settings → Shortcuts</span><span>Ctrl + Shift + Y</span></div>
+          <div class="release-card-eyebrow"><span>04 / MULTI CHAT</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.tabs.title">Nhiều cuộc trò chuyện, một thanh bên</h3>
+          <p data-i18n="release.tabs.desc">Đổi tên, kéo sắp xếp, tìm chat và đánh dấu yêu thích. Nhận dấu chưa đọc khi chat nền trả lời xong và quay lại công việc khi cần.</p>
+          <div class="release-preview" aria-hidden="true">
+            <div class="release-preview-bar"><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-dot"></span><span class="release-preview-label">DinSide / Side Panel</span></div>
+            <div class="release-preview-tabs"><span class="release-preview-tab is-active"><img class="release-preview-provider-mark" src="assets/chatgpt-mark.svg" alt="" aria-hidden="true"> ChatGPT <span class="release-preview-close">×</span></span><span class="release-preview-tab"><img class="release-preview-provider-mark" src="assets/claude-mark.svg" alt="" aria-hidden="true"> Claude <span class="release-preview-close">×</span></span><span class="release-preview-add">+</span></div>
+            <div class="release-preview-content"><span class="release-preview-content-title">Research notes</span><span class="release-preview-line"></span><span class="release-preview-line short"></span><span class="release-preview-line medium"></span><div class="release-preview-compose"><span>Message ChatGPT</span><span>↑</span></div></div>
+          </div>
+          <span class="release-card-footnote" data-i18n="release.tabs.note">Tab chat bật sẵn cho cài đặt mới · Tùy chỉnh trong Settings.</span>
         </article>
         <article class="release-card reveal-on-scroll">
-          <div class="release-card-eyebrow"><span>05 / PAGE TOOLS</span><span class="release-card-index">↗</span></div>
-          <h3 data-i18n="release.tools.title">Năm công cụ ngay trên trang đang xem</h3>
-          <p data-i18n="release.tools.desc">Chọn phần tử, chọn hình ảnh, chọn file, chụp một vùng hoặc vẽ trực tiếp lên trang để chia sẻ nội dung chính xác hơn.</p>
-          <div class="release-pills"><span data-i18n="release.tools.tag1">Chọn</span><span data-i18n="release.tools.tag2">Chụp vùng</span><span data-i18n="release.tools.tag3">Vẽ</span></div>
+          <div class="release-card-eyebrow"><span>05 / SETTINGS SEARCH</span><span class="release-card-index">↗</span></div>
+          <h3 data-i18n="release.search.title">Tìm thao tác ngay trong Settings</h3>
+          <p data-i18n="release.search.desc">Mở Settings là có thể gõ tìm ngay. Tìm công cụ hoặc thiết lập bằng tiếng Việt có dấu, không dấu hay tiếng Anh; dùng phím mũi tên và Enter để mở.</p>
+          <div class="settings-demo" aria-hidden="true">
+            <div class="settings-demo-input"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span data-i18n="release.search.example">Tìm thao tác hoặc cài đặt…</span></div>
+            <div class="settings-demo-result"><span data-i18n="release.search.action">Chọn trên trang</span><kbd>↵</kbd></div>
+            <div class="settings-demo-result"><span data-i18n="release.search.setting">Ghim ngữ cảnh trang</span><span>↗</span></div>
+          </div>
+          <div class="release-pills"><span>↑ ↓</span><span>Enter</span><span>Esc</span></div>
         </article>
       </div>
-      <p class="release-footer-note" data-i18n="release.disclaimer">Các tính năng trên thuộc gói v0.6.16. Phiên bản trên Chrome Web Store có thể được cập nhật theo lịch duyệt của cửa hàng.</p>
+      <p class="release-footer-note" data-i18n="release.disclaimer">Nội dung giới thiệu theo DinSide 0.6.20. Phiên bản trên Chrome Web Store có thể cập nhật chậm hơn do lịch duyệt của cửa hàng.</p>
     </div>
   </section>
 
@@ -376,19 +384,15 @@
       <!-- Right Info Column -->
       <div class="about-info-col reveal-right">
         <span class="section-label" data-i18n="about.label">Giới thiệu</span>
-        <h2 class="section-main-title" data-i18n="about.title">
-          Tối ưu hóa luồng làm việc giữa Web và Trí tuệ nhân tạo
-        </h2>
-        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;" data-i18n="about.lead">
-          Thông thường khi dùng ChatGPT hay Claude, bạn phải liên tục bôi đen, copy và chuyển tab để dán vào khung chat. DinSide loại bỏ hoàn toàn rào cản này bằng cách mang chatbot vào ngay bên cạnh trang bạn đang đọc.
-        </p>
+        <h2 class="section-main-title" data-i18n="about.title">Tối ưu hóa luồng làm việc giữa Web và Trí tuệ nhân tạo</h2>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;" data-i18n="about.lead">Thông thường khi dùng ChatGPT hay Claude, bạn phải liên tục bôi đen, copy và chuyển tab để dán vào khung chat. DinSide loại bỏ hoàn toàn rào cản này bằng cách mang chatbot vào ngay bên cạnh trang bạn đang đọc.</p>
 
         <ul class="step-checklist">
           <li class="step-check-item">
             <div class="check-bullet">+</div>
             <div class="step-check-text">
-              <strong data-i18n="about.c1.title">Tự động đọc cấu trúc trang và vùng nhìn (Viewport)</strong>
-              <p data-i18n="about.c1.desc">Chỉ gửi những nội dung bạn đang quan tâm thay vì gửi tràn lan gây nghẽn context.</p>
+              <strong data-i18n="about.c1.title">Chủ động chọn ngữ cảnh</strong>
+              <p data-i18n="about.c1.desc">Bật/tắt ngữ cảnh trang, chọn vùng đang xem và kiểm tra nội dung chuẩn bị gửi trong Context.</p>
             </div>
           </li>
           <li class="step-check-item">
@@ -401,8 +405,8 @@
           <li class="step-check-item">
             <div class="check-bullet">+</div>
             <div class="step-check-text">
-              <strong data-i18n="about.c3.title">An toàn & Bảo mật — Xác minh bởi Chrome Web Store</strong>
-              <p data-i18n="about.c3.desc">Được kiểm duyệt bởi Google, toàn bộ xử lý diễn ra trực tiếp trên trình duyệt của bạn.</p>
+              <strong data-i18n="about.c3.title">Xử lý ngữ cảnh trong trình duyệt</strong>
+              <p data-i18n="about.c3.desc">Lịch sử chuyển hội thoại và thiết lập lưu cục bộ. Ngữ cảnh và file bạn gửi sẽ được xử lý bởi nhà cung cấp AI đã chọn.</p>
             </div>
           </li>
         </ul>
@@ -423,9 +427,9 @@
       <div class="section-headline-bar reveal-on-scroll">
         <div>
           <span class="section-label" data-i18n="providers.label">Hệ sinh thái AI</span>
-          <h2 class="section-main-title" data-i18n="providers.title">Hỗ trợ 15+ Nhà cung cấp AI</h2>
+          <h2 class="section-main-title" data-i18n="providers.title">Hỗ trợ 19 nhà cung cấp AI</h2>
         </div>
-        <span style="font-size: 0.85rem; color: var(--text-muted);" data-i18n="providers.note">Không yêu cầu API Key trả phí</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" data-i18n="providers.note">Không cần API key để kết nối web chat</span>
       </div>
 
       <!-- 3D Perspective Image Stream Corridor Hero -->
@@ -567,16 +571,35 @@
         <!-- Clean Foreground Content: Top Title & Bottom Description -->
         <div class="ish-foreground">
           <div class="ish-top-header">
-            <h3 class="ish-headline" data-i18n="providers.heroTitle">
-              Mọi mô hình AI bạn cần,<br>
-              ngay trên thanh bên.
-            </h3>
+            <h3 class="ish-headline" data-i18n="providers.heroTitle">AI quen thuộc của bạn,<br>ngay trên thanh bên.</h3>
           </div>
-          <p class="ish-description" data-i18n="providers.heroDesc">
-            Đưa toàn bộ ngữ cảnh duyệt web vào thẳng ChatGPT, Claude, Gemini, DeepSeek... Trò chuyện song song, không cần copy-paste hay API Key trả phí.
-          </p>
+          <p class="ish-description" data-i18n="providers.heroDesc">ChatGPT, Claude, Gemini, DeepSeek và nhiều lựa chọn khác. Dùng tài khoản hiện có, mở nhiều chat và chuyển tiếp hội thoại khi cần.</p>
         </div>
       </div>
+
+      <details class="provider-directory">
+        <summary data-i18n="providers.directory">Xem đủ 19 nhà cung cấp</summary>
+        <ul><li><img src="assets/chatgpt-mark.svg" alt="" width="18" height="18" loading="lazy"><span>ChatGPT</span></li>
+          <li><img src="assets/claude-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Claude</span></li>
+          <li><img src="assets/gemini-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Gemini</span></li>
+          <li><img src="assets/google-g.svg" alt="" width="18" height="18" loading="lazy"><span>Google AI Mode (Beta)</span></li>
+          <li><img src="assets/google-g.svg" alt="" width="18" height="18" loading="lazy"><span>Google AI Studio</span></li>
+          <li><img src="assets/notebooklm-mark.svg" alt="" width="18" height="18" loading="lazy"><span>NotebookLM</span></li>
+          <li><img src="assets/perplexity-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Perplexity</span></li>
+          <li><img src="assets/deepseek-mark.svg" alt="" width="18" height="18" loading="lazy"><span>DeepSeek</span></li>
+          <li><img src="assets/openrouter-mark.svg" alt="" width="18" height="18" loading="lazy"><span>OpenRouter</span></li>
+          <li><img src="assets/copilot-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Microsoft Copilot</span></li>
+          <li><img src="assets/qwen-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Qwen</span></li>
+          <li><img src="assets/kimi-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Kimi</span></li>
+          <li><img src="assets/meta-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Meta AI</span></li>
+          <li><img src="assets/xiaomi-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Xiaomi MiMo Studio</span></li>
+          <li><img src="assets/zai-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Z.ai</span></li>
+          <li><img src="assets/muse-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Muse</span></li>
+          <li><img src="assets/mistral-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Mistral</span></li>
+          <li><img src="assets/mistral-console-mark.svg" alt="" width="18" height="18" loading="lazy"><span>Mistral Console</span></li>
+          <li><img src="assets/dola-mark.png" alt="" width="18" height="18" loading="lazy"><span>Dola</span></li></ul>
+        <p data-i18n="providers.limits">Tài khoản, model, hạn mức sử dụng và khả năng đính kèm tùy từng nhà cung cấp. Google AI Mode hiện ở trạng thái Beta.</p>
+      </details>
     </div>
   </section>
 
@@ -624,7 +647,7 @@
           </div>
           <div>
             <strong class="store-banner-title" data-i18n="install.storeTitle">Cài đặt chính thức từ Chrome Web Store</strong>
-            <p class="store-banner-desc" data-i18n="install.storeDesc">Phiên bản mới nhất · Tự động cập nhật bảo mật · Được kiểm duyệt bởi Google</p>
+            <p class="store-banner-desc" data-i18n="install.storeDesc">Cập nhật tự động qua cửa hàng · Bản mới có thể cần thời gian xét duyệt</p>
           </div>
         </div>
         <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" class="btn-store-install">
@@ -643,28 +666,16 @@
               <div class="fc-header">
                 <div class="fc-info-wrap">
                   <div class="fc-info-item is-active" data-info-step="0">
-                    <h3 class="fc-step-title" data-i18n="install.s1.title">
-                      Mở trang tiện ích trên Chrome Web Store
-                    </h3>
-                    <p class="fc-step-desc" data-i18n="install.s1.desc">
-                      Bấm nút "Thêm vào Chrome ngay" ở trên hoặc truy cập trực tiếp <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer">trang DinSide trên Chrome Web Store</a>.
-                    </p>
+                    <h3 class="fc-step-title" data-i18n="install.s1.title">Mở trang tiện ích trên Chrome Web Store</h3>
+                    <p class="fc-step-desc" data-i18n="install.s1.desc">Bấm nút "Thêm vào Chrome ngay" ở trên hoặc truy cập trực tiếp <a href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer">trang DinSide trên Chrome Web Store</a>.</p>
                   </div>
                   <div class="fc-info-item" data-info-step="1">
-                    <h3 class="fc-step-title" data-i18n="install.s2.title">
-                      Bấm "Thêm vào Chrome"
-                    </h3>
-                    <p class="fc-step-desc" data-i18n="install.s2.desc">
-                      Xác nhận hộp thoại popup của trình duyệt. Tiện ích sẽ được cài đặt và kích hoạt trong vòng vài giây.
-                    </p>
+                    <h3 class="fc-step-title" data-i18n="install.s2.title">Bấm "Thêm vào Chrome"</h3>
+                    <p class="fc-step-desc" data-i18n="install.s2.desc">Xác nhận hộp thoại popup của trình duyệt. Tiện ích sẽ được cài đặt và kích hoạt trong vòng vài giây.</p>
                   </div>
                   <div class="fc-info-item" data-info-step="2">
-                    <h3 class="fc-step-title" data-i18n="install.s3.title">
-                      Mở Side Panel và trải nghiệm
-                    </h3>
-                    <p class="fc-step-desc" data-i18n="install.s3.desc">
-                      Ghim biểu tượng DinSide vào thanh công cụ hoặc nhấn tổ hợp phím tắt để bắt đầu trò chuyện với AI cùng ngữ cảnh trang web.
-                    </p>
+                    <h3 class="fc-step-title" data-i18n="install.s3.title">Mở Side Panel và trải nghiệm</h3>
+                    <p class="fc-step-desc" data-i18n="install.s3.desc">Ghim DinSide lên thanh công cụ và mở thanh bên. Chọn nhà cung cấp, đăng nhập tài khoản AI của bạn rồi bắt đầu; không cần tạo tài khoản DinSide.</p>
                   </div>
                 </div>
 
@@ -846,12 +857,10 @@
       <div class="faq-list-mf reveal-on-scroll">
         <div class="faq-item-mf">
           <button class="faq-q-btn">
-            <span data-i18n="faq.q1">DinSide có hoàn toàn miễn phí không?</span>
+            <span data-i18n="faq.q1">Có cần tài khoản hay trả phí cho DinSide không?</span>
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="faq-ans-body" data-i18n="faq.a1">
-            Đúng vậy! Tiện ích mở rộng DinSide hoàn toàn miễn phí cho tất cả mọi người sử dụng. Bạn có thể ủng hộ tác giả qua kênh donate để khuyến khích phát triển và duy trì các bản cập nhật tiếp theo.
-          </div>
+          <div class="faq-ans-body" data-i18n="faq.a1">Bản hiện tại không yêu cầu tài khoản DinSide hay gói trả phí. Chuyển hội thoại miễn phí và không giới hạn lượt trong DinSide. Đăng nhập, thanh toán và đồng bộ đám mây của DinSide đang tạm tắt; hạn mức và gói model của nhà cung cấp AI vẫn áp dụng riêng.</div>
         </div>
 
         <div class="faq-item-mf">
@@ -859,19 +868,15 @@
             <span data-i18n="faq.q2">Tôi có cần mua API key để sử dụng không?</span>
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="faq-ans-body" data-i18n="faq.a2">
-            Không cần! DinSide tương tác trực tiếp với giao diện web chat của các nhà cung cấp (ChatGPT, Claude, Gemini...) mà bạn đã đăng nhập sẵn trên trình duyệt. Bạn chỉ cần đăng nhập tài khoản bình thường là dùng được ngay.
-          </div>
+          <div class="faq-ans-body" data-i18n="faq.a2">Không cần API key để kết nối các web chat được hỗ trợ. Bạn dùng tài khoản của nhà cung cấp như khi truy cập website của họ. Một số model, định dạng file hoặc lượt sử dụng có thể cần quyền truy cập hay gói trả phí từ nhà cung cấp.</div>
         </div>
 
         <div class="faq-item-mf">
           <button class="faq-q-btn">
-            <span data-i18n="faq.q3">Dữ liệu và nội dung trang web của tôi có an toàn không?</span>
+            <span data-i18n="faq.q3">Ngữ cảnh và file của tôi được xử lý ở đâu?</span>
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="faq-ans-body" data-i18n="faq.a3">
-            Tuyệt đối an toàn. DinSide không có máy chủ lưu trữ dữ liệu trung gian. Mọi xử lý ngữ cảnh diễn ra 100% cục bộ trong trình duyệt của bạn và chỉ được gửi tới đúng chatbot AI mà bạn bấm gửi.
-          </div>
+          <div class="faq-ans-body" data-i18n="faq.a3">DinSide chuẩn bị ngữ cảnh trong trình duyệt và lưu thiết lập, lịch sử chuyển hội thoại cục bộ. Khi gửi, nhà cung cấp AI bạn chọn nhận ngữ cảnh và file đính kèm theo chính sách của họ. Ảnh vùng xem là tùy chọn, mặc định tắt; hãy kiểm tra nội dung đang hiển thị trước khi bật.</div>
         </div>
 
         <div class="faq-item-mf">
@@ -879,9 +884,17 @@
             <span data-i18n="faq.q4">Làm thế nào để đổi phím tắt mở DinSide?</span>
             <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="faq-ans-body" data-i18n="faq.a4">
-            Bạn có thể truy cập <code>chrome://extensions/shortcuts</code> trong trình duyệt, tìm đến mục DinSide và gán bất kỳ tổ hợp phím nào bạn thấy tiện lợi nhất (mặc định là Ctrl+Shift+Y).
-          </div>
+          <div class="faq-ans-body" data-i18n="faq.a4">Vào <code>chrome://extensions/shortcuts</code>, tìm DinSide và gán phím bạn muốn. Phím mở mặc định là Ctrl+Shift+Y trên Windows/Linux hoặc Command+Shift+Y trên macOS; bạn có thể đổi nếu trùng với lệnh khác.</div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn" type="button"><span data-i18n="faq.q5">Muốn chọn model trước khi chuyển hội thoại thì sao?</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="faq-ans-body" data-i18n="faq.a5">Chọn Manual trong hộp thoại Transfer conversation. DinSide điền ngữ cảnh vào chat đích và để bản nháp chưa gửi, để bạn chọn model rồi tự gửi. Với Auto-send, DinSide điền ngữ cảnh và bấm gửi vào chat mới.</div>
+        </div>
+
+        <div class="faq-item-mf">
+          <button class="faq-q-btn" type="button"><span data-i18n="faq.q6">Ảnh và file gốc có đi theo khi chuyển hội thoại không?</span><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+          <div class="faq-ans-body" data-i18n="faq.a6">Không phải mọi tệp đính kèm đều chuyển được. Lịch sử có thể giữ tham chiếu tới ảnh hoặc file; AI bên nhận chỉ đọc được nội dung gốc khi file thực sự được đính kèm và được nhà cung cấp hỗ trợ. Hãy đính kèm lại các file quan trọng nếu cần.</div>
         </div>
       </div>
     </div>
@@ -896,9 +909,7 @@
             <img src="assets/icon128.png" alt="DinSide Logo" class="brand-logo-img">
             <span class="brand-title">DinSide</span>
           </div>
-          <p class="footer-desc-mf" data-i18n="footer.desc">
-            Cầu nối thông minh giữa trang web đang đọc và các mô hình AI bạn yêu thích. Tiện ích mở rộng Chrome phát triển bởi <strong>thanhdiner</strong>.
-          </p>
+          <p class="footer-desc-mf" data-i18n="footer.desc">Cầu nối thông minh giữa trang web đang đọc và các mô hình AI bạn yêu thích. Tiện ích mở rộng Chrome phát triển bởi <strong>thanhdiner</strong>.</p>
         </div>
 
         <div>
@@ -924,9 +935,7 @@
       </div>
 
       <div class="footer-bottom-bar">
-        <div data-i18n="footer.copyright">
-          © 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" style="color: var(--accent-coral);">thanhdiner</a>.
-        </div>
+        <div data-i18n="footer.copyright">© 2026 <strong>DinSide</strong>. Phát triển bởi <a href="https://github.com/thanhdiner" target="_blank" rel="noopener noreferrer" style="color: var(--accent-coral);">thanhdiner</a>.</div>
         <div class="social-links-bar" aria-label="Mạng xã hội footer">
           <a href="https://www.facebook.com/dinside/" target="_blank" rel="noopener noreferrer" class="social-link-item" title="Facebook" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
@@ -945,8 +954,7 @@
     </div>
   </footer>
 
-  <!-- Translations Data & Main JavaScript File -->
-  <script src="js/translations.js"></script>
+  <!-- Main JavaScript Files (translations already loaded in head) -->
   <script src="js/hero-color-panels.js"></script>
   <script src="js/metal-pill.js"></script>
   <script src="js/main.js"></script>

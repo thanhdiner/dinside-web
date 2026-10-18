@@ -1,92 +1,73 @@
-# DinSide Web — Trang Giới Thiệu & Cài Đặt Tiện Ích DinSide
+# DinSide Web
 
-Trang landing page chính thức giới thiệu tiện ích mở rộng **DinSide** (Chrome Manifest V3 Side Panel) — kết nối ngữ cảnh trình duyệt trực tiếp vào hơn 15 mô hình AI hàng đầu (ChatGPT, Claude, Gemini, DeepSeek...) mà không cần copy-paste thủ công.
+Website giới thiệu và hướng dẫn cài đặt DinSide, viết bằng HTML, CSS và JavaScript thuần. Nội dung tiếng Việt và tiếng Anh được đối chiếu với **DinSide 0.6.20** ngày **18/10/2026**. Phiên bản trên Chrome Web Store có thể chậm hơn do thời gian xét duyệt.
 
-Tiện ích được phát hành chính thức trên **Chrome Web Store**.
+## Nội dung sản phẩm
 
----
+- 19 nhà cung cấp AI, dùng tài khoản web chat hiện có; không cần API key để kết nối.
+- Ngữ cảnh trang, vùng xem, nhiều tab, ghim tham chiếu và Quick Ask khi bôi đen.
+- Chuyển hội thoại với Loaded / Full history / Recent, xem lại ngữ cảnh, Auto-send hoặc Manual để chọn model trước khi gửi.
+- Select on page nhận diện văn bản, ảnh và file; Capture region và Draw on page là công cụ riêng.
+- Ảnh vùng xem tùy chọn, mặc định tắt; tối ưu PNG cục bộ giữ nguyên điểm ảnh.
+- Tab chat, tìm kiếm trong Settings, tài liệu Google Workspace và file đính kèm theo khả năng của nhà cung cấp.
 
-## 🔗 Liên kết chính thức
+DinSide hiện không yêu cầu tài khoản hay gói trả phí. Đăng nhập DinSide, thanh toán và đồng bộ đám mây đang tạm tắt. Giới hạn model, tài khoản và tải file của từng nhà cung cấp vẫn áp dụng. Tham chiếu file trong lịch sử không đồng nghĩa file gốc đã được chuyển sang AI đích.
 
-- **Chrome Web Store**: [https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo](https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo)
-- **Tác giả**: [HUYNH VAN THANH (@thanhdiner)](https://github.com/thanhdiner)
+Các bản xem thử trên landing page chỉ mô phỏng giao diện, **không gửi hội thoại hoặc tải file thật**.
 
----
+## Chạy cục bộ
 
-## 🌟 Tính năng của trang web
-
-- **Giao diện hiện đại & Siêu mượt**: Thiết kế chuẩn MultiFlex Dark Theme, tối ưu tương phản và typography.
-- **Mô phỏng trực quan (Interactive Mockup)**: Trực tiếp minh hoạ trải nghiệm chia đôi màn hình giữa việc duyệt web và thanh bên DinSide với khả năng đổi qua lại giữa ChatGPT, Claude, Gemini.
-- **Hệ sinh thái 15+ AI Provider**: Danh mục các mô hình AI được hỗ trợ kèm logo SVG sắc nét.
-- **Cài đặt 1 chạm nhanh chóng**: Hướng dẫn cài đặt trực tiếp từ Chrome Web Store an toàn và tiện lợi.
-- **Khu vực ủng hộ & Mời cà phê**:
-  - Hỗ trợ chuyển khoản nhanh qua mã **VietQR / Vietcombank** (Chủ TK: HUYNH VAN THANH, STK: 1061960104).
-  - Nút copy số tài khoản và nút tải ảnh QR tiện lợi.
-- **Tối ưu Responsive & Tương thích**: Tương thích tốt trên máy tính, máy tính bảng và điện thoại di động.
-
----
-
-## 📂 Cấu trúc thư mục
-
-```text
-dinside-web/
-├── index.html              # Trang chủ chính
-├── css/
-│   └── style.css           # Toàn bộ CSS (Variables, Theme, Responsive)
-├── js/
-│   └── main.js             # Logic xử lý giao diện, tab mockup, copy toast
-├── assets/                 # Icons, logo AI, video demo, QR donate
-├── .gitignore
-└── README.md
-```
-
----
-
-## 🚀 Cách chạy thử cục bộ (Local Preview)
-
-Vì trang được xây dựng hoàn toàn bằng **HTML, CSS và JavaScript thuần**, bạn có thể:
-
-1. **Cách 1 (Nhanh nhất)**: Nhấp đúp chuột trực tiếp vào file `index.html` để mở trên bất kỳ trình duyệt nào.
-2. **Cách 2 (Sử dụng Python)**:
-   ```bash
-   python -m http.server 3000
-   ```
-   Sau đó mở trình duyệt tại: `http://localhost:3000`
-3. **Cách 3 (Sử dụng Node.js npx)**:
-   ```bash
-   npx serve .
-   ```
-4. **Cách 4**: Dùng extension **Live Server** trong VS Code / Cursor.
-
----
-
-## 🌐 Triển khai lên mạng (Deployment)
-
-**Đã deploy:** https://thanhdiner.github.io/dinside-web/ từ repo https://github.com/thanhdiner/dinside-web (nhánh `main`, thư mục `/(root)`).
-
-**Cập nhật website:** Sau khi sửa `D:\Dev\dinside-web`, chạy:
+Không cần cài dependency hoặc build. Từ thư mục dự án:
 
 ```powershell
-pwsh -File "D:\Dev\dinside-web\publish.ps1" -Message "feat: update website"
+python -m http.server 3000 --bind 127.0.0.1
 ```
 
-Script đồng bộ file website công khai sang `D:\Dev\dinside-web-publish`, commit và push. GitHub Pages sẽ tự deploy mỗi lần push. Git history cũ tại thư mục nguồn vẫn giữ nguyên, không cần Node.js server.
+Mở `http://127.0.0.1:3000`. Dùng HTTP để kiểm tra đầy đủ tài nguyên và tương tác.
 
+## Cấu trúc
 
+```text
+index.html                 Trang chủ, nội dung tiếng Việt dự phòng
+css/style.css              Giao diện sáng/tối và responsive
+js/translations.js         Nội dung VI/EN, nạp một lần trong head
+js/main.js                 Ngôn ngữ, theme, bản xem thử, FAQ, hướng dẫn cài đặt
+js/hero-color-panels.js    Hiệu ứng minh họa WebGL
+js/metal-pill.js           Hiệu ứng giao diện
+assets/                    Logo, ảnh cài đặt và QR ủng hộ
+publish.ps1                Đồng bộ sang repo công khai, commit và push
+```
 
-### 1. GitHub Pages (Miễn phí)
-1. Đẩy mã nguồn repo lên GitHub (ví dụ: `https://github.com/thanhdiner/dinside-web`).
-2. Vào tab **Settings** -> **Pages**.
-3. Tại phần **Source**, chọn nhánh `main` (hoặc `master`) và thư mục `/(root)`.
-4. Bấm **Save**. Trang web sẽ chạy sau khoảng 1 phút tại `https://thanhdiner.github.io/dinside-web/`.
+`components/` và `lib/` là các mẫu TSX tham khảo, không tham gia trang HTML đang chạy. Các bản sao extension `sidepanel.html`, `sidepanel.js` và ZIP cũ trong `downloads/` không được trang hiện tại sử dụng hoặc phát hành bởi `publish.ps1`. Cài đặt qua Chrome Web Store; không dùng các ZIP cũ này làm bản phát hành mới.
 
-### 2. Vercel hoặc Netlify
-Kéo thả thư mục `dinside-web` vào bảng điều khiển của Vercel hoặc Netlify là trang web sẽ online ngay lập tức mà không cần cấu hình build step.
+## Kiểm tra trước khi cập nhật
 
----
+```powershell
+node --check js/main.js
+node --check js/translations.js
+git diff --check
+```
 
-## 👤 Thông tin liên hệ
+Trong Chrome, kiểm tra hai ngôn ngữ và hai theme ở desktop và mobile: bản xem thử Auto-send/Manual, chọn file mô phỏng, danh sách 19 nhà cung cấp, FAQ, menu mobile và các bước cài đặt. Kiểm tra console, tài nguyên nội bộ và tràn ngang. Đối chiếu nội dung `data-i18n` với cả hai bộ bản dịch và nội dung HTML dự phòng.
 
-- Tác giả: **HUYNH VAN THANH** ([@thanhdiner](https://github.com/thanhdiner))
-- Email: `huynhvanthanh.dev@gmail.com`
-- Chrome Web Store: [DinSide Extension](https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo)
+Khi thay đổi sản phẩm, đối chiếu `manifest.json`, provider catalog và tài liệu release trong repo extension. Không tự coi bản local là bản đã được Chrome Web Store duyệt.
+
+## Phát hành website
+
+- Website: https://thanhdiner.github.io/dinside-web/
+- Repo công khai: https://github.com/thanhdiner/dinside-web
+- Mirror cục bộ: `D:\Dev\dinside-web-publish`
+
+Chỉ chạy khi muốn phát hành thay đổi lên mạng:
+
+```powershell
+pwsh -File "D:\Dev\dinside-web\publish.ps1" -Message "feat: align website with DinSide 0.6.20"
+```
+
+Script đồng bộ `index.html`, `README.md`, `.gitignore`, `publish.ps1` và các thư mục `assets/`, `css/`, `js/` sang mirror; cập nhật hash cache cho CSS, bản dịch và script chính; rồi commit và push `origin main`. GitHub Pages phục vụ từ nhánh `main`, thư mục gốc. Đây là thao tác phát hành công khai, không phải lệnh preview hoặc kiểm tra.
+
+## Liên kết
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo)
+- [Tác giả @thanhdiner](https://github.com/thanhdiner)
+- Hỗ trợ: huynhvanthanh.dev@gmail.com
