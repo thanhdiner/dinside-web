@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=093dc93ec5aa">
+  <link rel="stylesheet" href="css/style.css?v=20261020-chatgpt-notice">
 
   <!-- Immediate Theme Initialization (Zero Flicker) -->
   <script>
@@ -53,7 +53,7 @@
   </script>
 
   <!-- Immediate Language Initialization -->
-  <script src="js/translations.js?v=b4ad1d82b67f"></script>
+  <script src="js/translations.js?v=20261020-chatgpt-notice"></script>
   <script>
     (function() {
       function detectLang() {
@@ -197,6 +197,19 @@
       </div>
     </div>
   </nav>
+
+  <!-- Temporary public notice: ChatGPT compatibility fix under review -->
+  <section class="service-notice" role="status" aria-label="Trạng thái dịch vụ DinSide" data-i18n-aria-label="status.aria">
+    <div class="container service-notice-inner">
+      <span class="service-notice-symbol" aria-hidden="true">!</span>
+      <div class="service-notice-copy">
+        <p class="service-notice-meta" data-i18n="status.meta">20/10/2026 · THÔNG BÁO SỰ CỐ</p>
+        <h2 class="service-notice-title" data-i18n="status.title">ChatGPT đang gặp lỗi tương thích trên DinSide</h2>
+        <p class="service-notice-description" data-i18n="status.description">DinSide 0.6.19 hiện có thể không hoạt động đúng với ChatGPT. Bản sửa 0.6.21 đã được gửi Google xét duyệt và sẽ tự động phát hành sau khi được duyệt. Trong lúc chờ, bạn có thể thử các AI khác trong DinSide. Xin lỗi vì sự gián đoạn.</p>
+      </div>
+      <a class="service-notice-link" href="https://chromewebstore.google.com/detail/dinside/gpmnoijpldnibaffgbnddfidgofbdbgo" target="_blank" rel="noopener noreferrer" data-i18n="status.link">Xem trên Chrome Web Store ↗</a>
+    </div>
+  </section>
 
   <!-- Hero Section (centered) -->
   <header class="hero-split-section">
@@ -957,7 +970,7 @@
   <!-- Main JavaScript Files (translations already loaded in head) -->
   <script src="js/hero-color-panels.js"></script>
   <script src="js/metal-pill.js"></script>
-  <script src="js/main.js?v=f30858d3a3a5"></script>
+  <script src="js/main.js"></script>
 
   <!-- Instant Scroll Restoration: Applied before first paint so page appears directly at previous scroll offset -->
   <script>
