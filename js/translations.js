@@ -2,6 +2,11 @@
 const translations = {
   "vi": {
     "page.title": "DinSide — Mang ngữ cảnh trang web vào AI Chat của bạn",
+    "status.aria": "Trạng thái dịch vụ DinSide",
+    "status.meta": "20/10/2026 · THÔNG BÁO SỰ CỐ",
+    "status.title": "ChatGPT đang gặp lỗi tương thích trên DinSide",
+    "status.description": "DinSide 0.6.19 hiện có thể không hoạt động đúng với ChatGPT. Bản sửa 0.6.21 đã được gửi Google xét duyệt và sẽ tự động phát hành sau khi được duyệt. Trong lúc chờ, bạn có thể thử các AI khác trong DinSide. Xin lỗi vì sự gián đoạn.",
+    "status.link": "Xem trên Chrome Web Store ↗",
     "page.description": "DinSide kết nối ngữ cảnh trang web với 19 nhà cung cấp AI ngay trên thanh bên Chrome. Chọn nội dung, gửi tài liệu và chuyển tiếp hội thoại giữa các AI.",
     "topbar.email": "huynhvanthanh.dev@gmail.com",
     "nav.home": "Trang chủ",
@@ -154,6 +159,11 @@ const translations = {
   },
   "en": {
     "page.title": "DinSide — Bring Web Context Directly to Your AI Chat",
+    "status.aria": "DinSide service status",
+    "status.meta": "OCT 20, 2026 · SERVICE NOTICE",
+    "status.title": "ChatGPT compatibility issue in DinSide",
+    "status.description": "The published DinSide 0.6.19 may not work correctly with ChatGPT. Fix version 0.6.21 has been submitted to Google for review and will publish automatically when approved. In the meantime, you can try other AI providers in DinSide. We apologize for the disruption.",
+    "status.link": "View on Chrome Web Store ↗",
     "page.description": "Bring web context to 19 AI providers in the Chrome side panel. Select page content, attach documents and continue conversations across providers with DinSide.",
     "topbar.email": "huynhvanthanh.dev@gmail.com",
     "nav.home": "Home",
